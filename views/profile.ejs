@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.108.0">
+    <title>Profile</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    
+    <link href="/css/sidebars.css" rel="stylesheet">
+    <link href="/css/index.css" rel="stylesheet">   
+
+    <style>
+        .b-example-divider {
+        height: 3rem;
+        background-color: #E8E9EE;
+        border: solid rgba(0, 0, 0, .15);
+        border-width: 1px 0;
+        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+    }
+
+    .b-example-vr {
+        flex-shrink: 0;
+        width: 1.5rem;
+        height: 100vh;
+    }
+    </style>
+    
+</head>
+
+<body>
+    <main class="d-flex flex-nowrap vh-100">
+        <!-- slides bar -->
+        <div class="d-flex flex-column flex-shrink-0 p-3 side" style="width: 300px;">
+            <ul class="nav nav-pills flex-column mb-auto">
+                <br>
+                <h2 class="h2bar"> &nbsp; Study In</h2>
+                <hr class="hrbarA ">
+                <li>
+                    <a href="/form/home " class="nav-link list-group-item-action list-group-item-dark p-2.8 text-dark fw-bold">
+                        <i class="bi bi-houses"></i>
+                        Home
+                    </a>
+                </li>
+                <br>
+                <li>
+                    <a href="/form/listMyForm" class="nav-link list-group-item-action list-group-item-dark p-2.8 text-dark fw-bold">
+                        <i class="bi bi-folder2-open"></i>
+                        My Form
+                    </a>
+                </li>
+                <br>
+                <li>
+                    <a href="/form/formSubmission" class="nav-link list-group-item-action list-group-item-dark p-2.8 text-dark fw-bold">
+                        <i class="bi bi-file-earmark-arrow-down"></i>
+                        Submission
+                    </a>
+                </li>
+                <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+                <hr class="hrbarA">
+                <li>
+                    <a href="/user/profile" class="nav-link active bg-light list-group-item-action list-group-item-light p-2.8 text-dark fw-bold">
+                        <i class="bi bi-person"></i>
+                        Profile
+                    </a>
+                </li>
+                <li>
+                    <a href="/auth/login" class="nav-link list-group-item-action list-group-item-dark p-2.8 text-white fw-bold">
+                        <i class="bi bi-box-arrow-right"></i>
+                        LogOut
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <!-- end slide bar -->
+
+        <div class="b-example-divider b-example-vr p-1" style="width:84.98%">
+            <div class="container">
+                <div class="text-center bg-light atas" style="margin-left: -55px; margin-top: 50px; border-radius: 50px;" >
+                    <div class="row align-items-start p-5">
+                        <div class="col">
+                            <img src="/img/profile.png" class="w-40" alt="">
+                        </div>
+                        <div class="col">
+                            <h3 class="text-dark" style="margin-right: 150px;">Ani Susanti</h3>
+                        </div>
+                        <div class="col">
+                            <a href="/user/editProfile"><button type="button" class="btn btn-warning rounded-pill">EditProfile</button></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <table class="table tabel-radius">
+                <tr>
+                    <td>
+                        <div class="bawah">
+                            <form action="" method="" class="pt-5">
+                                <div class="container overflow-hidden">
+                                    <div class="row gy-3">
+                                        <div class="col-6">
+                                            <div class="form-floating mb-1">
+                                                <input type="text" class="form-control w-75" id="floatingInput"
+                                                    name="first_name" placeholder="first_name"
+                                                    style="border-radius: 25px;">
+                                                <label for="floatingInput" class="text-dark">Name</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="form-floating mb-1">
+                                                <input type="text" class="form-control w-75" id="floatingInput"
+                                                    name="surename" placeholder="surename" style="border-radius: 25px;">
+                                                <label for="floatingInput" class="text-dark">Username</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="form-floating mb-1">
+                                                <input type="text" class="form-control w-75" id="floatingInput"
+                                                    name="email" placeholder="email" style="border-radius: 25px;">
+                                                <label for="floatingInput" class="text-dark">Email</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="form-floating mb-1">
+                                                <input type="text" class="form-control w-75" id="floatingInput"
+                                                    name="username" placeholder="username" style="border-radius: 25px;">
+                                                <label for="floatingInput" class="text-dark">Password</label>
+                                            </div>
+                                        </div>  
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+
+    </main>
+
+
+    <script src="../../../assets/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="../../../assets/js/sidebars.js"></script>
+
+    <!-- Include the Bootstrap JavaScript and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.0/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

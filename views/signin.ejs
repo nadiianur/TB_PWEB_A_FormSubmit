@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="/css/signin.css">
+</head>
+
+<body>
+  <div class="title">
+    Welcome Back !
+  </div>
+  <div class="wrapper">
+    <form class="m-4" action='/auth/login' method="post" id="formLogin">
+      <div class="field">
+        <input type="username" id="floatingInputUsername" name="username" required>
+        <label for="floatingInputInvalid">Username</label>
+      </div>
+      <div class="field">
+        <input type="password" id="floatingPassword" name="password" required>
+        <label for="floatingPassword">Password</label>
+      </div>
+      <br>
+      <br>
+      <div class="field">
+          <input type="submit" class="fw-semibold w-100 btn btn-lg btn-submit text-white btn-light" value="Sign in">
+      </div>
+      <br>
+      <div class="content">
+          <div class="checkbox">
+              <input type="checkbox" id="ingatkan-saya">
+              <label for="ingatkan-saya">Remember</label>
+          </div>
+      </div>
+    </form>
+  </div>
+  <div class="row">
+    <p>Don't Have an Account?</p>
+    <h4><a href="/user/register">Create Account</a></h4>
+  </div>
+
+  <script>
+    const formLogin = document.getElementById('formLogin');
+    formLogin.addEventListener("submit", async (event) =>  {
+      event.preventDefault();
+
+      const username = document.getElementById('floatingInputUsername').value;
+      const password = document.getElementById('floatingPassword').value;
+
+      const formData = new FormData(formLogin);
+      const requestOptions = await fetch('http://localhost:3000/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({username, password})
+      });
+
+      const data = await requestOptions.json();
+
+      if (data.success == 'ok') {
+        alert(data.msg);
+        window.location.href = '/form/home';
+      } else if (!data.success == false) {
+        alert('Login Tidak Berhasil');
+        window.location.href = '/auth/login';
+      } else if (data.msg == 'Username not valid'){
+        alert(data.msg);
+        window.location.href = '/auth/login';
+      } else if(data.msg == 'Password wrong'){
+        alert(data.msg);
+        window.location.href = '/auth/login';
+      }
+    });
+  </script>
+</body>
+
+</html>

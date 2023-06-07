@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.108.0">
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/sidebars/">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+   
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/task.css">
+    <link rel="stylesheet" href="/css/sidebars.css">
+    <link rel="stylesheet" href="/css/style2.css">
+
+    <style>
+        .b-example-divider {
+        height: 3rem;
+        background-color: #E8E9EE;
+        border: solid rgba(0, 0, 0, .15);
+        border-width: 1px 0;
+        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+        }
+
+        .b-example-vr {
+            flex-shrink: 0;
+            height: 100vh;
+        }
+
+        .button {
+        border-radius: 25px;
+        width: 250px;
+        height: 50px;
+        font-weight: bold;
+        }
+    </style>
+
+</head>
+
+<body>
+    <main class="d-flex flex-nowrap vh-100">
+        <!-- slides bar -->
+        <div class="d-flex flex-column flex-shrink-0 p-3 side" style="width: 300px;">
+            <ul class="nav nav-pills flex-column mb-auto">
+                <br>
+                <h2 class="h2bar"> &nbsp; Study In</h2>
+                <hr class="hrbarA">
+                <li>    
+                    <a href="/form/home " class="nav-link list-group-item-action list-group-item-dark p-2.8 text-dark fw-bold">
+                        <i class="bi bi-houses"></i>
+                        Home
+                    </a>
+                </li>
+                <br>
+                <li>
+                    <a href="/form/listMyForm" class="nav-link list-group-item-action list-group-item-dark p-2.8 text-dark fw-bold">
+                        <i class="bi bi-folder2-open"></i>
+                        My Form
+                    </a>
+                </li>
+                <br>
+                <li>
+                    <a href="/form/formSubmission" class="nav-link active bg-light list-group-item-action list-group-item-light p-2.8 text-dark fw-bold ">
+                        <i class="bi bi-file-earmark-arrow-down"></i>
+                        Submission
+                    </a>
+                </li>
+                <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+                <hr class="hrbar">
+                <li>
+                    <a href="/user/profile" class="nav-link list-group-item-action list-group-item-dark p-2.8 text-white fw-bold">
+                        <i class="bi bi-person"></i>
+                        Profile
+                    </a>
+                </li>
+                <li>
+                    <a href="/auth/login" class="nav-link list-group-item-action list-group-item-dark p-2.8 text-white fw-bold">
+                        <i class="bi bi-box-arrow-right"></i>
+                        LogOut
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <!-- end slide bar -->
+
+        <div class="b-example-divider b-example-vr " style="width:84.98%">
+            <br>
+                 <h2 class="tittle text-center my-3 text-dark">List Submission</h2>
+            <br>
+            <br>
+            <div class="white-rectangle">
+                <a href="/form/formSubmission" class="text-decoration-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-backspace" viewBox="0 0 16 16">
+                    <path d="M5.83 5.146a.5.5 0 0 0 0 .708L7.975 8l-2.147 2.146a.5.5 0 0 0 .707.708l2.147-2.147 2.146 2.147a.5.5 0 0 0 .707-.708L9.39 8l2.146-2.146a.5.5 0 0 0-.707-.708L8.683 7.293 6.536 5.146a.5.5 0 0 0-.707 0z"></path>
+                    <path d="M13.683 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-7.08a2 2 0 0 1-1.519-.698L.241 8.65a1 1 0 0 1 0-1.302L5.084 1.7A2 2 0 0 1 6.603 1h7.08zm-7.08 1a1 1 0 0 0-.76.35L1 8l4.844 5.65a1 1 0 0 0 .759.35h7.08a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1h-7.08z"></path>
+                    </svg>
+                </a>
+                    <!-- <div id="search-container">
+                        <form class="d-flex" role="search">
+                            <input class="form-control me-2" type="search" placeholder="Search..." aria-label="Search..." required>
+                            <button class="btn btn-outline-success" type="submit">Search</button>
+                        </form>
+                    </div> -->
+                    <div class="table-box">
+                        <form action="" id="" method=""></form>
+                            <table class="table text-center">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">No</th>
+                                        <th scope="col">Nama</th>
+                                        <th scope="col">Keterangan</th>
+                                        <th scope="col">Upload At</th>
+                                        <th scope="col">File</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td scope="row">1</td>
+                                        <td>xxx</td>
+                                        <td>xxxxxxxxx</td>
+                                        <td>xx-xx-xxx</td>
+                                        <td>xx-xx-xxx</td>
+                                        <td>
+                                            <button type="button" class="btn btn-secondary">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
+                                                <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"></path>
+                                                <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"></path>
+                                                </svg>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+
+        <script src="../../../assets/dist/js/bootstrap.bundle.min.js"></script>
+
+        <script src="../../../assets/js/sidebars.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,453 @@
+/* upload task */
+* {
+    box-sizing: border-box;
+}
+
+.kotak {
+    margin-left: 100px;
+    border: 3px solid #7383a4;
+    height: 660px;
+    background-color:white;
+}
+
+.container {
+    background-color: #E8E9EE;
+    padding: 5px;
+    border-radius: 25px;
+    width: 1000px;
+    height: 600px;
+}
+
+.avatar-container {
+    display: flex;
+    align-items: center;
+}
+
+.avatar {
+    margin-right: 10px;
+    width: 210px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.tittle h2{
+    font-weight: bold;
+    color: #7383a4;
+    margin-left: 50px;
+    margin-bottom: 9px;
+}
+
+.upload-info {
+    color: black;
+    margin-left: 6cm;
+    margin-bottom: 1px;
+    font-weight: bold;
+}
+
+.upload-date {
+    color: black;
+    margin-left: 6cm;
+    margin-bottom: 3px;
+}
+
+.instruction-info {
+    color: black;
+    margin-left: 6cm;
+    margin-bottom: 1px;
+    font-weight: bold;
+}
+
+.upload-text {
+    font-family: Arial, sans-serif;
+    display: inline-block;
+    margin-left: 5px;
+    font-size: 14px;
+    color: #555;
+}
+
+.instruction-text {
+    color: black;
+    margin-left: 6cm;
+    margin-bottom: 3px;
+}
+
+hr {
+    border-top: 2px solid #928585;
+}
+
+.answer-title {
+    margin-left: 70px;
+}
+
+.file-upload-container {
+    margin-left: 20px;
+    width: 800px;
+}
+
+.file-upload-box {
+    display: flex;
+    align-items: center;
+    background-color: #ffffff;
+    padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: 25px;
+    width: 850px;
+}
+
+.file-upload-box label {
+    display: flex;
+    align-items: center;
+}
+
+.file-upload-box i {
+    color: #3a15c1;
+}
+
+.description-section {
+    margin-left: 80px;
+    width: 900px;
+    font-size: 18px;
+}
+
+.description-section textarea {
+    margin-top: 0px;
+    height: 120px;
+    border-radius: 25px;
+    border: 3px solid #ddd;
+    margin-bottom: 20px;
+}
+
+.action-buttons {
+    display: flex;
+    margin-top: 10px;
+}
+
+.cancel-button {
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px 10px;
+    margin-left: 670px;
+    border-radius: 25px;
+    width: 140px;
+    height: 50px;
+}
+
+.upload-button {
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px 10px;
+    margin-left: 10px;
+    border-radius: 25px;
+    width: 140px;
+    height: 50px;
+}
+
+h1,
+h2,
+h3 {
+    margin: 0;
+    font-size: 30px;
+    font-weight: bold;
+    color: #555
+}
+
+textarea {
+    display: block;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 100%;
+    height: 200px;
+    resize: none;
+}
+
+button {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-left: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.upload-button {
+    color: #fff;
+}
+
+/* untuk add task */
+.upload-text {
+    color: black;
+}
+
+button[type="button"] {
+    margin-right: 10px;
+}
+
+button[type="submit"] {
+    float: right;
+}
+
+.col {
+    height: 600px;
+}
+
+h4 {
+    text-align: center;
+    margin-top: 1.5rem;
+    color: #333;
+}
+
+.task-form-container {
+    background-color: white;
+    padding: 5px;
+    border-radius: 50px;
+    width: 1050px;
+    margin: 0 auto;
+}
+
+.task-form-container1 {
+    background-color: white;
+    padding: 5px;
+    border-radius: 50px;
+    width: 1100px;
+    margin: 0 auto;
+    height: 750px;
+}
+
+.form-floating {
+    margin-left: 32px;
+    margin-top: 20px;
+    color: black;
+}
+
+input.form-control,
+textarea.form-control {
+    background-color: #ccc;
+    border-radius: 20px;
+    width: 900px;
+    font-size: 20px;
+    margin-left: 30px;
+   
+}
+
+.upload-container {
+    margin: 30px;
+}
+
+.buttons-container {
+    display: flex;
+    margin-top: 10px;
+    justify-content: center;
+    width: 140px;
+    height: 40px;
+    border-radius: 25px;
+}
+
+
+.create-button {
+    font-size: 14px;
+    padding: 10px 10px;
+}
+
+/* untuk DESCRIPTION TASK */
+.data {
+    height: 600px;
+}
+
+.task-description {
+    background-color: white;
+    padding: 5px;
+    border-radius: 25px;
+    width: 1000px;
+    margin: 0 auto;
+    margin-right: 120px;
+}
+
+.task-label {
+    color: black;
+}
+
+.button-edit {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-edit {
+    background-color: white;
+    border-radius: 25px;
+    width: 145px;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    color: #F0AD4E;
+    font-weight: bold;
+    margin-right: -600px;
+}
+
+/* untuk EDIT DESCRIPTION */
+.row {
+    margin: 0;
+}
+
+.task-form {
+    background-color: white;
+    padding: 5px;
+    border-radius: 25px;
+    width: 1000px;
+    margin: 0 auto;
+    margin-right: 120px;
+}
+
+.button-eita {
+    display: flex;
+}
+
+
+.button-eita .btn-outline-danger {
+    background-color: #fff;
+    color: #000;
+    border: 1px solid #ff0000;
+    margin-left: -45px;
+    border-radius: 25px;
+    width: 145px;
+    margin-right: 700px;
+    padding: 10px 20px;
+
+}
+
+.button-eita .btn-outline-danger:hover {
+    background-color: #ffcc00;
+    color: #000;
+    border: 1px solid #ff0000;
+    border-radius: 25px;
+    margin-right: 700px;
+
+}
+
+.button-eita .upload-button {
+    background-color: #ffcc00;
+    color: #000;
+    border: 1px solid #000;
+}
+
+.button-eita .upload-button:hover {
+    background-color: #ffdd33;
+    color: #000;
+    border: 1px solid #000;
+}
+
+.btn-outline-danger {
+    color: #dc3545;
+    border-color: #dc3545;
+
+}
+
+/* .btn-primary {
+    color: black;
+    background-color: #F0AD4E;
+} */
+
+/* UNTUK MAU DOWNLOAD FILE */
+.information-container {
+    background-color: white;
+    padding: 5px;
+    border-radius: 25px;
+    width: 1000px;
+    height: 500px;
+    margin: 0 auto;
+    margin-right: 120px;
+}
+
+.headerr {
+    display: flex;
+    align-items: flex-start;
+}
+
+.headerr-content {
+    display: flex;
+    align-items: center;
+    margin-left: 30px;
+    margin-top: 33px;
+}
+
+.icon-chevron-left {
+    color: rgb(79, 65, 132);
+}
+
+.information-title {
+    color: rgb(79, 65, 132);
+    margin-left: 20px;
+    margin-top: 20px;
+}
+
+.information-row {
+    color: black;
+    font-weight: bold;
+    margin-left: 70px;
+}
+
+/* .row-label {
+    display: inline-block;
+    width: 70px;
+} */
+/* .row-value {
+    display: inline-block;
+    width: 100px;
+} */
+
+/* ni untuk donloadnya */
+.file-download {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.download-button {
+    padding: 10px 20px;
+    background-color: #ffffff;
+    color: #007bff;
+    border: 2px solid #007bff;
+    border-radius: 32px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 144px;
+    height: 33.72px;
+    left: 0px;
+    top: 69px;
+    border: 1px solid #0066CC;
+    margin-left: -400px;
+}
+
+.download-button:hover {
+    background-color: #007bff;
+    color: #ffffff;
+}
+
+.button-text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.file-container {
+    display: flex;
+    align-items: center;
+}
+
+.file-row {
+    display: flex;
+    align-items: center;
+}
+
+.file-row i {
+    color: black;
+    margin-right: 5px;
+    margin-left: 70px;
+}
+
+.file-name {
+    color: black;
+}

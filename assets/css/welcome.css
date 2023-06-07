@@ -1,0 +1,104 @@
+*{
+    text-decoration: none;
+    margin: 0px;
+    padding: 0px;
+}
+
+body {
+    margin: 0px;
+    padding: 0px;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.rectangle {
+    width: 100%;
+    height: 200px;
+    background-color: pink;
+  }
+
+.wrapper {
+   width: 1100px;
+   margin: auto;
+   position: relative; 
+}
+
+.logo {
+    font-size: 40px;
+    font-weight: bolder;
+    float: left;
+    font-family: Times New Roman ;
+    color: #292643;
+    margin-left: -150px;
+}
+
+.menu {
+    float: right;
+}
+
+nav {
+    width: 100%; 
+    margin:auto; 
+    display: flex;
+    line-height: 80px;
+    position: sticky; 
+    position: -webkit-sticky;
+    top: 0;
+    /*background: #FFFFFF ; */ 
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+nav ul li {
+    float: left;
+}
+
+nav ul li a {
+    color: #292643;
+    font-weight: bolder;
+    text-align: center;
+    padding: 0px 16px 0px 16px;
+    text-decoration: none;
+}
+
+nav ul li a :hover {
+    text-decoration: underline;
+}
+
+/*section {
+    margin: auto;
+    display: flex;
+    margin-bottom: 50px;
+}*/
+
+
+h2 {
+    font-family:'comic sans-ms';
+    font-weight: 800;
+    font-size: 45px;
+    margin-bottom: 20; 
+    margin: auto;
+
+   
+}
+
+img {
+    margin: auto;
+    display: flex;
+    margin-bottom: 50px; 
+}
+
+.judul {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: -5vh;
+  }
+  
+  h2 {
+    text-align: center;
+  }

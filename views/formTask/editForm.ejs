@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.108.0">
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/sidebars/">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/index.css" rel="stylesheet">
+    <link href="/css/task.css" rel="stylesheet">
+    <link href="/css/sidebars.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+    <style>
+        .b-example-divider {
+        height: 3rem;
+        background-color: #E8E9EE;
+        border: solid rgba(0, 0, 0, .15);
+        border-width: 1px 0;
+        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+        }
+
+        .b-example-vr {
+            flex-shrink: 0;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <main class="d-flex flex-nowrap vh-100">
+        <!-- slides bar -->
+        <div class="d-flex flex-column flex-shrink-0 p-3 side" style="width: 300px;">
+            <ul class="nav nav-pills flex-column mb-auto">
+                <br>
+                <h2 class="h2bar"> &nbsp; Study In</h2>
+                <hr class="hrbarA">
+                <li>
+                    <a href="/form/home " class="nav-link list-group-item-action list-group-item-dark p-2.8 text-dark fw-bold">
+                        <i class="bi bi-houses"></i>
+                        Home
+                    </a>
+                </li>
+                <br>
+                <li>
+                    <a href="/form/listMyForm" class="nav-link active bg-light list-group-item-action list-group-item-light p-2.8 text-dark fw-bold ">
+                        <i class="bi bi-folder2-open"></i>
+                        My Form
+                    </a>
+                </li>
+                <br>
+                <li>
+                    <a href="/form/formSubmission" class="nav-link list-group-item-action list-group-item-dark p-2.8 text-dark fw-bold">
+                        <i class="bi bi-file-earmark-arrow-down"></i>
+                        Submission
+                    </a>
+                </li>
+                <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+                <hr class="hrbar">
+                <li>
+                    <a href="/user/profile" class="nav-link list-group-item-action list-group-item-dark p-2.8 text-white fw-bold">
+                        <i class="bi bi-person"></i>
+                        Profile
+                    </a>
+                </li>
+                <li>
+                    <a href="/auth/login" class="nav-link list-group-item-action list-group-item-dark p-2.8 text-white fw-bold">
+                        <i class="bi bi-box-arrow-right"></i>
+                        LogOut
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <!-- end slide bar -->
+
+
+            <div class="b-example-divider b-example-vr " style="width:84.98%">
+                <div class="add">
+                    <div class="row">
+                        <div class="col data ms-5" style="height: 600px;">
+                            <br>
+                            <h2 class="tittle text-center my-3 text-dark">Edit Form</h2>
+                            <br> <br>
+                            <div class="kotak task-form-container">
+                                <form class="m-auto mt-5" action="" method="" id="addform"></form>
+                                    <div class="form-floating">
+                                        <p style="color: black; margin-left: 32px; margin-top: 20px;font-weight: bold;">
+                                            Title Task</p>
+                                        <input type="text" class="form-control" id="floatingInput" placeholder="Title" name="">
+                                        <br>
+                                    </div>
+                                    <div class="form-floating">
+                                        <p style="color: black; margin-left: 32px;font-weight: bold;">Instructions</p>
+                                        <input style="width: 900px; height: 120px;" 
+                                        type="text" class="form-control" id="floatingInput" placeholder="Instructions" name="">
+                                        <br>
+                                    </div>
+                                    <!-- <div class="upload-container">
+                                        <p style="color: black; margin-left: 32px;font-weight: bold;">Upload File</p>
+                                        <input type="file" class="form-control" id="floatingInput" placeholder="file-upload" name="">
+                                    </div> -->
+                                    </form>
+                                    <div class="action-buttons">
+                                        <a href="/form/listMyForm"  class="cancel-button btn btn-outline-danger">
+                                            Cancel
+                                        </a>
+                                        <a href="/form/listMyForm" form="" class="upload-button btn btn-lg btn-warning">Edit</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <script src="../../../assets/dist/js/bootstrap.bundle.min.js"></script>
+
+        <script src="../../../assets/js/sidebars.js"></script>
+
+</body>
+
+</html>
