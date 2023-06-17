@@ -11,10 +11,12 @@ router.use(express.static('public'));
 router.use(express.json()); 
 router.use(cookieParser());
 
-router.post('/register', controllers.register);
 router.get('/register', controllers.viewRegister)
-router.get('/profile', controllers.getProfile, verifyToken)
-router.get('/editProfile', controllers.getEditProfile, verifyToken)
-router.post('/:user_id/editProfile', controllers.editUser, verifyToken);
+router.post('/register', controllers.register);
+
+router.get('/profile', controllers.getProfile)
+router.get('/editProfile', controllers.getEditProfile
+)
+router.post('/editProfile', controllers.editUser);
 
 module.exports = router;

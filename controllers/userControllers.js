@@ -5,6 +5,28 @@ var bodyParser = require('body-parser');
 require("dotenv").config();
 const controllers = {}
 
+
+const verifyToken = (req, res, next) => {
+  const token = req.cookies.accessToken;
+  //   console.log(token)
+  if (!token) {
+      res.json({
+          msg: "Invalid token"
+      })
+      // Token tidak ada, redirect ke halaman login
+      return res.redirect('/auth/login');
+  }
+
+  try {
+      const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+      req.user = decoded.user_id;
+      next();
+  } catch (error) {
+      // Token tidak valid atau kedaluwarsa, redirect ke halaman login
+      return res.redirect('/auth/login');
+  }
+};
+
 const register = async(req,res) => {
     const { nama, username, email, password, confPassword } = req.body;
     if (password !== confPassword)
@@ -43,52 +65,199 @@ const viewRegister = async (req,res) => {
   }
 controllers.viewRegister = viewRegister
 
-// const getUser = async(req,res) => {
-//   const { id } = req.params;
-//   try{
-//     const user = await User.findOne({ where: { id } });
-//     res.json(user);
-//   } catch (error){
-//     res.status(400).json({ msg: error.message })
-//   }
-// }
-// controllers.getUser = getUser
+const getProfile = async (req, res) => {
+  try {
+    const findUser = await User.findOne({
+        where: {
+            user_id: req.session.user_id
+        }
+    });
 
-const getProfile = (req, res) => {
-    res.render('profile');
-  }
-controllers.getProfile = getProfile;
+    if (!findUser) {
+        return res.redirect('/auth/login');
+    }
+    const nama = findUser.nama
+    const username = findUser.username;
+    const email = findUser.email
+
+    res.render('profile', {
+        nama,
+        username,
+        email,
+    });
+} catch (error) {
+    return res.redirect('/auth/login');
+}
+}
+controllers.getProfile = [verifyToken, getProfile];
+
+const getEditProfile = async(req, res) => {
+  try {
+    const findUser = await User.findOne({
+        where: {
+            user_id: req.session.user_id
+        }
+    });
+
+    if (!findUser) {
+        return res.redirect('/auth/login');
+    }
+    const nama = findUser.nama
+    const username = findUser.username;
+    const email = findUser.email
+
+    res.render('editProfile', {
+        nama,
+        username,
+        email,
+    });
+} catch (error) {
+    return res.redirect('/auth/login');
+}
+}
+controllers.getEditProfile = [verifyToken,getEditProfile];
 
 const editUser = async(req,res) => {
-  let userId = req.params.user_id;
-  const {nama, username, email, password, avatar} = req.body;
-  
-  try{
-    const update = await User.update({
-      username: username,
-      email: email,
-      password: password,
-      nama: nama,
-      avatar: avatar
-    },{ 
-      where:{ user_id: userId }
-    })
-    if(update){
-      res.json({ msg:"Edit Profile Success", success: 'true'})
+  try {
+    const findUser = await User.findOne({
+      where: {
+          user_id: req.session.user_id
+      }
+  });
+
+    const user_id = findUser.user_id
+    const realUsername = findUser.usernames
+    const realEmail = findUser.email
+    const realNama = findUser.nama
+
+    const username = req.body.username || realUsername
+    const email = req.body.email || realEmail
+    const nama = req.body.nama || realNama
+
+    const passwordBaru = req.body.passwordBaru
+    const passwordLama = req.body.passwordLama
+
+    if (passwordBaru == '' && passwordLama == '') {
+        if (!username || !email || !nama) {
+            res.status(400).json({
+                success: false,
+                msg: 'Data not valid'
+            })
+        } else {
+            if (username.length < 10) {
+                res.status(400).json({
+                    success: false,
+                    msg: 'Username must 10 characters'
+                })
+            } else {
+                const newData = await User.update({
+                    username: username,
+                    email: email,
+                    nama: nama,
+                }, {
+                    where: {
+                        user_id: user_id
+                    }
+                })
+
+                if (newData) {
+                    const findUserBaru = await User.findByPk(user_id)
+                    const usernameBaru = findUserBaru.username
+                    const emailBaru = findUserBaru.email
+                    const namaBaru = findUserBaru.nama
+
+                    res.status(200).json({
+                        success: true,
+                        username: usernameBaru,
+                        email: emailBaru,
+                        nama: namaBaru,
+                        msg: 'Data Sucessfully Update'
+                    })
+                } else {
+                    res.status(400).json({
+                        success: false,
+                        message: 'Try agail later!'
+                    })
+                }
+            }
+
+        }
+    } else if (passwordBaru != '' && passwordLama == '') {
+        res.status(400).json({
+            success: false,
+            msg: 'Please fill in Old Password'
+        })
+    } else if (passwordBaru == '' && passwordLama != '') {
+        res.status(400).json({
+            success: false,
+            msg: 'Please fill in New Password'
+        })
     } else {
-      res.json({ msg: 'Register Failed' });
+        const passwordAsli = findUser.password
+
+        const salt = bcrypt.genSaltSync(10);
+        const passwordMatch = bcrypt.compareSync(passwordLama, passwordAsli);
+
+
+        if (!username || !email || !username || !passwordBaru || !passwordLama) {
+            res.status(400).json({
+                success: false,
+                msg: 'Try again'
+            })
+        } else {
+            if (username.length < 15) {
+                res.status(400).json({
+                    success: false,
+                    msg: 'Username must 15 characters'
+                })
+            } else {
+                if (passwordMatch) {
+                    const hashedPasswordBaru = bcrypt.hashSync(passwordBaru, salt)
+                    const newData = await User.update({
+                        username: username,
+                        password: hashedPasswordBaru,
+                        email: email,
+                        nama: nama,
+                    }, {
+                        where: {
+                            user_id: user_id
+                        }
+                    })
+
+                    if (newData) {
+                        const findUserBaru = await User.findByPk(user_id)
+                        const newUsername = findUserBaru.username
+                        const newEmail = findUserBaru.email
+                        const newNama = findUserBaru.nama
+
+                        res.status(200).json({
+                            success: true,
+                            username: newUsername,
+                            email: newEmail,
+                            nama: newNama,
+                            msg: 'Profile Sucessfully Updated'
+                        })
+                    } else {
+                        res.status(400).json({
+                            success: false,
+                            message: 'Try again!'
+                        })
+                    }
+                } else {
+                    res.status(400).json({
+                        success: false,
+                        msg: 'Wrong Old Password'
+                    })
+                }
+            }
+        }
     }
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Server error' });
+    return res.redirect('/auth/login');
   }
-  
-}
-controllers.editUser = editUser;
+  }
+controllers.editUser = [verifyToken, editUser];
 
-  const getEditProfile = (req, res) => {
-    res.render('editProfile');
-  }
-  controllers.getEditProfile = getEditProfile;
+
 
   module.exports = controllers

@@ -89,7 +89,7 @@
                             <img src="/img/profile.png" class="w-40" alt="">
                         </div>
                         <div class="col">
-                            <h3 class="text-dark" style="margin-right: 150px;">Ani Susanti</h3>
+                            <h3 class="text-dark" style="margin-right: 250px;"><%= nama %></h3>
                         </div>
                     </div>
                 </div>
@@ -98,42 +98,43 @@
                 <tr>
                     <td>
                         <div class="bawah">
-                            <form action="" method="" class="pt-5">
+                            <form method="post" class="mt-5" id="formProfile">
                                 <div class="container overflow-hidden">
                                     <div class="row gy-3">
-                                        <div class="col-6">
-                                            <div class="form-floating mb-1">
-                                                <input type="text" class="form-control w-75" id="floatingInput"
-                                                    name="first_name" placeholder="first_name"
-                                                    style="border-radius: 25px;">
-                                                <label for="floatingInput" class="text-dark">Name</label>
-                                            </div>
+                                        <div class="form-floating mb-3 w-50 " >
+                                            <input type="text" class="form-control" id="floatingInputUsername" name="username"
+                                                placeholder="username" value="<%= username %>" style="border-radius: 50px;">
+                                            <label for="floatingInput" style="margin-left: 10px;"> Username</label>
                                         </div>
-                                        <div class="col-6">
-                                            <div class="form-floating mb-1">
-                                                <input type="text" class="form-control w-75" id="floatingInput"
-                                                    name="surename" placeholder="surename" style="border-radius: 25px;">
-                                                <label for="floatingInput" class="text-dark">Username</label>
-                                            </div>
+                                        <div class="form-floating mb-3 w-50 ">
+                                            <input type="email" class="form-control" id="floatingInputEmail" placeholder="name@example.com"
+                                                name="email" value="<%= email %>" style="border-radius: 50px;">
+                                            <label for="floatingInput" style="margin-left: 10px;"> Email</label>
                                         </div>
-                                        <div class="col-6">
-                                            <div class="form-floating mb-1">
-                                                <input type="text" class="form-control w-75" id="floatingInput"
-                                                    name="email" placeholder="email" style="border-radius: 25px;">
-                                                <label for="floatingInput" class="text-dark">Email</label>
-                                            </div>
+                                        <div class="form-floating mb-3 w-50 ">
+                                            <input type="text" class="form-control" id="floatingInputNama" placeholder="nama" name="nama"
+                                                value="<%= nama %>" style="border-radius: 50px;">
+                                            <label for="floatingNama" style="margin-left: 10px;"> Nama</label>
                                         </div>
-                                        <div class="col-6">
-                                            <div class="form-floating mb-1">
-                                                <input type="text" class="form-control w-75" id="floatingInput"
-                                                    name="username" placeholder="username" style="border-radius: 25px;">
-                                                <label for="floatingInput" class="text-dark">Password</label>
-                                            </div>
+                                        <div class="form-floating mb-3 w-50 "></div>
+                                        </div>
+                                        <div class="form-floating mb-1 w-50 ">
+                                            <br><br><br>
+                                            <p class="text-danger">Change Password? Here!</p>
+                                        </div>
+                                        <div class="form-floating mb-3 w-50 ">
+                                            <input type="password" class="form-control" id="floatingPasswordBaru" placeholder="password baru"
+                                                name="passwordBaru" style="border-radius: 50px;">
+                                            <label for="floatingPassword">New Password</label>
+                                        </div>
+                                        <div class="form-floating mb-3 w-50 ">
+                                            <input type="password" class="form-control" id="floatingPasswordLama" placeholder="password lama"
+                                                name="passwordLama" style="border-radius: 50px;">
+                                            <label for="floatingPassword">Old Password</label>
                                         </div>
                                             <div class="simpan">
-                                                <a href="#">
-                                                    <button class="btn btn-lg text-white btn-success float-end"
-                                                        type="save" style="border-radius: 25px; margin-right: 25px;">Save</button>
+                                                <a href="#" class="btn btn-lg text-white btn-success float-end"
+                                                        type="button" id="save-update-btn" style="border-radius: 25px; margin-right: 25px;">Save Change
                                                 </a>
                                             </div>
                                         </div>
@@ -148,6 +149,46 @@
 
 
     </main>
+
+    <script>
+         document.addEventListener("DOMContentLoaded", async function () {
+            const saveUpdateBtn = document.getElementById("save-update-btn");
+            saveUpdateBtn.addEventListener('click', async function (event) {
+                event.preventDefault()
+
+                const username = document.getElementById('floatingInputUsername').value;
+                const email = document.getElementById('floatingInputEmail').value;
+                const nama = document.getElementById('floatingInputNama').value;
+                const passwordBaru = document.getElementById('floatingPasswordBaru').value
+                const passwordLama = document.getElementById('floatingPasswordLama').value
+
+                const response = await fetch('/user/editProfile', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        username: username,
+                        email: email,
+                        nama: nama,
+                        passwordBaru: passwordBaru,
+                        passwordLama: passwordLama
+                    })
+                })
+
+                const data = await response.json()
+                if (data.success == true) {
+                    alert(data.msg)
+                    window.location.href = '/user/profile'
+                } else {
+                    alert(data.msg)
+                    location.reload()
+                }
+            })
+
+
+         })
+    </script>
 
 
     <script src="../../../assets/dist/js/bootstrap.bundle.min.js"></script>

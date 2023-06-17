@@ -10,34 +10,39 @@
     <link href="/css/sidebars.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/style2.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-    
-<style>
-    .b-example-divider {
-        height: 3rem;
-        background-color: #E8E9EE;
-        border: solid rgba(0, 0, 0, .15);
-        border-width: 1px 0;
-        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
-    }
 
-    .b-example-vr {
-        flex-shrink: 0;
-        width: 1.5rem;
-        height: 100vh;
-    }
+    <style>
+        .b-example-divider {
+            height: 3rem;
+            background-color: #E8E9EE;
+            border: solid rgba(0, 0, 0, .15);
+            border-width: 1px 0;
+            box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+        }
 
-    .button {
-        border-radius: 25px;
-        width: 250px;
-        height: 50px;
-        font-weight: bold;
-    }
-</style>
+        .b-example-vr {
+            flex-shrink: 0;
+            width: 1.5rem;
+            height: 100vh;
+        }
+
+        .button {
+            border-radius: 25px;
+            width: 250px;
+            height: 50px;
+            font-weight: bold;
+        }
+
+        .tabelform {
+            background-color: #E8E9EE;
+            overflow-y: scroll;
+        }
+    </style>
 
 </head>
 
 <body>
-    <main class="d-flex flex-nowrap vh-100">
+    <main class="d-flex flex-nowrap vw-100">
         <!-- slides bar -->
         <div class="d-flex flex-column flex-shrink-0 p-3 side" style="width: 300px;">
             <ul class="nav nav-pills flex-column mb-auto">
@@ -45,21 +50,24 @@
                 <h2 class="text-align text-white fw-semibold"> &nbsp; Study In</h2>
                 <hr class="text-white">
                 <li>
-                    <a href="/form/home " class="nav-link active bg-light list-group-item-action list-group-item-light p-2.8 text-dark fw-bold ">
+                    <a href="/form/home "
+                        class="nav-link active bg-light list-group-item-action list-group-item-light p-2.8 text-dark fw-bold ">
                         <i class="bi bi-houses"></i>
                         Home
                     </a>
                 </li>
                 <br>
                 <li>
-                    <a href="/form/listMyForm" class="nav-link list-group-item-action list-group-item-dark p-2.8 text-dark fw-bold">
+                    <a href="/form/listMyForm"
+                        class="nav-link list-group-item-action list-group-item-dark p-2.8 text-dark fw-bold">
                         <i class="bi bi-folder2-open"></i>
                         My Form
                     </a>
                 </li>
                 <br>
                 <li>
-                    <a href="/form/formSubmission" class="nav-link list-group-item-action list-group-item-dark p-2.8 text-dark fw-bold">
+                    <a href="/form/formSubmission"
+                        class="nav-link list-group-item-action list-group-item-dark p-2.8 text-dark fw-bold">
                         <i class="bi bi-file-earmark-arrow-down"></i>
                         Submission
                     </a>
@@ -67,13 +75,15 @@
                 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
                 <hr class="text-white">
                 <li>
-                    <a href="/user/profile" class="nav-link list-group-item-action list-group-item-dark p-2.8 text-white fw-bold">
+                    <a href="/user/profile"
+                        class="nav-link list-group-item-action list-group-item-dark p-2.8 text-white fw-bold">
                         <i class="bi bi-person"></i>
                         Profile
                     </a>
                 </li>
                 <li>
-                    <a href="/auth/login" class="nav-link list-group-item-action list-group-item-dark p-2.8 text-white fw-bold">
+                    <a href="/auth/login"
+                        class="nav-link list-group-item-action list-group-item-dark p-2.8 text-white fw-bold">
                         <i class="bi bi-box-arrow-right"></i>
                         LogOut
                     </a>
@@ -82,8 +92,8 @@
         </div>
         <!-- end slide bar -->
 
-        <div class="b-example-divider b-example-vr p-1" style="width:84.98%">
-            <div class="ms-1">
+        <div class="b-example-divider b-example-vr p-1 table" style="width:84.98%" >
+            <div class="ms-1 ">
                 <div class="row">
                     <div class="col data ms-5" style="height: 700px;">
                         <table class=" mt-3">
@@ -99,35 +109,39 @@
                         </table>
                         <table>
                             <br>
-                            <a href="/form/addForm"><button type="button" class="button btn btn-primary btn-lg"  type="button">+ Add New</button></a>
+                            <a href="/form/addForm"><button type="button" class="button btn btn-primary btn-lg"
+                                    type="button">+ Add New</button></a>
                         </table>
-                        <table class="border bg-light shadow mt-5 w-75" style="border-radius: 50px;">
-                            <form id="formList" method="get" action='/form/list'>
-                                <tr class="">
-                                    <td class="text-center w-25">
-                                        <br><br>
-                                        <img src="/img/profile.png" alt="" class="w-50 rounded-circle mt-2 ">
-                                    </td>
-                                    <td class="pt-5 pe-5 ps-5">
-                                        <h2 class="fw-bold">Syadza Intan Benya</h2>
-                                        <p>today at 5.00 PM</p>
-                                        <br>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    
-                                    <td class="ps-5 pb-5 ">
-                                        <h3>Tugas I Pemograman Web A</h3>
-                                        <p>Instructions</p>
-                                        <p>Pembuatan Rancangan UI</p>
-                                        <br>
-                                        <a href="/submission/upload"><button type="button" class="button btn btn-dark"
-                                                style="border-radius: 25px;">Turn In</button></a>
-                                    </td>
-                                </tr>
-                            </form>
+
+                        <% if (data && data.length > 0) { %>
+
+                            <% data.forEach((item, index) => { %>
+                            <table class="border bg-light shadow mt-5 w-50 tableForm" style="border-radius: 50px;" form_id="<%= item.form_id %>" tittle="<%= item.tittle %>" user_id="<%= item.user_id %>" created_at="<%= item.created_at %>" description="<%= item.description %>">
+                            <tbody>
+                            <tr>
+                                <td class="pt-3 pe-5 ps-5">
+                                    <h3 class="fw-bold"><%= item.nama %></h3>
+                                    <p><%= item.created_at %></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="pt-2 pe-5 ps-5">
+                                    <h2 style="margin-bottom: 30px;"><%= item.tittle %></h2>
+                                    <p style="font-weight: 500; margin-top: 5px;">Instructions :</p>
+                                    <p style="font-size: large;"><%= item.description %></p>
+                                    <!-- href="/submission/upload" -->
+                                    <a href="/submission/upload/<%= item.form_id %>" type="button" class="btn btn-dark" id="btnTurnIn"
+                                        style="border-radius: 25px; width: 125px; margin-bottom: 50px;" >
+                                        <!-- <form action="/submission/upload/<%= item.form_id %>" method="GET"> -->
+                                            Turn Ins
+                                        <!-- </form> -->
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
                         </table>
+                            <% }); %>
+                        <% } %>
                     </div>
                 </div>
             </div>
@@ -135,13 +149,59 @@
     </main>
 
     <script>
-        
+
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous">
     </script>
-    <script src="../../assets/js/sidebars.js"></script>
+    <!-- <script src="/assets/js/sidebars.js"></script> -->
+    <!-- <script>
+    //    tableForm = document.getElementsByClassName('tableForm')
+    //    for (let index = 0; index < tableForm.length; index++) {
+    //     const btnTurnIn = document.getElementsByClassName('btnTurnIn')
+    //     btnTurnIn[index].addEventListener('click', async function(){
+    //         tableForm.getAttribute('title')
+    //         tableForm.getAttribute('nama')
+    //         tableForm.getAttribute('created_at')
+    //         tableForm.getAttribute('description')
+
+            
+    //     })
+    //    }
+
+    const btnTurnIn = document.getElementsById('btnTurnIn')
+    
+    for (let index = 0; index < btnTurnIn.length; index++) {
+        btnTurnIn[index].addEventListener('click', async function (){
+            const tableForm = document.getElementsByClassName('tableForm')
+            const form_id = tableForm[index].getAttribute('form_id')
+            const tittle = tableForm[index].getAttribute('tittle')
+            const user_id = tableForm[index].getAttribute('user_id')
+            const created_at = tableForm[index].getAttribute('created_at')
+            const description = tableForm[index].getAttribute('description')
+
+            const response = await fetch(`http://localhost:3000/submission/upload/${form_id}`,{
+                method: 'GET',
+                body: JSON.stringify({
+                    //form_id: form_id,
+                    // tittle:tittle,
+                    // user_id:user_id,
+                    // created_at:created_at,
+                    // description:description
+                })
+            })
+            const data = response.json()
+            if (data.success == true) {
+                alert('berhasil')
+            } else {
+                alert('gagal')
+            }
+        })
+        
+    }
+    </script> -->
 </body>
+
 
 </html>

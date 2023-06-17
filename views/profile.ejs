@@ -89,7 +89,7 @@
                             <img src="/img/profile.png" class="w-40" alt="">
                         </div>
                         <div class="col">
-                            <h3 class="text-dark" style="margin-right: 150px;">Ani Susanti</h3>
+                            <h3 class="text-dark" style="margin-right: 80px;"><%= nama %></h3>
                         </div>
                         <div class="col">
                             <a href="/user/editProfile"><button type="button" class="btn btn-warning rounded-pill">EditProfile</button></a>
@@ -101,42 +101,36 @@
                 <tr>
                     <td>
                         <div class="bawah">
-                            <form action="" method="" class="pt-5">
                                 <div class="container overflow-hidden">
                                     <div class="row gy-3">
-                                        <div class="col-6">
-                                            <div class="form-floating mb-1">
-                                                <input type="text" class="form-control w-75" id="floatingInput"
-                                                    name="first_name" placeholder="first_name"
-                                                    style="border-radius: 25px;">
-                                                <label for="floatingInput" class="text-dark">Name</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="form-floating mb-1">
-                                                <input type="text" class="form-control w-75" id="floatingInput"
-                                                    name="surename" placeholder="surename" style="border-radius: 25px;">
-                                                <label for="floatingInput" class="text-dark">Username</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="form-floating mb-1">
-                                                <input type="text" class="form-control w-75" id="floatingInput"
-                                                    name="email" placeholder="email" style="border-radius: 25px;">
-                                                <label for="floatingInput" class="text-dark">Email</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-6">
+                                        <div class="isi ms-3 mt-3 mb-3 me-4 ms-5" >
+                                            <ul class="list-group list-group-flush w-50">
+                                                <div class="mb-4" style="margin-left: 150px;">
+                                                    <br>
+                                                    <label class="form-label fw-semibold">Nama</label>
+                                                    <li class="list-group-item" style="border-radius: 25px; width: 700px;"" ><%= nama %></li>
+                                                </div>
+                                                <div class="mb-4 " style="margin-left: 150px;">
+                                                    <br>
+                                                    <label class="form-label fw-semibold">Username</label>
+                                                    <li class="list-group-item" style="border-radius: 25px; width: 700px;"><%= username %></li>
+                                                </div>
+                                                <div class="mb-4" style="margin-left: 150px;">
+                                                    <br>
+                                                    <label class="form-label fw-semibold">Email</label>
+                                                    <li class="list-group-item" style="border-radius: 25px; width: 700px;"><%= email %></li>
+                                                </div>
+                                            </ul>
+                                        <!-- <div class="col-6">
                                             <div class="form-floating mb-1">
                                                 <input type="text" class="form-control w-75" id="floatingInput"
                                                     name="username" placeholder="username" style="border-radius: 25px;">
                                                 <label for="floatingInput" class="text-dark">Password</label>
                                             </div>
-                                        </div>  
+                                        </div>   -->
                                         </div>
                                     </div>
                                 </div>
-                            </form>
                         </div>
                     </td>
                 </tr>

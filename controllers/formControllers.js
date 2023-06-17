@@ -5,6 +5,7 @@ var jwt = require("jsonwebtoken");
 var bodyParser = require('body-parser');
 require("dotenv").config();
 const user = require('../models/users.js');
+const moment = require('moment');
 const controllers = {}
 
 
@@ -29,21 +30,77 @@ const verifyToken = (req, res, next) => {
     }
 };
 
-const listForm = async (req, res) => {
-
-}
-controllers.listForm = [verifyToken, listForm];
-
-const getListMyForm = async (req, res) => {
-    res.render('formTask/listMyForm');
-}
-controllers.getListMyForm = [verifyToken, getListMyForm];
-
 
 const home = async (req, res) => {
-    res.render('home');
+    const findForm = await Form.findAll()
+    
+    if (findForm) {
+        const data = []
+        for (let index = 0; index < findForm.length; index++) {
+            const user_id = findForm[index].user_id
+            const created = findForm[index].created_at
+            const form_id = findForm[index].form_id
+            const tittle = findForm[index].tittle
+            const description = findForm[index].description
+
+            const created_at = moment(created).format('YYYY-MM-DD HH:mm:ss');
+
+            const findUser = await user.findByPk(user_id)
+
+            if (findUser) {
+                const nama = findUser.nama
+
+                data.push({
+                    nama, user_id, created_at, form_id, tittle, description
+                })
+                
+            } else {
+                res.status(400).json ({
+                    success: false,
+                    msg: 'Pengguna Tidak Ditemukan'
+                })
+            }
+        }
+        res.render('home',{
+            data
+        });
+    } else {
+        res.status(400).json({
+            success:false,
+            msg: 'Form Tidak Ditemukan'
+        })
+    }
+    
 }
 controllers.home = [verifyToken, home]
+
+const thisForm = async (req, res) => {
+    // const form_id = req.params.form_id
+    // const tittle = req.params.tittle
+    // const user_id = req.params.user_id
+    // const created_at = req.params.created_at
+    // const description = req.params.description
+
+    // if(!form_id){
+    //     res.status(400).json({
+    //         success: false,
+    //         msg: 'Data Tidak Didapatkan'
+    //     })
+    // } else {
+    //     const findForm = Form.findOne({
+    //         where:{
+    //             form_id: form_id 
+    //         }
+    //     })
+    //     if (findForm) {
+    //        res.sender('submission/upload', {
+    //         form_id, tittle, user_id, created_at, description
+    //        })
+    //     }
+    // }
+  }
+
+controllers.thisForm = [verifyToken,thisForm];
 
 
 const getFormSubmission = (req, res) => {
@@ -51,6 +108,85 @@ const getFormSubmission = (req, res) => {
 }
 controllers.getFormSubmission = [verifyToken, getFormSubmission];
 
+
+// Function Read Data Form
+// ini buat get halaman list form yang pernah di buat si user yang login
+const getListMyForm = async (req, res) => 
+{
+    const findUser = await user.findOne({
+        where: {
+            user_id: req.session.user_id
+        }
+    })
+
+    if (!findUser) {
+        res.render('/auth/login')
+    }
+    
+    const username = findUser.username
+    res.render('formTask/listMyForm', {
+          username,
+    })
+};  
+controllers.getListMyForm = [verifyToken, getListMyForm];
+// ini buat read data form si user yg lagi login
+const listForm = async (req, res) => {
+    try {
+        const allMyForm = await Form.findAll({
+          where: {
+            user_id: req.session.user_id
+          }
+        });
+    
+        if (allMyForm.length > 0) {
+            const forms = allMyForm.map((doc) => ({
+                form_id: doc.form_id,
+                tittle: doc.tittle,
+                created_at: doc.created_at,
+                description: doc.description,
+                user_id: doc.user_id,
+            }));
+          res.status(200).json({
+            success: true,
+            forms: forms
+          });
+        } else {
+          res.status(400).json({
+            success: false,
+            msg: 'You dont have any form'
+          });
+        }
+      } catch (error) {
+        res.status(500).json({
+          success: false,
+          msg: 'Try Again!'
+        });
+      }
+    };
+controllers.listForm = [verifyToken, listForm];
+
+
+// Function Create Form
+// Ini buat get halaman add Form
+const getAddForm = async (req, res) => {
+    try{
+        const findUser = await user.findOne({
+            where: {
+                user_id: req.session.user_id
+            }
+        })
+
+        if (!findUser){
+            return res.redirect('/auth/login')
+        }
+
+        res.render('formTask/addForm')
+    } catch (error) {
+        return res.redirect('/auth/login');
+      }
+}
+controllers.getAddForm = [verifyToken, getAddForm];
+// Ini buat data yang untuk add form
 const addForm = async (req, res) => {
     const user_id = req.session.user_id;
     const {
@@ -82,90 +218,103 @@ const addForm = async (req, res) => {
 }
 controllers.addForm = addForm;
 
-const getAddForm = async (req, res) => {
-    try{
-        const findUser = await user.findOne({
-            where: {
-                user_id: req.session.user_id
-            }
-        })
 
-        if (!findUser){
-            return res.redirect('/auth/login')
+// Function Update Form
+// Ini buat get halaman edit Form
+const getEditForm = async (req, res) => {
+    const form_id = req.params.form_id;
+    
+    const findUser = await user.findOne({
+        where: {
+            user_id: req.session.user_id
         }
+    })
+    const username = findUser.username
 
-        res.render('formTask/addForm')
-    } catch (error) {
-        return res.redirect('/auth/login');
-      }
+    const forms = await Form.findByPk(form_id);
+    const tittle = forms.tittle
+    const description = forms.description
+
+    if (!findUser) {
+        res.render('/auth/login')
+    } else {
+        res.render('formTask/editForm', {
+          form_id,
+          username,
+          tittle,
+          description
+        })
+    }
 }
-controllers.getAddForm = [verifyToken, getAddForm];
-
+controllers.getEditForm = [verifyToken, getEditForm];
+// Ini buat data form yang akan di edit 
 const editForm = async (req, res) => {
-    let form_id = req.params.form_id;
-    // let user_id = req.params.user_id;
-    const {
-        tittle,
-        description
-    } = req.body;
-    try {
-        await Form.update({
+    const form_id = req.params.form_id;
+    const tittle = req.body.tittle
+    const description = req.body.description
+    console.log(form_id)
+    
+    const findForm = await Form.findByPk(form_id)
+
+    if (!findForm) {
+      res.status(400).json({
+        msg: 'Form not found',
+        success: false
+      })
+    } else {
+        const newForm = await Form.update({
             tittle: tittle,
             description: description,
-        }, {
+            }, {
             where: {
-                form_id: form_id
-                // user_id : user_id
+                form_id: form_id,
             }
-        })
-        if (Form) {
-            res.json({
-                msg: "Form already updated!"
+        }); 
+  
+        if (!newForm) {
+            
+            res.status(400).json({
+                msg: 'Please try again',
+                success: false
             })
-        } else {
-            res.json({
-                msg: "Please try again later"
-            })
-        }
-
-    } catch (error) {
-        res.status(400).json({
-            msg: error.message
-        })
+        } 
+            
+        res.status(200).json({
+            msg: 'Form Sucessfully Updated',
+            data: {
+                tittle: tittle,
+                description: description,
+            },
+                success: true
+            });
     }
 }
-controllers.editForm = editForm;
+controllers.editForm = [verifyToken, editForm];
 
-const getEditForm = (req, res) => {
-    res.render('formTask/editForm');
-}
-controllers.getEditForm = getEditForm;
 
+// Function Dalete Form
 const deleteForm = async (req, res) => {
-    let form_id = req.params.form_id;
-    // let user_id = req.params.user_id;
-    try {
-        await Form.destroy({
-            where: {
-                form_id: form_id
-                // user_id : user_id
-            }
-        })
-        if (Form) {
-            res.json({
-                msg: "Form succesfully deleted!"
-            })
-        } else {
-            res.json({
-                msg: "Please try again later"
-            })
+    const form_id = req.params.form_id;
+    const user_id = req.params.user_id;
+
+    const delet = await Form.destroy({
+        where: {
+          form_id: form_id,
+          user_id: user_id
         }
-    } catch (error) {
+    });
+    if (delet) {
+        res.status(200).json({
+            success: true,
+            msg: 'Form sucessfully deleted'
+          })
+    } else {
         res.status(400).json({
-            msg: error.message
-        })
+            success: false,
+            msg: 'Please try again!'
+          })
     }
 }
-controllers.deleteForm = deleteForm;
+controllers.deleteForm = [verifyToken, deleteForm];
 
 module.exports = controllers

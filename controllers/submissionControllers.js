@@ -5,6 +5,29 @@ var jwt = require("jsonwebtoken");
 var bodyParser = require('body-parser');
 require("dotenv").config();
 const controllers = {}
+const Form = require("../models/forms.js");
+const User = require("../models/users.js");
+
+const verifyToken = (req, res, next) => {
+    const token = req.cookies.accessToken;
+    //   console.log(token)
+    if (!token) {
+        res.json({
+            msg: "Invalid token"
+        })
+        // Token tidak ada, redirect ke halaman login
+        return res.redirect('/auth/login');
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+        req.user = decoded.user_id;
+        next();
+    } catch (error) {
+        // Token tidak valid atau kedaluwarsa, redirect ke halaman login
+        return res.redirect('/auth/login');
+    }
+};
 
 const getSubmission = async (req, res) => {
     const submission = await Submission.findAll();
@@ -12,10 +35,38 @@ const getSubmission = async (req, res) => {
 }
 controllers.getSubmission = getSubmission;
 
-const uploadSubmission = (req, res) => {
-    res.render('submission/upload');
-  }
-controllers.uploadSubmission = uploadSubmission;
+const uploadSubmission = async (req, res) => {
+    const form_id = req.params.form_id
+    // const tittle = req.params.tittle
+    // const user_id = req.params.user_id
+    // const created_at = req.params.created_at
+    // const description = req.params.description
+
+    const findForm = await Form.findOne({
+        where:{
+            form_id: form_id 
+        }
+    })
+    const findUser = await User.findOne({
+        where : {
+            user_id: findForm.user_id
+        }
+    })
+
+    const item = findForm
+    if(!form_id){
+        res.status(400).json({
+            success: false,
+            msg: 'Data Tidak Didapatkan'
+        })
+    }
+    
+        res.render('submission/upload', {
+        item: item,
+        user: findUser
+        })
+    }
+controllers.uploadSubmission = [verifyToken, uploadSubmission];
 
 const getDetailSubmission = (req, res) => {
     res.render('submission/detailSubmission');
@@ -79,7 +130,6 @@ const editSubmission = async (req, res) => {
     }
 }
 controllers.editSubmission = editSubmission;
-
 
 const deleteSubmission = async (req, res) => {
     let id = req.params.id;
