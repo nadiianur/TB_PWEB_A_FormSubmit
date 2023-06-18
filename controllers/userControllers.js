@@ -1,7 +1,6 @@
 const User = require("../models/users.js");
 const bcrypt = require("bcrypt");
 var jwt = require("jsonwebtoken");
-var bodyParser = require('body-parser');
 require("dotenv").config();
 const controllers = {}
 
@@ -27,6 +26,9 @@ const verifyToken = (req, res, next) => {
   }
 };
 
+
+// Function Register Akun
+// ini buat post semua data user yang melakukan register
 const register = async(req,res) => {
     const { nama, username, email, password, confPassword } = req.body;
     if (password !== confPassword)
@@ -59,12 +61,15 @@ const register = async(req,res) => {
     }
   }
 controllers.register = register
-
+// ini buat get halaman register akun
 const viewRegister = async (req,res) => {
     res.render('signup');
   }
 controllers.viewRegister = viewRegister
 
+
+// Function Read Data Profile
+// ini buat get halaman profile si user yang login
 const getProfile = async (req, res) => {
   try {
     const findUser = await User.findOne({
@@ -91,11 +96,14 @@ const getProfile = async (req, res) => {
 }
 controllers.getProfile = [verifyToken, getProfile];
 
+
+// Function Edit Data Profile
+// ini buat get halaman edit profile si user yang login
 const getEditProfile = async(req, res) => {
   try {
     const findUser = await User.findOne({
         where: {
-            user_id: req.session.user_id
+            user_id: req.session.user_idcontrollers/userControllers.js
         }
     });
 
@@ -116,7 +124,7 @@ const getEditProfile = async(req, res) => {
 }
 }
 controllers.getEditProfile = [verifyToken,getEditProfile];
-
+// ini buat post data edit profile
 const editUser = async(req,res) => {
   try {
     const findUser = await User.findOne({
@@ -126,7 +134,7 @@ const editUser = async(req,res) => {
   });
 
     const user_id = findUser.user_id
-    const realUsername = findUser.usernames
+    const realUsername = findUser.username
     const realEmail = findUser.email
     const realNama = findUser.nama
 

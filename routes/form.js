@@ -18,7 +18,9 @@ router.post('/addform', controllers.addForm);
 router.get('/addForm', controllers.getAddForm);
 
 router.get('/editForm/:form_id', controllers.getEditForm);
-router.put('/editForm/:form_id', controllers.editForm);
+// router.put('/editForm/:form_id', controllers.editForm);
+
+router.post('/editForm/:form_id', controllers.testEdit);
 
 router.delete('/deleteForm/:form_id/user/:user_id', controllers.deleteForm);
 router.get('/home', controllers.home);

@@ -91,7 +91,7 @@
                             <h2 class="tittle text-center my-3 text-dark">Edit Form</h2>
                             <br> <br>
                                 <div class="kotak task-form-container">
-                                    <form class="m-auto mt-5" action="/form/editForm/:form_id" method="post" id="form-edit-doc">
+                                    <form class="m-auto mt-5" action="/form/editForm/<%= form_id %>" method="post" id="form-edit">
                                         <ul class="">
                                             <li class="list-group-item">
                                                 <br><br><br>
@@ -110,17 +110,16 @@
                                                 </div>
                                             </li>
                                         </ul>
-                                    
+                                    </form>
                                 </div>
                                 <div class="action-buttons">
                                     <a href="/form/listMyForm"  class="cancel-button btn btn-outline-danger">
                                         Cancel
                                     </a>
-                                    <button form="form-edit-doc" class="btn-submit btn btn-success" style="width: 120px; border-radius: 25px;">
+                                    <button form="form-edit" class="btn btn-success btn-submit me-3" style="width: 120px; border-radius: 25px;">
                                         Update
                                     </button>
                                 </div>  
-                            </form>
                         </div>
                     </div>
                 </div>
@@ -134,36 +133,35 @@
 
         <script>
             document.addEventListener("DOMContentLoaded", async function () {
-            const form = document.querySelector('#form-edit-doc');
+            const form = document.querySelector('form');
             form.addEventListener('submit', async (event) => {
                 event.preventDefault();
 
                 const tittle = document.getElementById('floatingInputTittle').value;
                 const description = document.getElementById('floatingInputDesc').value;
-                
-                // const formData = new FormData();
-                // formData.append('tittle', tittle);
-                // formData.append('description', description);
 
                 const form_id = '<%= form_id %>';
                 try {
-                    const response = await fetch(`http://localhost:3000/form/editForm/${form_id}`, {
-                            method: 'PUT',
+                    const response = await fetch(`http://localhost:3000/form/editForm/${form_id}`,{
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
                             body : JSON.stringify({
-                                tittle,
-                                description
+                                tittle: tittle,
+                                description: description
                             })
                         });
-                        const data = await response.json();
-                        console.log(tittle,description)
+                    
+                        const data = await response.json()
         
-                        if (data.success) {
+                        if (data.success == true) {
                             alert(data.msg);
                             window.location.href = '/form/listMyForm';
-                        } else if (!data.success) {
+                        } else if (data.success == false) {
                             alert(data.msg);
                             window.location.href = '/form/listMyForm';
-                        } 
+                        }
                     
                 } catch (error) {
                     console.log(error);

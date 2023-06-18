@@ -1,8 +1,6 @@
 var express = require('express');
 const Form = require("../models/forms.js");
-const bcrypt = require("bcrypt");
 var jwt = require("jsonwebtoken");
-var bodyParser = require('body-parser');
 require("dotenv").config();
 const user = require('../models/users.js');
 const moment = require('moment');
@@ -29,7 +27,6 @@ const verifyToken = (req, res, next) => {
         return res.redirect('/auth/login');
     }
 };
-
 
 const home = async (req, res) => {
     const findForm = await Form.findAll()
@@ -113,22 +110,24 @@ controllers.getFormSubmission = [verifyToken, getFormSubmission];
 // ini buat get halaman list form yang pernah di buat si user yang login
 const getListMyForm = async (req, res) => 
 {
-    const findUser = await user.findOne({
-        where: {
-            user_id: req.session.user_id
-        }
-    })
+    try{
+        const findUser = await user.findOne({
+            where: {
+                user_id: req.session.user_id
+            }
+        })
 
-    if (!findUser) {
-        res.render('/auth/login')
+        if (!findUser) {
+            res.render('/auth/login')
+        }
+
+        res.render('formTask/listMyForm')
+    } catch (error) {
+        return res.redirect('/auth/login');
     }
-    
-    const username = findUser.username
-    res.render('formTask/listMyForm', {
-          username,
-    })
 };  
 controllers.getListMyForm = [verifyToken, getListMyForm];
+
 // ini buat read data form si user yg lagi login
 const listForm = async (req, res) => {
     try {
@@ -186,6 +185,7 @@ const getAddForm = async (req, res) => {
       }
 }
 controllers.getAddForm = [verifyToken, getAddForm];
+
 // Ini buat data yang untuk add form
 const addForm = async (req, res) => {
     const user_id = req.session.user_id;
@@ -229,7 +229,6 @@ const getEditForm = async (req, res) => {
             user_id: req.session.user_id
         }
     })
-    const username = findUser.username
 
     const forms = await Form.findByPk(form_id);
     const tittle = forms.tittle
@@ -240,7 +239,6 @@ const getEditForm = async (req, res) => {
     } else {
         res.render('formTask/editForm', {
           form_id,
-          username,
           tittle,
           description
         })
@@ -248,48 +246,43 @@ const getEditForm = async (req, res) => {
 }
 controllers.getEditForm = [verifyToken, getEditForm];
 // Ini buat data form yang akan di edit 
-const editForm = async (req, res) => {
+const testEdit = async (req, res) => {
     const form_id = req.params.form_id;
+    console.log(form_id)
+
     const tittle = req.body.tittle
     const description = req.body.description
-    console.log(form_id)
-    
     const findForm = await Form.findByPk(form_id)
 
-    if (!findForm) {
-      res.status(400).json({
-        msg: 'Form not found',
-        success: false
-      })
-    } else {
-        const newForm = await Form.update({
+    if(findForm){
+        const edit = await Form.update({
             tittle: tittle,
-            description: description,
-            }, {
-            where: {
-                form_id: form_id,
+            description:  description
+        },{
+            where:{
+                form_id: form_id
             }
-        }); 
-  
-        if (!newForm) {
-            
+        })
+
+        if(edit){
+            res.status(200).json({
+                msg: 'Form Sucessfully Updated',
+                data: {
+                    tittle: tittle,
+                    description:description
+                },
+                success: true
+            })
+        } else{
             res.status(400).json({
                 msg: 'Please try again',
                 success: false
             })
-        } 
-            
-        res.status(200).json({
-            msg: 'Form Sucessfully Updated',
-            data: {
-                tittle: tittle,
-                description: description,
-            },
-                success: true
-            });
+        }
     }
+        
 }
-controllers.editForm = [verifyToken, editForm];
+controllers.testEdit = testEdit;
 
 
 // Function Dalete Form

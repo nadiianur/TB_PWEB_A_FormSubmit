@@ -1,12 +1,11 @@
 var express = require('express');
 const Submission = require("../models/submissions.js");
-const bcrypt = require("bcrypt");
-var jwt = require("jsonwebtoken");
-var bodyParser = require('body-parser');
-require("dotenv").config();
-const controllers = {}
 const Form = require("../models/forms.js");
 const User = require("../models/users.js");
+var jwt = require("jsonwebtoken");
+require("dotenv").config();
+const controllers = {}
+
 
 const verifyToken = (req, res, next) => {
     const token = req.cookies.accessToken;
@@ -47,6 +46,8 @@ const uploadSubmission = async (req, res) => {
             form_id: form_id 
         }
     })
+    
+
     const findUser = await User.findOne({
         where : {
             user_id: findForm.user_id
@@ -54,6 +55,7 @@ const uploadSubmission = async (req, res) => {
     })
 
     const item = findForm
+    
     if(!form_id){
         res.status(400).json({
             success: false,
