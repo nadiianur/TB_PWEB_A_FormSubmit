@@ -1,7 +1,6 @@
 const express = require('express');
 const controllers = require("../controllers/submissionControllers.js")
 const cookieParser =  require('cookie-parser');
-var verifyToken = require("../middleware/verifyToken.js");
 require("dotenv").config();
 
 const router = express.Router();
@@ -11,12 +10,13 @@ router.use(express.json());
 router.use(cookieParser());
 
 
-router.get('/upload/:form_id', controllers.uploadSubmission);
+router.get('/upload/:form_id', controllers.getUpload);
+router.post('/upload/:form_id', controllers.addSubmission);
 
-router.get('/list', controllers.getSubmission, verifyToken);
-router.post('/addsubmission', controllers.addSubmission, verifyToken);
-router.post('/:id/:form_id/editsubmission', controllers.editSubmission, verifyToken);
-router.post('/:id/deletesubmission', controllers.deleteSubmission, verifyToken);
+router.get('/list', controllers.getSubmission);
+
+router.post('/:id/:form_id/editsubmission', controllers.editSubmission);
+router.post('/:id/deletesubmission', controllers.deleteSubmission);
 
 router.get('/detailSubmission', controllers.getDetailSubmission);
 

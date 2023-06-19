@@ -90,42 +90,58 @@
                     <br>
                     <br>
                     <div class="kotak task-form-container1">
-                        <form class="m-auto mt-5" action="" method="" id="submission"></form>
-                        <div class="avatar-container">
-                            <div class="avatar">
-                                <img src="/img/profile.png" alt="Avatar"
-                                    style="width: 100px; height: 100px; border-radius: 50%; margin-left: 50px;">
+                            <br>
+                            <div class="avatar-container">
+                                <div class="avatar">
+                                    <img src="/img/profile.png" alt="Avatar"
+                                        style="width: 100px; height: 100px; border-radius: 50%; margin-left: 50px;">
+                                </div>
+                                <div>
+                                    <h3 class="mb-3"><%= user.nama %></h3>
+                                </div>
                             </div>
-                            <div>
-                                <h3 class="mb-3"><%= user.nama %></h3>
+                            <div >
+                                <h1 class="title mb-3" style="margin-left: 225px;"><%= item.tittle %></h1>
+                                <p class="upload-info">Created at :</p>
+                                <p class="upload-date mb-3"><%= item.created_at %></p>
+                                <p class="instruction-info">Instruction :</p>
+                                <p class="instruction-text mb-3"><%= item.description %></p>
+                                <hr>
+                            </div>  
+                            <h2 class="answer-title mb-3">Answer</h2>
+                            <form class="m-auto mt-2" action="/submission/upload/<%= item.form_id%>" method="post" id="form-upload"
+                                enctype="multipart/form-data">
+                                <ul class="">
+                                    <li class="list-group-item">
+                                        <div class="file-upload-container">
+                                            <div class="upload-container">
+                                                <p style="color: black; margin-left: 32px;font-weight: bold; font-size: 18px;">Upload File</p>
+                                                <input type="file" class="form-control" id="floatingInput" placeholder="file-upload" name="file">
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item" style="margin-right: 100px;">
+                                        <div class="description-section">
+                                            <p style="color: black; margin-left:2px;font-weight: bold;" for="floatingInputDesc">Comments</p>
+                                            <textarea placeholder="Add a comment (optional)" 
+                                            type="text" class="form-control" id="floatingInputDesc" name="description" style="margin-left: 1px;"></textarea>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </form>
+                            <div class="action-buttons">
+                                <a href="/form/home"  class="cancel-button btn btn-outline-danger">
+                                    Cancel
+                                </a>
+                                <!-- <input type="submit" class="upload-button btn btn-lg btn-primary" value="Upload"> -->
+                                <button form="form-upload" class="upload-button btn btn-lg btn-primary btn-submit me-3" type="submit">
+                                    Upload
+                                </button>
+                                <!-- <a href="/form/home" form="" class="upload-button btn btn-lg btn-primary">Upload</a> -->
                             </div>
-                        </div>
-                        <div >
-                            <h1 class="title mb-3" style="margin-left: 225px;"><%= item.tittle %></h1>
-                            <p class="upload-info">Created at :</p>
-                            <p class="upload-date mb-3"><%= item.created_at %></p>
-                            <p class="instruction-info">Instruction :</p>
-                            <p class="instruction-text mb-3"><%= item.description %></p>
-                            <hr>
-                        </div>  
-                        <h2 class="answer-title mb-3">Answer</h2>
-                        <div class="file-upload-container">
-                            <div class="upload-container">
-                                <p style="color: black; margin-left: 32px;font-weight: bold; font-size: 18px;">Upload File</p>
-                                <input type="file" class="form-control" id="floatingInput" placeholder="file-upload" name="">
-                            </div>
-                        </div>
-                        <div class="description-section">
-                            <p style="color: black; margin-left:2px;font-weight: bold;">Comments</p>
-                            <textarea placeholder="Add a comment (optional)"></textarea>
-                        </div>
-                        <div class="action-buttons">
-                            <a href="/form/home"  class="cancel-button btn btn-outline-danger">
-                                Cancel
-                            </a>
-                            <a href="/form/home" form="" class="upload-button btn btn-lg btn-primary">Upload</a>
-                        </div>
+                        
                     </div>
+                
                 </div>
             </div>
         </main>
@@ -133,6 +149,37 @@
         <script src="../../../assets/dist/js/bootstrap.bundle.min.js"></script>
         <script src="../../../assets/js/sidebars.js"></script>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function(){
+            const form = document.querySelector('#form-upload');
+            form.addEventListener('submit', async (event) => {
+                event.preventDefault();
+
+                const description = document.getElementById('floatingInputDesc').value;
+                const file = document.getElementById('floatingInput').files[0];
+
+                const formData = new FormData();
+                formData.append('description', description);
+                formData.append('file', file);
+
+                const form_id = '<%= item.form_id%>'
+                const response = await fetch('http://localhost:3000/submission/upload/' + form_id, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.success == true) {
+                    alert(data.msg);
+                    window.location.href = '/form/home';
+                } else if (data.success == false) {
+                    alert(data.msg);
+                }
+            });
+            
+        })
+        </script>
 </body>
 
 </html>

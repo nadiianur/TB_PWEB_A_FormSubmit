@@ -1,7 +1,6 @@
 const express = require('express');
 const cookieParser =  require('cookie-parser');
 require("dotenv").config();
-var verifyToken = require("../middleware/verifyToken.js");
 const controllers = require('../controllers/formControllers.js')
 
 var router = express.Router();

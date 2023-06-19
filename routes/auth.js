@@ -1,6 +1,5 @@
 const express = require('express');
 // const { getUsers, login , getLogin, logOut } = require("../controllers/authControllers.js")
-var verifyToken = require("../middleware/verifyToken.js");
 const cookieParser =  require('cookie-parser');
 require("dotenv").config();
 const controllers = require('../controllers/authControllers.js')

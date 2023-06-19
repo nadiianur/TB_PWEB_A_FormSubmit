@@ -4,6 +4,8 @@ const Form = require("../models/forms.js");
 const User = require("../models/users.js");
 var jwt = require("jsonwebtoken");
 require("dotenv").config();
+const multer = require('multer');
+const path = require('path');
 const controllers = {}
 
 
@@ -34,7 +36,8 @@ const getSubmission = async (req, res) => {
 }
 controllers.getSubmission = getSubmission;
 
-const uploadSubmission = async (req, res) => {
+
+const getUpload= async (req, res) => {
     const form_id = req.params.form_id
     // const tittle = req.params.tittle
     // const user_id = req.params.user_id
@@ -47,7 +50,6 @@ const uploadSubmission = async (req, res) => {
         }
     })
     
-
     const findUser = await User.findOne({
         where : {
             user_id: findForm.user_id
@@ -55,41 +57,65 @@ const uploadSubmission = async (req, res) => {
     })
 
     const item = findForm
-    
     if(!form_id){
         res.status(400).json({
             success: false,
             msg: 'Data Tidak Didapatkan'
         })
     }
-    
-        res.render('submission/upload', {
+        
+    res.render('submission/upload', {
         item: item,
         user: findUser
         })
     }
-controllers.uploadSubmission = [verifyToken, uploadSubmission];
+controllers.getUpload = [verifyToken, getUpload];
 
-const getDetailSubmission = (req, res) => {
-    res.render('submission/detailSubmission');
-  }
-controllers.getDetailSubmission = getDetailSubmission;
+
+// Konfigurasi modul multer 
+const storage = multer.diskStorage({
+    destination: function (req, file, cb){
+        cb(null, path.join(__dirname, '../', 'assets', 'fileSubmit'));
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.originalname);
+    }
+});
+
+const upload = multer({
+    storage: storage,
+})
+const uploaded = upload.single('file');
 
 const addSubmission = async (req, res) => {
-    const { user_id, form_id, uploaded_file,description } = req.body;
+    const form_id = req.params.form_id;
+    const user_id =  req.session.user_id;
+    const file = req.file;
+    const description = req.body.description;
+
     try {
-        await Submission.create({
+        
+        const uploads = await Submission.create({
             user_id: user_id,
             form_id: form_id,
-            uploaded_file: uploaded_file,
+            uploaded_file: file.originalname,
             description: description,
-    })
-        if (Submission) {
-            res.json({ msg: "Successfully added submission" })
-        } 
-        else {
-            res.json({
-                message: "Please try again later"
+        })
+        if (uploads) {
+            res.status(200).json({
+                msg: "Successfully added submission",
+                data: {
+                    user_id: user_id,
+                    form_id: form_id,
+                    uploaded_file: file.originalname,
+                    description: description,
+                },
+                success: true
+            });
+        } else {
+            res.status(400).json({
+                msg: "Please try again later",
+                success: false
             })
         }
     } catch (error) {
@@ -98,7 +124,12 @@ const addSubmission = async (req, res) => {
         })
     }
 }
-controllers.addSubmission = addSubmission;
+controllers.addSubmission = [verifyToken, uploaded, addSubmission];
+
+const getDetailSubmission = (req, res) => {
+    res.render('submission/detailSubmission');
+  }
+controllers.getDetailSubmission = getDetailSubmission;
 
 const editSubmission = async (req, res) => {
     let id = req.params.id;
