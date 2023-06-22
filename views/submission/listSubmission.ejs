@@ -81,7 +81,8 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/auth/login" class="nav-link list-group-item-action list-group-item-dark p-2.8 text-white fw-bold">
+                    <a href="#" id="btn-logout"
+                        class="nav-link list-group-item-action list-group-item-dark p-2.8 text-white fw-bold">
                         <i class="bi bi-box-arrow-right"></i>
                         LogOut
                     </a>
@@ -191,6 +192,7 @@
                     console.log(error);
                 }
                 
+                
                 const btndel = document.getElementsByClassName("btnDelete")
                 console.log(btndel)
 
@@ -220,6 +222,27 @@
                     })
                 }
 
+
+                const btnLogout = document.getElementById('btn-logout');
+                btnLogout.addEventListener('click', async function (event) {
+                    event.preventDefault()
+
+                    fetch('/auth/logout')
+                        .then(response => response.json())
+                        .then(data => {
+                        if (data.success) {
+                            // Logout berhasil, hapus token dari local storage
+                            localStorage.removeItem('token');
+                            // Redirect ke halaman login
+                            window.location.href = '/auth/login';
+                        } else {
+                            console.log(data.msg);
+                        }
+                    })
+                        .catch(error => {
+                        console.log('Error : ', error);
+                    });
+                });
             })
         </script>
 </body>

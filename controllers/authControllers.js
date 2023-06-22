@@ -7,6 +7,29 @@ const {
 } = require('express');
 const controllers = {}
 
+
+const verifyToken = (req, res, next) => {
+  const token = req.cookies.accessToken;
+  //   console.log(token)
+  if (!token) {
+      res.json({
+          msg: "Invalid token"
+      })
+      // Token tidak ada, redirect ke halaman login
+      return res.redirect('/auth/login');
+  }
+
+  try {
+      const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+      req.User = decoded.user_id;
+      next();
+  } catch (error) {
+      // Token tidak valid atau kedaluwarsa, redirect ke halaman login
+      return res.redirect('/auth/login');
+  }
+};
+
+
 controllers.login = async(req, res) => {
   let username = req.body.username;
   let password = req.body.password;
@@ -55,44 +78,30 @@ controllers.login = async(req, res) => {
   }
 }
 
+
 const viewLogin = async (req, res) => {
   res.render('signin');
-    // if(!req.session.user_id){
-    //     return res.status(401).json({ msg: "Please, login into your account" })
-    // }
-    // const user = await User.findOne ({
-    //     attributes :  [ 'user_id', 'username', 'email', 'avatar' ],
-    //     where : {
-    //         user_id : req.session.user_id
-    //     }
-    // })
-    // if (!user){
-    //     return res.status(404).json({ message : 'User Not Found'})
-    // }
 }
 controllers.viewLogin = viewLogin;
 
+
 const logOut = (req, res) => {
-  // req.session.destroy((err) => {
-  //   if (err) {
-  //       console.log(err);
-  //       return res.status(400).json({
-  //           success: false,
-  //           message: 'Cant logout',
-  //       });
-  //   }
+  req.session.destroy((err) => {
+    if (err) {
+        console.log(err);
+        return res.status(400).json({
+            success: false,
+            msg: 'Cant logout',
+        });
+    }
 
-  //   res.clearCookie('sessionUser_Id');
-  //   return res.status(200).json({
-  //       success: true,
-  //       message: 'Logout berhasil',
-  //       // res.redirect("/auth/login")
-  //   });
-  // });
-
-  res.redirect("/auth/login");
-  res.status(200).json({msg: 'OK'})
+    res.clearCookie('sessionId');
+    return res.status(200).json({
+        success: true,
+        msg: 'Logout berhasil',
+    });
+  });
 }
-controllers.logOut = logOut;
+controllers.logOut = [verifyToken, logOut];
 
 module.exports = controllers;

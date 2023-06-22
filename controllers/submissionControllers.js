@@ -6,6 +6,7 @@ var jwt = require("jsonwebtoken");
 require("dotenv").config();
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
 // const req = require('express/lib/request.js');
 // const { title } = require('process');
 const controllers = {}
@@ -24,26 +25,13 @@ const verifyToken = (req, res, next) => {
 
     try {
         const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-        req.user = decoded.user_id;
+        req.User = decoded.user_id;
         next();
     } catch (error) {
         // Token tidak valid atau kedaluwarsa, redirect ke halaman login
         return res.redirect('/auth/login');
     }
 };
-
-
-const getDetailSubmission = (req, res) => {
-    res.render('submission/detailSubmission');
-  }
-controllers.getDetailSubmission = getDetailSubmission;
-
-
-const getSubmission = async (req, res) => {
-    const submission = await Submission.findAll();
-    res.json(submission)
-}
-controllers.getSubmission = getSubmission;
 
 
 // Function Create Submission
@@ -193,7 +181,8 @@ const getEdit= async (req, res) => {
     } 
 }
 controllers.getEdit = [verifyToken, getEdit];
-// Ini buat data submission yang akan di edit. Hanya menyediakan editan untuk description
+// Ini buat submission data yang akan di edit
+//Hanya menyediakan editan untuk description
 const editSubmission = async (req, res) => {
     const id = req.params.id;
 
@@ -288,7 +277,7 @@ const listSubmission = async(req,res) => {
         } else {
           res.status(400).json({
             success: false,
-            msg: 'You dont have any submission'
+            msg: 'Nothing your submission'
           });
         }
       } catch (error) {
@@ -328,5 +317,41 @@ const deleteSubmission = async (req, res) => {
     }
 }
 controllers.deleteSubmission = [verifyToken, deleteSubmission];
+
+
+const downloadSubmission = async (req, res) => {
+    const id = req.params.id;
+
+    try {
+        const file = await Submission.findByPk(id)
+
+        if (!file) {
+            res.status(404).json({
+                success: false,
+                msg: 'Submission not found',
+              });
+        }
+        
+        //atribute file upload
+        const filePath = path.join(__dirname,  '../', 'assets', 'fileSubmit', file.uploaded_file);
+
+        //periksa file ada atau tidak
+        if (!fs.existsSync(filePath)) {
+            return res.status(404).json({
+              success: 'no',
+              msg: 'File not found',
+            });
+          }
+
+        // Mengirim file sebagai respons download
+        res.download(filePath);
+
+    } catch (error) {
+        res.status(400).json({
+            msg: error.message
+        })
+    }
+}
+controllers.downloadSubmission = [verifyToken, downloadSubmission];
 
 module.exports = controllers;

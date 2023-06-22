@@ -74,7 +74,8 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/auth/login" class="nav-link list-group-item-action list-group-item-dark p-2.8 text-white fw-bold">
+                    <a href="#" id="btn-logout"
+                        class="nav-link list-group-item-action list-group-item-dark p-2.8 text-white fw-bold">
                         <i class="bi bi-box-arrow-right"></i>
                         LogOut
                     </a>
@@ -181,36 +182,60 @@
             </div>
         </main>
 
-        <script src="../../../assets/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="../../../assets/js/sidebars.js"></script>
+        <script src="/assets/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="/assets/js/sidebars.js"></script>
 
         <script>
-            const form = document.querySelector('#form-upload');
-            form.addEventListener('submit', async (event) => {
-                event.preventDefault();
+                const btnLogout = document.getElementById('btn-logout');
+                    btnLogout.addEventListener('click', async function (event) {
+                        event.preventDefault()
 
-                const description = document.getElementById('floatingInputDesc').value;
-                const file = document.getElementById('floatingInput').files[0];
-
-                const formData = new FormData();
-                formData.append('description', description);
-                formData.append('file', file);
-
-                const form_id = '<%= item.form_id%>'
-                const response = await fetch('http://localhost:3000/submission/upload/' + form_id, {
-                    method: 'POST',
-                    body: formData
+                        fetch('/auth/logout')
+                            .then(response => response.json())
+                            .then(data => {
+                            if (data.success) {
+                                // Logout berhasil, hapus token dari local storage
+                                localStorage.removeItem('token');
+                                // Redirect ke halaman login
+                                window.location.href = '/auth/login';
+                            } else {
+                                console.log(data.msg);
+                            }
+                        })
+                            .catch(error => {
+                            console.log('Error : ', error);
+                        });
                 });
 
-                const data = await response.json();
 
-                if (data.success == true) {
-                    alert(data.msg);
-                    window.location.href = '/form/home';
-                } else if (data.success == false) {
-                    alert(data.msg);
-                }
-            });
+                const form = document.querySelector('#form-upload');
+                form.addEventListener('submit', async (event) => {
+                    event.preventDefault();
+
+                    const description = document.getElementById('floatingInputDesc').value;
+                    const file = document.getElementById('floatingInput').files[0];
+
+                    const formData = new FormData();
+                    formData.append('description', description);
+                    formData.append('file', file);
+
+                    const form_id = '<%= item.form_id%>'
+                    const response = await fetch('http://localhost:3000/submission/upload/' + form_id, {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success == true) {
+                        alert(data.msg);
+                        window.location.href = '/form/home';
+                    } else if (data.success == false) {
+                        alert(data.msg);
+                    }
+                });
+
+
         </script>
 </body>
 

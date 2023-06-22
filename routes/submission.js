@@ -24,9 +24,7 @@ router.get('/listSubmission', controllers.listSubmission);
 //delete submission
 router.delete('/deleteSubmission/:id', controllers.deleteSubmission);
 
-router.get('/list', controllers.getSubmission);
-
-router.get('/detailSubmission', controllers.getDetailSubmission);
-
+//download file submission
+router.get('/downloadFileSubmission/:id', controllers.downloadSubmission);
 
 module.exports = router;

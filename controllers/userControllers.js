@@ -103,7 +103,7 @@ const getEditProfile = async(req, res) => {
   try {
     const findUser = await User.findOne({
         where: {
-            user_id: req.session.user_idcontrollers/userControllers.js
+            user_id: req.session.user_id
         }
     });
 

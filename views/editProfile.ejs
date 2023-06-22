@@ -72,7 +72,8 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/auth/login" class="nav-link list-group-item-action list-group-item-dark p-2.8 text-white fw-bold">
+                    <a href="#" id="btn-logout"
+                        class="nav-link list-group-item-action list-group-item-dark p-2.8 text-white fw-bold">
                         <i class="bi bi-box-arrow-right"></i>
                         LogOut
                     </a>
@@ -187,14 +188,33 @@
             })
 
 
+            const btnLogout = document.getElementById('btn-logout');
+            btnLogout.addEventListener('click', async function (event) {
+                event.preventDefault()
+
+                fetch('/auth/logout')
+                    .then(response => response.json())
+                    .then(data => {
+                    if (data.success) {
+                        // Logout berhasil, hapus token dari local storage
+                        localStorage.removeItem('token');
+                        // Redirect ke halaman login
+                        window.location.href = '/auth/login';
+                    } else {
+                        console.log(data.msg);
+                    }
+                })
+                    .catch(error => {
+                    console.log('Error : ', error);
+                });
+            });
+
          })
     </script>
 
 
-    <script src="../../../assets/dist/js/bootstrap.bundle.min.js"></script>
-
-    <script src="../../../assets/js/sidebars.js"></script>
-
+    <script src="/assets/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/js/sidebars.js"></script>
     <!-- Include the Bootstrap JavaScript and jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.0/js/bootstrap.bundle.min.js"></script>

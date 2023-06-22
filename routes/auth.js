@@ -10,9 +10,11 @@ router.use(express.static('public'));
 router.use(express.json()); 
 router.use(cookieParser());
 
-// router.post('/register', register);
+//login akun
 router.get('/login', controllers.viewLogin);
 router.post('/login', controllers.login);
+
+//logout akun
 router.get('/logout', controllers.logOut);
 
 

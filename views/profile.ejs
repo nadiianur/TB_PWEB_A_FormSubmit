@@ -72,7 +72,8 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/auth/login" class="nav-link list-group-item-action list-group-item-dark p-2.8 text-white fw-bold">
+                    <a href="#" id="btn-logout"
+                        class="nav-link list-group-item-action list-group-item-dark p-2.8 text-white fw-bold">
                         <i class="bi bi-box-arrow-right"></i>
                         LogOut
                     </a>
@@ -92,7 +93,7 @@
                             <h3 class="text-dark" style="margin-right: 80px;"><%= nama %></h3>
                         </div>
                         <div class="col">
-                            <a href="/user/editProfile"><button type="button" class="btn btn-warning rounded-pill">EditProfile</button></a>
+                            <a href="/user/editProfile"><button type="button" class="btn btn-warning rounded-pill">Edit Profile</button></a>
                         </div>
                     </div>
                 </div>
@@ -101,36 +102,29 @@
                 <tr>
                     <td>
                         <div class="bawah">
-                                <div class="container overflow-hidden">
-                                    <div class="row gy-3">
-                                        <div class="isi ms-3 mt-3 mb-3 me-4 ms-5" >
-                                            <ul class="list-group list-group-flush w-50">
-                                                <div class="mb-4" style="margin-left: 150px;">
-                                                    <br>
-                                                    <label class="form-label fw-semibold">Nama</label>
-                                                    <li class="list-group-item" style="border-radius: 25px; width: 700px;"" ><%= nama %></li>
-                                                </div>
-                                                <div class="mb-4 " style="margin-left: 150px;">
-                                                    <br>
-                                                    <label class="form-label fw-semibold">Username</label>
-                                                    <li class="list-group-item" style="border-radius: 25px; width: 700px;"><%= username %></li>
-                                                </div>
-                                                <div class="mb-4" style="margin-left: 150px;">
-                                                    <br>
-                                                    <label class="form-label fw-semibold">Email</label>
-                                                    <li class="list-group-item" style="border-radius: 25px; width: 700px;"><%= email %></li>
-                                                </div>
-                                            </ul>
-                                        <!-- <div class="col-6">
-                                            <div class="form-floating mb-1">
-                                                <input type="text" class="form-control w-75" id="floatingInput"
-                                                    name="username" placeholder="username" style="border-radius: 25px;">
-                                                <label for="floatingInput" class="text-dark">Password</label>
+                            <div class="container overflow-hidden">
+                                <div class="row gy-3">
+                                    <div class="isi ms-3 mt-3 mb-3 me-4 ms-5" >
+                                        <ul class="list-group list-group-flush w-50">
+                                            <div class="mb-4" style="margin-left: 150px;">
+                                                <br>
+                                                <label class="form-label fw-semibold">Nama</label>
+                                                <li class="list-group-item" style="border-radius: 25px; width: 700px;"" ><%= nama %></li>
                                             </div>
-                                        </div>   -->
-                                        </div>
+                                            <div class="mb-4 " style="margin-left: 150px;">
+                                                <br>
+                                                <label class="form-label fw-semibold">Username</label>
+                                                <li class="list-group-item" style="border-radius: 25px; width: 700px;"><%= username %></li>
+                                            </div>
+                                            <div class="mb-4" style="margin-left: 150px;">
+                                                <br>
+                                                <label class="form-label fw-semibold">Email</label>
+                                                <li class="list-group-item" style="border-radius: 25px; width: 700px;"><%= email %></li>
+                                            </div>
+                                        </ul>
                                     </div>
                                 </div>
+                            </div>
                         </div>
                     </td>
                 </tr>
@@ -141,13 +135,36 @@
     </main>
 
 
-    <script src="../../../assets/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/dist/js/bootstrap.bundle.min.js"></script>
 
-    <script src="../../../assets/js/sidebars.js"></script>
-
+    <script src="assets/js/sidebars.js"></script>
     <!-- Include the Bootstrap JavaScript and jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.0/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        const btnLogout = document.getElementById('btn-logout');
+            btnLogout.addEventListener('click', async function (event) {
+                event.preventDefault()
+
+                fetch('/auth/logout')
+                    .then(response => response.json())
+                    .then(data => {
+                    if (data.success) {
+                        // Logout berhasil, hapus token dari local storage
+                        localStorage.removeItem('token');
+                        // Redirect ke halaman login
+                        window.location.href = '/auth/login';
+                    } else {
+                        console.log(data.msg);
+                    }
+                })
+                .catch(error => {
+                console.log('Error : ', error);
+            });
+        });
+    </script>
+
 </body>
 
 </html>

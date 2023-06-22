@@ -32,45 +32,60 @@ const verifyToken = (req, res, next) => {
 
 //Tampilan Home
 const home = async (req, res) => {
-    const findForm = await Form.findAll()
+    const form_id = req.params.form_id;
+
+    try{
+        const findUser = await user.findOne({
+            where: {
+                user_id: req.session.user_id
+            }
+        })
+
+        if (!findUser) {
+            res.render('/auth/login')
+        } else {
+            const findForm = await Form.findAll()
     
-    if (findForm) {
-        const data = []
-        for (let index = 0; index < findForm.length; index++) {
-            const user_id = findForm[index].user_id
-            const created = findForm[index].created_at
-            const form_id = findForm[index].form_id
-            const tittle = findForm[index].tittle
-            const description = findForm[index].description
-
-            const created_at = moment(created).format('YYYY-MM-DD HH:mm:ss');
-
-            const findUser = await user.findByPk(user_id)
-
-            if (findUser) {
-                const nama = findUser.nama
-
-                data.push({
-                    nama, user_id, created_at, form_id, tittle, description
-                })
-                
+            if (findForm) {
+                const data = []
+                for (let index = 0; index < findForm.length; index++) {
+                    const user_id = findForm[index].user_id
+                    const created = findForm[index].created_at
+                    const form_id = findForm[index].form_id
+                    const tittle = findForm[index].tittle
+                    const description = findForm[index].description
+        
+                    const created_at = moment(created).format('YYYY-MM-DD HH:mm:ss');
+        
+                    const findUser = await user.findByPk(user_id)
+        
+                    if (findUser) {
+                        const nama = findUser.nama
+        
+                        data.push({
+                            nama, user_id, created_at, form_id, tittle, description
+                        })
+                        
+                    } else {
+                        res.status(400).json ({
+                            success: false,
+                            msg: 'User not found'
+                        })
+                    }
+                }
+                res.render('home',{
+                    data
+                });
             } else {
-                res.status(400).json ({
-                    success: false,
-                    msg: 'User not found'
+                res.status(400).json({
+                    success:false,
+                    msg: 'Form Tidak Ditemukan'
                 })
             }
-        }
-        res.render('home',{
-            data
-        });
-    } else {
-        res.status(400).json({
-            success:false,
-            msg: 'Form Tidak Ditemukan'
-        })
-    }
-    
+        } 
+    } catch (error) {
+        return res.redirect('/auth/login');
+    } 
 }
 controllers.home = [verifyToken, home]
 
