@@ -1,8 +1,9 @@
 var express = require('express');
 const Form = require("../models/forms.js");
+const user = require("../models/users.js");
+const Submission = require ("../models/submissions.js")
 var jwt = require("jsonwebtoken");
 require("dotenv").config();
-const user = require('../models/users.js');
 const moment = require('moment');
 const controllers = {}
 
@@ -28,6 +29,8 @@ const verifyToken = (req, res, next) => {
     }
 };
 
+
+//Tampilan Home
 const home = async (req, res) => {
     const findForm = await Form.findAll()
     
@@ -54,7 +57,7 @@ const home = async (req, res) => {
             } else {
                 res.status(400).json ({
                     success: false,
-                    msg: 'Pengguna Tidak Ditemukan'
+                    msg: 'User not found'
                 })
             }
         }
@@ -71,39 +74,85 @@ const home = async (req, res) => {
 }
 controllers.home = [verifyToken, home]
 
-const thisForm = async (req, res) => {
-    // const form_id = req.params.form_id
-    // const tittle = req.params.tittle
-    // const user_id = req.params.user_id
-    // const created_at = req.params.created_at
-    // const description = req.params.description
 
-    // if(!form_id){
-    //     res.status(400).json({
-    //         success: false,
-    //         msg: 'Data Tidak Didapatkan'
-    //     })
-    // } else {
-    //     const findForm = Form.findOne({
-    //         where:{
-    //             form_id: form_id 
-    //         }
-    //     })
-    //     if (findForm) {
-    //        res.sender('submission/upload', {
-    //         form_id, tittle, user_id, created_at, description
-    //        })
-    //     }
-    // }
-  }
+// Function Read Data Submission di Form yang di buat user
+// ini buat get halaman list submission form si user yg sedang login
+const getFormSubmission = async (req, res) => {
+    const form_id = req.params.form_id;
 
-controllers.thisForm = [verifyToken,thisForm];
+    try{
+        const findUser = await user.findOne({
+            where: {
+                user_id: req.session.user_id
+            }
+        })
 
+        if (!findUser) {
+            res.render('/auth/login')
+        }
 
-const getFormSubmission = (req, res) => {
-    res.render('submission/listSubmission');
+        const form = await Form.findByPk(form_id);
+        if (!form) {
+            return res.status(404).json({
+              success: false,
+              msg: 'Form not found'
+            });
+          } else {
+            res.render('submission/detailSubmission',{
+                form_id: form_id
+            });
+          }
+        
+    } catch (error) {
+        return res.redirect('/auth/login');
+    }
 }
 controllers.getFormSubmission = [verifyToken, getFormSubmission];
+// ini buat read data list submission form
+const FormSubmission = async (req, res) => {
+    const form_id = req.params.form_id
+
+    try{
+        const form = await Form.findByPk(form_id)
+
+        if(form){
+            const submissionsForm = await Submission.findAll({
+                where:{
+                    form_id: form_id
+                }
+            })
+    
+            if (submissionsForm.length > 0){
+                const submissions = submissionsForm.map((doc) => ({
+                    id: doc.id,
+                    user_id: doc.user_id,
+                    form_id: doc.form_id,
+                    uploaded_file: doc.uploaded_file,
+                    created_at: doc.created_at,
+                    description: doc.description,
+                    updated_at: doc.updated_at,  
+                  }));
+                  res.status(200).json({
+                    success: true,
+                    submissions: submissions
+                  });
+            } else {
+                res.status(400).json({
+                    success: false,
+                    msg: 'Doesnt have any submission in this form'
+                  });
+              }
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+        success: 'eror',
+        msg: 'Server error',
+        });
+    }
+
+}
+controllers.FormSubmission = [verifyToken, FormSubmission];
 
 
 // Function Read Data Form
@@ -127,7 +176,6 @@ const getListMyForm = async (req, res) =>
     }
 };  
 controllers.getListMyForm = [verifyToken, getListMyForm];
-
 // ini buat read data form si user yg lagi login
 const listForm = async (req, res) => {
     try {
@@ -185,8 +233,7 @@ const getAddForm = async (req, res) => {
       }
 }
 controllers.getAddForm = [verifyToken, getAddForm];
-
-// Ini buat data yang untuk add form
+// Ini untuk add form
 const addForm = async (req, res) => {
     const user_id = req.session.user_id;
     const {
@@ -216,7 +263,7 @@ const addForm = async (req, res) => {
         })
     }
 }
-controllers.addForm = addForm;
+controllers.addForm = [verifyToken, addForm];
 
 
 // Function Update Form
@@ -282,7 +329,7 @@ const testEdit = async (req, res) => {
     }
         
 }
-controllers.testEdit = testEdit;
+controllers.testEdit = [verifyToken, testEdit];
 
 
 // Function Dalete Form

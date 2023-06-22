@@ -60,7 +60,7 @@
                 </li>
                 <br>
                 <li>
-                    <a href="/form/formSubmission" class="nav-link list-group-item-action list-group-item-dark p-2.8 text-dark fw-bold">
+                    <a href="/submission/listMySubmission" class="nav-link list-group-item-action list-group-item-dark p-2.8 text-dark fw-bold">
                         <i class="bi bi-file-earmark-arrow-down"></i>
                         Submission
                     </a>
@@ -108,15 +108,52 @@
                                 <p class="instruction-text mb-3"><%= item.description %></p>
                                 <hr>
                             </div>  
-                            <h2 class="answer-title mb-3">Answer</h2>
-                            <form class="m-auto mt-2" action="/submission/upload/<%= item.form_id%>" method="post" id="form-upload"
+                            
+                            <!-- jika si user sudah pernah submit tugasnya di form yang dipilih -->
+                            <% if (uploaded_file) { %>
+                            <h2 class="answer-title mb-1">&nbsp; Answer</h2>
+                            <ul class="">
+                                <li class="list-group-item">
+                                    <div class="file-upload-container">
+                                        <div class="upload-container">
+                                            <p style="color: black; margin-left: 22px;font-weight: bold; font-size: 18px;">Upload File</p>
+                                                <button class=" btn-dark" style="border-radius:15px; margin-left: 22px;" type="button">
+                                                    <p style="margin-top: 10px; text-align: center;"><%= uploaded_file %></p>
+                                                </button>    
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item" style="margin-right: 220px;">
+                                    <div class="description-section">
+                                        <p style="color: black; margin-left:2px;font-weight: bold;" for="floatingInputDesc">Comments</p>
+                                        <textarea placeholder="Add a comment (optional)" 
+                                        type="text" class="form-control" id="floatingInputDesc" name="description" style="margin-left: 1px;" disabled><%= description || '' %></textarea>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="action-buttons">
+                                <a href="/form/home"  class="cancel-button btn btn-secondary">
+                                    Cancel
+                                </a>
+                                <!-- <button id="btn" class="upload-button btn btn-lg btn-warning me-3" type="submit">
+                                    Edit
+                                </button> -->
+                                <a href="/submission/editSubmission/<%= id %>" type="button" class="upload-button btn btn-lg btn-warning me-3">
+                                        Edit
+                                </a>
+                            </div>
+                            
+                            <!-- jika si user belum pernah submit tugasnya di form yang dipilih -->
+                            <% } else { %> 
+                            <h2 class="answer-title mb-1">Answer</h2>
+                            <form action="/submission/upload/<%= item.form_id%>" method="post" id="form-upload"
                                 enctype="multipart/form-data">
-                                <ul class="">
+                                <ul class="">      
                                     <li class="list-group-item">
                                         <div class="file-upload-container">
                                             <div class="upload-container">
                                                 <p style="color: black; margin-left: 32px;font-weight: bold; font-size: 18px;">Upload File</p>
-                                                <input type="file" class="form-control" id="floatingInput" placeholder="file-upload" name="file">
+                                                <input type="file" class="form-control" id="floatingInput" placeholder="file-upload" name="file">  
                                             </div>
                                         </div>
                                     </li>
@@ -133,13 +170,11 @@
                                 <a href="/form/home"  class="cancel-button btn btn-outline-danger">
                                     Cancel
                                 </a>
-                                <!-- <input type="submit" class="upload-button btn btn-lg btn-primary" value="Upload"> -->
                                 <button form="form-upload" class="upload-button btn btn-lg btn-primary btn-submit me-3" type="submit">
                                     Upload
                                 </button>
-                                <!-- <a href="/form/home" form="" class="upload-button btn btn-lg btn-primary">Upload</a> -->
                             </div>
-                        
+                         <% } %>
                     </div>
                 
                 </div>
@@ -149,8 +184,7 @@
         <script src="../../../assets/dist/js/bootstrap.bundle.min.js"></script>
         <script src="../../../assets/js/sidebars.js"></script>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function(){
+        <script>
             const form = document.querySelector('#form-upload');
             form.addEventListener('submit', async (event) => {
                 event.preventDefault();
@@ -177,8 +211,6 @@
                     alert(data.msg);
                 }
             });
-            
-        })
         </script>
 </body>
 

@@ -6,6 +6,8 @@ var jwt = require("jsonwebtoken");
 require("dotenv").config();
 const multer = require('multer');
 const path = require('path');
+// const req = require('express/lib/request.js');
+// const { title } = require('process');
 const controllers = {}
 
 
@@ -30,6 +32,13 @@ const verifyToken = (req, res, next) => {
     }
 };
 
+
+const getDetailSubmission = (req, res) => {
+    res.render('submission/detailSubmission');
+  }
+controllers.getDetailSubmission = getDetailSubmission;
+
+
 const getSubmission = async (req, res) => {
     const submission = await Submission.findAll();
     res.json(submission)
@@ -37,13 +46,11 @@ const getSubmission = async (req, res) => {
 controllers.getSubmission = getSubmission;
 
 
+// Function Create Submission
+// Ini buat get halaman add Submission
 const getUpload= async (req, res) => {
-    const form_id = req.params.form_id
-    // const tittle = req.params.tittle
-    // const user_id = req.params.user_id
-    // const created_at = req.params.created_at
-    // const description = req.params.description
-
+    const form_id = req.params.form_id;
+    
     const findForm = await Form.findOne({
         where:{
             form_id: form_id 
@@ -63,16 +70,36 @@ const getUpload= async (req, res) => {
             msg: 'Data Tidak Didapatkan'
         })
     }
-        
-    res.render('submission/upload', {
-        item: item,
-        user: findUser
+    
+    const cekSubmission = await Submission.findOne({
+        where:{
+            user_id: findUser.user_id,
+            form_id: findForm.form_id
+        }
+    })
+
+    if(!cekSubmission){
+        //jika belum pernah upload
+        res.render('submission/upload', {
+            item: item,
+            user: findUser,
+            uploaded_file: null,
+            description: null,
         })
+    } else {
+        res.render('submission/upload', {
+            item: item,
+            user: findUser,
+            id: cekSubmission.id,
+            user_id: cekSubmission.user_id,
+            uploaded_file: cekSubmission.uploaded_file,
+            description: cekSubmission.description
+            })
+    }
     }
 controllers.getUpload = [verifyToken, getUpload];
 
-
-// Konfigurasi modul multer 
+// Konfigurasi modul multer untuk uploaded file
 const storage = multer.diskStorage({
     destination: function (req, file, cb){
         cb(null, path.join(__dirname, '../', 'assets', 'fileSubmit'));
@@ -87,6 +114,7 @@ const upload = multer({
 })
 const uploaded = upload.single('file');
 
+// Ini untuk add Submission
 const addSubmission = async (req, res) => {
     const form_id = req.params.form_id;
     const user_id =  req.session.user_id;
@@ -104,13 +132,13 @@ const addSubmission = async (req, res) => {
         if (uploads) {
             res.status(200).json({
                 msg: "Successfully added submission",
+                success: true,
                 data: {
                     user_id: user_id,
                     form_id: form_id,
                     uploaded_file: file.originalname,
                     description: description,
-                },
-                success: true
+                }
             });
         } else {
             res.status(400).json({
@@ -126,64 +154,82 @@ const addSubmission = async (req, res) => {
 }
 controllers.addSubmission = [verifyToken, uploaded, addSubmission];
 
-const getDetailSubmission = (req, res) => {
-    res.render('submission/detailSubmission');
-  }
-controllers.getDetailSubmission = getDetailSubmission;
 
+// Function Update Submission
+// Ini buat get halaman edit Submission
+const getEdit= async (req, res) => {
+    const id = req.params.id
+    const user_id =req.session.user_id
+
+    const findSubmit = await Submission.findOne({
+        where:{
+            id: id
+        }
+    })
+
+    const findForm = await Form.findOne({
+        where:{
+            form_id: findSubmit.form_id 
+        }
+    })
+    
+    const findUser = await User.findOne({
+        where : {
+            user_id: findSubmit.user_id
+        }
+    })
+
+    if (!findUser) {
+        res.render('/auth/login')
+    } else {
+        res.render('submission/editSubmission', {
+            item: findSubmit,
+            user: findUser,
+            form: findForm,
+            user_id,
+            id,
+            success: true
+        })
+    } 
+}
+controllers.getEdit = [verifyToken, getEdit];
+// Ini buat data submission yang akan di edit. Hanya menyediakan editan untuk description
 const editSubmission = async (req, res) => {
-    let id = req.params.id;
-    let form_id = req.params.form_id;
-    // let user_id = req.params.user_id;
-    const { uploaded_file, description } = req.body;
-    try {
-        await Submission.update({
-            uploaded_file: uploaded_file,
-            description: description,
-        }, {
-            where: {
-                id : id,
-                form_id: form_id,
-                // user_id : user_id
-            }
-        })
-        if (Submission) {
-            res.json({
-                msg: "File already updated!"
-            })
-        } else {
-            res.json({
-                msg: "Please try again later"
-            })
-        }
-    } catch (error) {
-        res.status(400).json({
-            msg: error.message
-        })
-    }
-}
-controllers.editSubmission = editSubmission;
+    const id = req.params.id;
 
-const deleteSubmission = async (req, res) => {
-    let id = req.params.id;
-    let form_id = req.params.form_id;
-    // let user_id = req.params.user_id;
     try {
-        await Submission.destroy({
-            where: {
-                id : id,
-                form_id: form_id,
-                // user_id: user_id
-            }
-        })
-        if (Submission) {
-            res.json({
-                msg: "File successfully deleted!"
-            })
+        const description  = req.body.description;
+        const findSubmission = await Submission.findByPk(id)
+
+        if (!findSubmission){
+            res.status(400).json({
+                msg: 'Submission not find',
+                success: "undefined"
+              })
         } else {
-            res.json({
-                msg: "Please try again later"
+            const updateSubmit = await Submission.update({
+                description: description
+            },
+            {
+                where: {
+                    id: id
+                }
             })
+
+            if (updateSubmit) {
+                res.status(200).json({
+                    msg: "File already updated!",
+                    data: {
+                        description: description
+                      },
+                      success: true
+                })
+            } else {
+                res.status(400).json({
+                    msg: "Please try again later",
+                    success: false
+                })
+            }
         }
     } catch (error) {
         res.status(400).json({
@@ -191,6 +237,96 @@ const deleteSubmission = async (req, res) => {
         })
     }
 }
-controllers.deleteSubmission = deleteSubmission;
+controllers.editSubmission = [verifyToken, editSubmission];
+
+
+// Function Read Data Submission
+// ini buat get halaman list submission
+const getListMySubmission = async (req, res) => 
+{
+    try{
+        const findUser = await User.findOne({
+            where: {
+                user_id: req.session.user_id
+            }
+        })
+
+        if (!findUser) {
+            res.render('/auth/login')
+        }
+
+        res.render('submission/listSubmission')
+    } catch (error) {
+        return res.redirect('/auth/login');
+    }
+};  
+controllers.getListMySubmission = [verifyToken, getListMySubmission];
+// ini buat read data Submission si user yg lagi login
+const listSubmission = async(req,res) => {
+    try {
+        const allMySubmission = await Submission.findAll({
+          where: {
+            user_id: req.session.user_id
+          }
+        });
+        
+        if (allMySubmission.length > 0) {
+          const submissions = allMySubmission.map((doc) => ({
+            id: doc.id,
+            user_id: doc.user_id,
+            form_id: doc.form_id,
+            uploaded_file: doc.uploaded_file,
+            created_at: doc.created_at,
+            description: doc.description,
+            updated_at: doc.updated_at,  
+          }));
+
+          res.status(200).json({
+            success: true,
+            submissions: submissions
+          });
+        } else {
+          res.status(400).json({
+            success: false,
+            msg: 'You dont have any submission'
+          });
+        }
+      } catch (error) {
+        res.status(500).json({
+          msg: 'Try Again!',
+          success: 'error'
+        });
+      }
+    };
+controllers.listSubmission = [verifyToken, listSubmission];
+
+
+// Function Dalete Submission
+const deleteSubmission = async (req, res) => {
+    const id = req.params.id;
+    try {
+        const delet = await Submission.destroy({
+            where: {
+              id: id,
+            }
+        });
+        if (delet) {
+            res.status(200).json({
+                success: true,
+                msg: 'Submission sucessfully deleted'
+              })
+        } else {
+            res.status(400).json({
+                success: false,
+                msg: 'Please try again!'
+              })
+        }
+    } catch (error) {
+        res.status(400).json({
+            msg: error.message
+        })
+    }
+}
+controllers.deleteSubmission = [verifyToken, deleteSubmission];
 
 module.exports = controllers;

@@ -74,7 +74,8 @@
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-            }, body: JSON.stringify(thisData)
+            }, 
+            body: JSON.stringify(thisData)
           });
     
           const data = await requestOptions.json();

@@ -59,7 +59,7 @@
                 </li>
                 <br>
                 <li>
-                    <a href="/form/formSubmission" class="nav-link list-group-item-action list-group-item-dark p-2.8 text-dark fw-bold">
+                    <a href="/submission/listMySubmission" class="nav-link list-group-item-action list-group-item-dark p-2.8 text-dark fw-bold">
                         <i class="bi bi-file-earmark-arrow-down"></i>
                         Submission
                     </a>
@@ -145,9 +145,9 @@
               });
         
               const data = await requestOptions.json();
-              if (data.success == 'ok') {
-                alert(data.msg);
-                window.location.href = '/form/home';
+              if (data.success == true) {
+                    // alert(data.msg);
+                    window.location.href = '/form/home';
               } else if (data.msg == "Please try again later") {
                 alert(data.msg);
               } 

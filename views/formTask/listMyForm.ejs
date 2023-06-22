@@ -67,7 +67,7 @@
                 </li>
                 <br>
                 <li>
-                    <a href="/form/formSubmission" class="nav-link list-group-item-action list-group-item-dark p-2.8 text-dark fw-bold">
+                    <a href="/submission/listMySubmission" class="nav-link list-group-item-action list-group-item-dark p-2.8 text-dark fw-bold">
                         <i class="bi bi-file-earmark-arrow-down"></i>
                         Submission
                     </a>
@@ -99,12 +99,6 @@
                 <br>
                 <a href="/form/addForm"><button style="margin-left: 52px;"
                     type="button" class="button btn btn-primary btn-lg"  type="button">+ Add New</button></a>
-                    <!-- <div id="search-container">
-                        <form class="d-flex" role="search">
-                            <input class="form-control me-2" type="search" placeholder="Search..." aria-label="Search..." required>
-                            <button class="btn btn-outline-success" type="submit">Search</button>
-                        </form>
-                    </div> -->
                     <div class="table-box">
                         <table class="table text-center">
                             <thead class="table">
@@ -117,7 +111,7 @@
                                 </tr>
                             </thead>
                             <tbody id="formTableBody">
-                                 
+                                <!-- Fetch data tabel -->
                             </tbody>
                         </table>
                     </div>
@@ -166,11 +160,19 @@
                         description.innerHTML = doc.description
                         i++;
 
+                        const detail = document.createElement("a")
                         const edit = document.createElement("a")
                         const del = document.createElement("a")
 
+                        const logoSearch = document.createElement("i")
                         const logoEdit = document.createElement("i")
                         const logoDel = document.createElement("i")
+
+                        action.appendChild(detail)
+                        detail.setAttribute('href', '/form/submissionForm/' + doc.form_id);
+                        detail.classList.add("btn", "btn-success", "btn-sm", "me-2")
+                        detail.appendChild(logoSearch)
+                        logoSearch.classList.add("bi", "bi-search")
 
                         action.appendChild(edit)
                         edit.setAttribute('href', '/form/editForm/' + doc.form_id)

@@ -18,7 +18,7 @@ const verifyToken = (req, res, next) => {
 
   try {
       const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-      req.user = decoded.user_id;
+      req.User = decoded.user_id;
       next();
   } catch (error) {
       // Token tidak valid atau kedaluwarsa, redirect ke halaman login

@@ -59,7 +59,7 @@
                 </li>
                 <br>
                 <li>
-                    <a href="/form/formSubmission" class="nav-link list-group-item-action list-group-item-dark p-2.8 text-dark fw-bold">
+                    <a href="/submission/listMySubmission" class="nav-link list-group-item-action list-group-item-dark p-2.8 text-dark fw-bold">
                         <i class="bi bi-file-earmark-arrow-down"></i>
                         Submission
                     </a>
@@ -113,9 +113,11 @@
                                     </form>
                                 </div>
                                 <div class="action-buttons">
+                                    <!-- Button Cancel Edit -->
                                     <a href="/form/listMyForm"  class="cancel-button btn btn-outline-danger">
                                         Cancel
                                     </a>
+                                    <!-- Button Edit -->
                                     <button form="form-edit" class="btn btn-success btn-submit me-3" style="width: 120px; border-radius: 25px;">
                                         Update
                                     </button>
@@ -133,16 +135,16 @@
 
         <script>
             document.addEventListener("DOMContentLoaded", async function () {
-            const form = document.querySelector('form');
-            form.addEventListener('submit', async (event) => {
-                event.preventDefault();
+                const form = document.querySelector('form');
+                form.addEventListener('submit', async (event) => {
+                    event.preventDefault();
 
-                const tittle = document.getElementById('floatingInputTittle').value;
-                const description = document.getElementById('floatingInputDesc').value;
+                    const tittle = document.getElementById('floatingInputTittle').value;
+                    const description = document.getElementById('floatingInputDesc').value;
 
-                const form_id = '<%= form_id %>';
-                try {
-                    const response = await fetch(`http://localhost:3000/form/editForm/${form_id}`,{
+                    const form_id = '<%= form_id %>';
+                    try {
+                        const response = await fetch(`http://localhost:3000/form/editForm/${form_id}`,{
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
@@ -152,23 +154,21 @@
                                 description: description
                             })
                         });
-                    
+                        
                         const data = await response.json()
-        
+                        
                         if (data.success == true) {
                             alert(data.msg);
                             window.location.href = '/form/listMyForm';
                         } else if (data.success == false) {
                             alert(data.msg);
-                            window.location.href = '/form/listMyForm';
+                            location.reload()
                         }
-                    
-                } catch (error) {
-                    console.log(error);
-                    alert(error)
-                }
-
-            });
+                    } catch (error) {
+                        console.log(error);
+                        alert(error)
+                    }
+                });
             })
         </script>
 </body>

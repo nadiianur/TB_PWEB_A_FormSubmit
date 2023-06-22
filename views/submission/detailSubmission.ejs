@@ -60,14 +60,14 @@
                 </li>
                 <br>
                 <li>
-                    <a href="/form/listMyForm" class="nav-link list-group-item-action list-group-item-dark p-2.8 text-dark fw-bold">
+                    <a href="/form/listMyForm" class="nav-link active bg-light list-group-item-action list-group-item-light p-2.8 text-dark fw-bold ">
                         <i class="bi bi-folder2-open"></i>
                         My Form
                     </a>
                 </li>
                 <br>
                 <li>
-                    <a href="/form/formSubmission" class="nav-link active bg-light list-group-item-action list-group-item-light p-2.8 text-dark fw-bold ">
+                    <a href="/submission/listMySubmission"  class="nav-link list-group-item-action list-group-item-dark p-2.8 text-dark fw-bold">
                         <i class="bi bi-file-earmark-arrow-down"></i>
                         Submission
                     </a>
@@ -96,50 +96,28 @@
             <br>
             <br>
             <div class="white-rectangle">
-                <a href="/form/formSubmission" class="text-decoration-none">
+                <a href="/form/listMyForm" class="text-decoration-none">
                     <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-backspace" viewBox="0 0 16 16">
                     <path d="M5.83 5.146a.5.5 0 0 0 0 .708L7.975 8l-2.147 2.146a.5.5 0 0 0 .707.708l2.147-2.147 2.146 2.147a.5.5 0 0 0 .707-.708L9.39 8l2.146-2.146a.5.5 0 0 0-.707-.708L8.683 7.293 6.536 5.146a.5.5 0 0 0-.707 0z"></path>
                     <path d="M13.683 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-7.08a2 2 0 0 1-1.519-.698L.241 8.65a1 1 0 0 1 0-1.302L5.084 1.7A2 2 0 0 1 6.603 1h7.08zm-7.08 1a1 1 0 0 0-.76.35L1 8l4.844 5.65a1 1 0 0 0 .759.35h7.08a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1h-7.08z"></path>
                     </svg>
                 </a>
-                    <!-- <div id="search-container">
-                        <form class="d-flex" role="search">
-                            <input class="form-control me-2" type="search" placeholder="Search..." aria-label="Search..." required>
-                            <button class="btn btn-outline-success" type="submit">Search</button>
-                        </form>
-                    </div> -->
                     <div class="table-box">
-                        <form action="" id="" method=""></form>
                             <table class="table text-center">
-                                <thead>
+                                <thead class="table">
                                     <tr>
                                         <th scope="col">No</th>
                                         <th scope="col">Nama</th>
-                                        <th scope="col">Keterangan</th>
-                                        <th scope="col">Upload At</th>
                                         <th scope="col">File</th>
+                                        <th scope="col">Description</th>
+                                        <th scope="col">Upload At</th>
                                         <th scope="col">Action</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr>
-                                        <td scope="row">1</td>
-                                        <td>xxx</td>
-                                        <td>xxxxxxxxx</td>
-                                        <td>xx-xx-xxx</td>
-                                        <td>xx-xx-xxx</td>
-                                        <td>
-                                            <button type="button" class="btn btn-secondary">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
-                                                <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"></path>
-                                                <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"></path>
-                                                </svg>
-                                            </button>
-                                        </td>
-                                    </tr>
+                                <tbody id="formTableBody">
+                                    <!-- Fetch data tabel -->
                                 </tbody>
                             </table>
-                        </form>
                     </div>
                 </div>
             </div>
@@ -147,10 +125,72 @@
         </main>
 
 
-        <script src="../../../assets/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="/assets/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="/assets/js/sidebars.js"></script>
 
-        <script src="../../../assets/js/sidebars.js"></script>
+        <script>
+             document.addEventListener("DOMContentLoaded", async function () {
+                const tbody = document.getElementById("formTableBody");
+                const form_id = "<%= form_id %>";
 
+                try {
+                    const response = await fetch(`http://localhost:3000/form/submissionMyForm/${form_id}`);
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                    const myFormSubmission = data.submissions;
+                    console.log(myFormSubmission)
+                    var i = 1;
+                    
+                    myFormSubmission.forEach((doc) => {
+                        const tr = document.createElement("tr");
+                        tbody.appendChild(tr);
+
+                        const no = document.createElement("td")
+                        const user_id = document.createElement("td")
+                        const uploaded_file = document.createElement('td')
+                        const description = document.createElement("td")
+                        const created_at = document.createElement("td")
+                        const action = document.createElement("td")
+
+                        tbody.appendChild(tr)
+                        tr.appendChild(no)
+                        tr.appendChild(user_id)
+                        tr.appendChild(uploaded_file)
+                        tr.appendChild(description)
+                        tr.appendChild(created_at)
+                        tr.appendChild(action)
+
+                        no.setAttribute('scope', 'row')
+
+                        no.innerHTML = i;
+                        user_id.innerHTML = doc.user_id
+                        uploaded_file.innerHTML = doc.uploaded_file
+                        description.innerHTML = doc.description
+                        created_at.innerHTML = doc.created_at
+                        i++;
+
+                        const down = document.createElement("a")
+
+                        const logoDown = document.createElement("i")
+
+                        action.appendChild(down)
+                        // detail.setAttribute('href', '/submission/upload/' + doc.form_id);
+                        down.classList.add("btn", "btn-secondary", "btn-sm", "me-2")
+                        down.appendChild(logoDown)
+                        logoDown.classList.add("bi", "bi-download")
+
+                    });
+                } else if (data.success == false){
+                    alert(data.msg);
+                } else {
+                    alert('Nothing submission in this form ');
+                    }
+                } catch (error) {
+                    console.log(error);
+                }
+             })
+        </script>
 </body>
 
 </html>
