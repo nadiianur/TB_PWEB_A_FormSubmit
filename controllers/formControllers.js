@@ -32,8 +32,7 @@ const verifyToken = (req, res, next) => {
 
 //Tampilan Home
 const home = async (req, res) => {
-    const form_id = req.params.form_id;
-
+    // const form_id = req.params.form_id;
     try{
         const findUser = await user.findOne({
             where: {
@@ -41,6 +40,8 @@ const home = async (req, res) => {
             }
         })
 
+        const formCount = await Form.count();
+        
         if (!findUser) {
             res.render('/auth/login')
         } else {
@@ -74,7 +75,8 @@ const home = async (req, res) => {
                     }
                 }
                 res.render('home',{
-                    data
+                    data,
+                    formCount
                 });
             } else {
                 res.status(400).json({
@@ -88,86 +90,6 @@ const home = async (req, res) => {
     } 
 }
 controllers.home = [verifyToken, home]
-
-
-// Function Read Data Submission di Form yang di buat user
-// ini buat get halaman list submission form si user yg sedang login
-const getFormSubmission = async (req, res) => {
-    const form_id = req.params.form_id;
-
-    try{
-        const findUser = await user.findOne({
-            where: {
-                user_id: req.session.user_id
-            }
-        })
-
-        if (!findUser) {
-            res.render('/auth/login')
-        }
-
-        const form = await Form.findByPk(form_id);
-        if (!form) {
-            return res.status(404).json({
-              success: false,
-              msg: 'Form not found'
-            });
-          } else {
-            res.render('submission/detailSubmission',{
-                form_id: form_id
-            });
-          }
-        
-    } catch (error) {
-        return res.redirect('/auth/login');
-    }
-}
-controllers.getFormSubmission = [verifyToken, getFormSubmission];
-// ini buat read data list submission form
-const FormSubmission = async (req, res) => {
-    const form_id = req.params.form_id
-
-    try{
-        const form = await Form.findByPk(form_id)
-
-        if(form){
-            const submissionsForm = await Submission.findAll({
-                where:{
-                    form_id: form_id
-                }
-            })
-    
-            if (submissionsForm.length > 0){
-                const submissions = submissionsForm.map((doc) => ({
-                    id: doc.id,
-                    user_id: doc.user_id,
-                    form_id: doc.form_id,
-                    uploaded_file: doc.uploaded_file,
-                    created_at: doc.created_at,
-                    description: doc.description,
-                    updated_at: doc.updated_at,  
-                  }));
-                  res.status(200).json({
-                    success: true,
-                    submissions: submissions
-                  });
-            } else {
-                res.status(400).json({
-                    success: false,
-                    msg: 'Doesnt have any submission in this form'
-                  });
-              }
-        }
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({
-        success: 'eror',
-        msg: 'Server error',
-        });
-    }
-
-}
-controllers.FormSubmission = [verifyToken, FormSubmission];
 
 
 // Function Read Data Form
@@ -201,24 +123,39 @@ const listForm = async (req, res) => {
         });
     
         if (allMyForm.length > 0) {
-            const forms = allMyForm.map((doc) => ({
+            const formPromises = allMyForm.map(async (doc) => {
+
+                const createdAt = new Date(doc.created_at);
+                const day = String(createdAt.getDate()).padStart(2, '0');
+                const month = String(createdAt.getMonth() + 1).padStart(2, '0');
+                const year = createdAt.getFullYear();
+                const hours = String(createdAt.getHours()).padStart(2, '0');
+                const minutes = String(createdAt.getMinutes()).padStart(2, '0');
+                const seconds = String(createdAt.getSeconds()).padStart(2, '0');
+                
+                const format = `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+
+                return {
                 form_id: doc.form_id,
                 tittle: doc.tittle,
-                created_at: doc.created_at,
+                created_at: format,
                 description: doc.description,
                 user_id: doc.user_id,
-            }));
-          res.status(200).json({
+                }
+
+        });
+        const forms = await Promise.all(formPromises);
+        res.status(200).json({
             success: true,
             forms: forms
-          });
+        });
         } else {
           res.status(400).json({
             success: false,
             msg: 'You dont have any form'
           });
         }
-      } catch (error) {
+    } catch (error) {
         res.status(500).json({
           success: false,
           msg: 'Try Again!'
@@ -345,6 +282,106 @@ const testEdit = async (req, res) => {
         
 }
 controllers.testEdit = [verifyToken, testEdit];
+
+
+// Function Read Data Submission di Form yang di buat user
+// ini buat get halaman list submission form si user yg sedang login
+const getFormSubmission = async (req, res) => {
+    const form_id = req.params.form_id;
+
+    try{
+        const findUser = await user.findOne({
+            where: {
+                user_id: req.session.user_id
+            }
+        })
+
+        if (!findUser) {
+            res.render('/auth/login')
+        }
+
+        const form = await Form.findByPk(form_id);
+        if (!form) {
+            return res.status(404).json({
+              success: false,
+              msg: 'Form not found'
+            });
+          } else {
+            res.render('submission/detailSubmission',{
+                form_id: form_id
+            });
+          }
+        
+    } catch (error) {
+        return res.redirect('/auth/login');
+    }
+}
+controllers.getFormSubmission = [verifyToken, getFormSubmission];
+// ini buat read data list submission form
+const FormSubmission = async (req, res) => {
+    const form_id = req.params.form_id
+
+    try{
+        const form = await Form.findByPk(form_id)
+
+        if(form){
+            const submissionsForm = await Submission.findAll({
+                where:{
+                    form_id: form_id
+                }
+            })
+    
+            if (submissionsForm.length > 0) {
+            const submissionPromises = submissionsForm.map(async (doc) => {
+                const User = await user.findByPk(doc.user_id);
+                const nama = User.nama;
+      
+                const createdAt = new Date(doc.created_at);
+                const day = String(createdAt.getDate()).padStart(2, '0');
+                const month = String(createdAt.getMonth() + 1).padStart(2, '0');
+                const year = createdAt.getFullYear();
+                const hours = String(createdAt.getHours()).padStart(2, '0');
+                const minutes = String(createdAt.getMinutes()).padStart(2, '0');
+                const seconds = String(createdAt.getSeconds()).padStart(2, '0');
+                
+                const format = `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+
+                return {
+                  id: doc.id,
+                  user_id: doc.user_id,
+                  form_id: doc.form_id,
+                  uploaded_file: doc.uploaded_file,
+                  created_at: format,
+                  description: doc.description,
+                  updated_at: doc.updated_at,
+                  nama: nama,
+                };
+              });
+      
+              const submissions = await Promise.all(submissionPromises);
+      
+                  res.status(200).json({
+                    success: true,
+                    submissions: submissions
+                  });
+            } else {
+                res.status(400).json({
+                    success: false,
+                    msg: 'Doesnt have any submission in this form'
+                  });
+              }
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+        success: 'eror',
+        msg: 'Server error',
+        });
+    }
+
+}
+controllers.FormSubmission = [verifyToken, FormSubmission];
+
 
 
 // Function Dalete Form

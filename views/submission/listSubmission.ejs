@@ -91,7 +91,7 @@
         </div>
         <!-- end slide bar -->
 
-        <div class="b-example-divider b-example-vr " style="width:84.98%">
+        <div class="b-example-divider b-example-vr " style="width:85.3%;">
             <br>
                  <h2 class="tittle text-center my-3 text-dark">List My Submission</h2>
             <br>
@@ -102,9 +102,9 @@
                                 <thead class="table">
                                     <tr>
                                         <th scope="col">No</th>
-                                        <th scope="col">Id Form</th>
-                                        <th scope="col">My File</th>
-                                        <th scope="col">Time Submit</th>
+                                        <th scope="col">Tittle Form</th>
+                                        <th scope="col">My Submission</th>
+                                        <th scope="col">Time Submission</th>
                                         <th scope="col">Action</th>
                                     </tr>
                                 </thead>
@@ -139,14 +139,14 @@
                         tbody.appendChild(tr);
 
                         const no = document.createElement("td")
-                        const form_id = document.createElement("td")
+                        const tittle = document.createElement("td")
                         const uploaded_file = document.createElement("td")
                         const created_at = document.createElement('td')
                         const action = document.createElement("td")
 
                         tbody.appendChild(tr)
                         tr.appendChild(no)
-                        tr.appendChild(form_id)
+                        tr.appendChild(tittle)
                         tr.appendChild(uploaded_file)
                         tr.appendChild(created_at)
                         tr.appendChild(action)
@@ -154,7 +154,7 @@
                         no.setAttribute('scope', 'row')
 
                         no.innerHTML = i;
-                        form_id.innerHTML = doc.form_id
+                        tittle.innerHTML = doc.tittle
                         uploaded_file.innerHTML = doc.uploaded_file
                         created_at.innerHTML = doc.created_at
                         i++;

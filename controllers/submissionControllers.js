@@ -7,6 +7,7 @@ require("dotenv").config();
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+// const { user } = require('accesstoken/config.js');
 // const req = require('express/lib/request.js');
 // const { title } = require('process');
 const controllers = {}
@@ -41,7 +42,7 @@ const getUpload= async (req, res) => {
     
     const findForm = await Form.findOne({
         where:{
-            form_id: form_id 
+            form_id: form_id,
         }
     })
     
@@ -52,6 +53,7 @@ const getUpload= async (req, res) => {
     })
 
     const item = findForm
+
     if(!form_id){
         res.status(400).json({
             success: false,
@@ -110,29 +112,41 @@ const addSubmission = async (req, res) => {
     const description = req.body.description;
 
     try {
-        
-        const uploads = await Submission.create({
-            user_id: user_id,
-            form_id: form_id,
-            uploaded_file: file.originalname,
-            description: description,
+        const myForm = await Form.findOne({
+            where:{
+                form_id: form_id,
+                user_id: req.session.user_id
+            }
         })
-        if (uploads) {
-            res.status(200).json({
-                msg: "Successfully added submission",
-                success: true,
-                data: {
-                    user_id: user_id,
-                    form_id: form_id,
-                    uploaded_file: file.originalname,
-                    description: description,
-                }
-            });
-        } else {
+        if (myForm){
             res.status(400).json({
-                msg: "Please try again later",
-                success: false
+                success: 'mine',
+                msg: 'Cant Submission in Your Own Form',
+              });
+        } else { 
+            const uploads = await Submission.create({
+                user_id: user_id,
+                form_id: form_id,
+                uploaded_file: file.originalname,
+                description: description,
             })
+            if (uploads) {
+                res.status(200).json({
+                    msg: "Successfully added submission",
+                    success: true,
+                    data: {
+                        user_id: user_id,
+                        form_id: form_id,
+                        uploaded_file: file.originalname,
+                        description: description,
+                    }
+                });
+            } else {
+                res.status(400).json({
+                    msg: "Please try again later",
+                    success: false
+                })
+            }
         }
     } catch (error) {
         res.status(400).json({
@@ -260,16 +274,32 @@ const listSubmission = async(req,res) => {
         });
         
         if (allMySubmission.length > 0) {
-          const submissions = allMySubmission.map((doc) => ({
-            id: doc.id,
-            user_id: doc.user_id,
-            form_id: doc.form_id,
-            uploaded_file: doc.uploaded_file,
-            created_at: doc.created_at,
-            description: doc.description,
-            updated_at: doc.updated_at,  
-          }));
+            const submissionPromises = allMySubmission.map(async (doc) => {
+                const findForm = await Form.findByPk(doc.form_id)
+                const tittle = findForm.tittle;
 
+                const createdAt = new Date(doc.created_at);
+                const day = String(createdAt.getDate()).padStart(2, '0');
+                const month = String(createdAt.getMonth() + 1).padStart(2, '0');
+                const year = createdAt.getFullYear();
+                const hours = String(createdAt.getHours()).padStart(2, '0');
+                const minutes = String(createdAt.getMinutes()).padStart(2, '0');
+                const seconds = String(createdAt.getSeconds()).padStart(2, '0');
+                
+                const format = `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+
+                return{ 
+                id: doc.id,
+                user_id: doc.user_id,
+                form_id: doc.form_id,
+                uploaded_file: doc.uploaded_file,
+                created_at: format,
+                description: doc.description,
+                updated_at: doc.updated_at,  
+                tittle: tittle
+                }
+        });
+        const submissions = await Promise.all(submissionPromises);
           res.status(200).json({
             success: true,
             submissions: submissions
@@ -319,6 +349,7 @@ const deleteSubmission = async (req, res) => {
 controllers.deleteSubmission = [verifyToken, deleteSubmission];
 
 
+// Download File Submission
 const downloadSubmission = async (req, res) => {
     const id = req.params.id;
 
@@ -332,10 +363,9 @@ const downloadSubmission = async (req, res) => {
               });
         }
         
-        //atribute file upload
+        //atribute file 
         const filePath = path.join(__dirname,  '../', 'assets', 'fileSubmit', file.uploaded_file);
 
-        //periksa file ada atau tidak
         if (!fs.existsSync(filePath)) {
             return res.status(404).json({
               success: 'no',
@@ -353,5 +383,30 @@ const downloadSubmission = async (req, res) => {
     }
 }
 controllers.downloadSubmission = [verifyToken, downloadSubmission];
+
+
+// Lihat File Submission
+const lihatFileSubmission = async (req,res) => {
+    const id = req.params.id
+
+    try{
+        const file = await Submission.findByPk(id)
+
+        //atribute file
+        const filePath = path.join(__dirname,  '../', 'assets', 'fileSubmit', file.uploaded_file);
+
+        res.sendFile(filePath, {
+            success: true
+        });
+
+    } catch (error) {
+        console.error('Error fetching submission:', error);
+        res.status(500).json({
+        success: false,
+        msg: 'Failed to fetch submission'
+        });
+    }
+};
+controllers.lihatFileSubmission = [verifyToken, lihatFileSubmission];
 
 module.exports = controllers;

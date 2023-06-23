@@ -91,13 +91,9 @@
         </div>
         <!-- end slide bar -->
 
-        <div class="b-example-divider b-example-vr " style="width:84.98%">
-            <br>
-                 <h2 class="tittle text-center my-3 text-dark">List My Form</h2>
-            <br>
-            <br>
-            <div class="white-rectangle">
-                <br>
+        <div class="b-example-divider b-example-vr"  style="width:85.3%;">
+            <br><h2 class="tittle text-center my-3 text-dark">List My Form</h2><br><br>
+            <div class="white-rectangle"><br>
                 <a href="/form/addForm"><button style="margin-left: 52px;"
                     type="button" class="button btn btn-primary btn-lg"  type="button">+ Add New</button></a>
                     <div class="table-box">
@@ -116,9 +112,9 @@
                             </tbody>
                         </table>
                     </div>
-                </div>
             </div>
-        </main>
+        </div>
+    </main>
 
         <script src="/assets/dist/js/bootstrap.bundle.min.js"></script>
         <script src="/assets/js/sidebars.js"></script>
@@ -161,19 +157,19 @@
                         description.innerHTML = doc.description
                         i++;
 
-                        const detail = document.createElement("a")
+                        const files = document.createElement("a")
                         const edit = document.createElement("a")
                         const del = document.createElement("a")
 
-                        const logoSearch = document.createElement("i")
+                        const logoFiles = document.createElement("i")
                         const logoEdit = document.createElement("i")
                         const logoDel = document.createElement("i")
 
-                        action.appendChild(detail)
-                        detail.setAttribute('href', '/form/submissionForm/' + doc.form_id);
-                        detail.classList.add("btn", "btn-success", "btn-sm", "me-2")
-                        detail.appendChild(logoSearch)
-                        logoSearch.classList.add("bi", "bi-search")
+                        action.appendChild(files)
+                        files.setAttribute('href', '/form/submissionForm/' + doc.form_id);
+                        files.classList.add("btn", "btn-secondary", "btn-sm", "me-2")
+                        files.appendChild(logoFiles)
+                        logoFiles.classList.add("bi", "bi-files")
 
                         action.appendChild(edit)
                         edit.setAttribute('href', '/form/editForm/' + doc.form_id)

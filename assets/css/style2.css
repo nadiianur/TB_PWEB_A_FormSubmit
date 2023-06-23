@@ -16,6 +16,7 @@
 .table{
     background-color: #E8E9EE;
     overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 .table thead{
@@ -30,9 +31,10 @@ form {
     margin-left: auto;
   }
   
-@media (min-width: 768px) {
-    .bd-placeholder-img-lg {
+@media (min-width: 992px) {
+    .b-example-divider.b-example-vr.p-1.table .bd-placeholder-img-lg {
         font-size: 3.5rem;
+        width: 100%;
     }
 }
 
