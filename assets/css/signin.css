@@ -58,7 +58,6 @@ body {
 .wrapper form .field {
     height: 62px;
     width: 520px;
-    margin-top: 30px;
     position: relative;
 }
 
@@ -79,6 +78,64 @@ form .field input:valid {
 }
 
 .wrapper form .field label {
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    color: #999;
+    font-weight: 400;
+    font-size: 22px;
+    pointer-events: none;
+    transform: translateY(-50%);
+    transition: all 0.3s ease;
+}
+
+.wrapper1 {
+    width: 590px;
+    height: 550px;
+    background: #94a3c0;
+    border-radius: 25px;
+    box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.1);
+}
+
+.wrapper1 h5 {
+    text-align: center;
+    margin-top: 0px;
+    color: #F5F5F5;
+}
+
+.wrapper1 p {
+    text-align: center;
+    margin-top: 20px;
+    color: #F5F5F5;
+}
+
+.wrapper1 form {
+    padding: 20px 30px 50px 30px;
+}
+
+.wrapper1 form .field {
+    height: 62px;
+    width: 520px;
+    position: relative;
+}
+
+.wrapper1 form .field input {
+    height: 100%;
+    width: 100%;
+    outline: none;
+    font-size: 20px;
+    padding-left: 20px;
+    border: 1px solid lightgrey;
+    border-radius: 35px;
+    transition: all 0.3s ease;
+}
+
+.wrapper1 form .field input:focus,
+form .field input:valid {
+    border-color: black;
+}
+
+.wrapper1 form .field label {
     position: absolute;
     top: 50%;
     left: 20px;

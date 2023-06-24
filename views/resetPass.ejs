@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reset Password</title>
+    <link rel="stylesheet" href="/css/signin.css">
+</head>
+
+<body>
+  <div class="title">
+    Forgot Password !
+  </div>
+  <div class="wrapper1" style="margin-bottom: 120px;">
+    <form action='/auth/resetPassword' method="post" id="formReset">
+      <div class="field" style="margin-bottom: 30px; margin-top: 20px;">
+        <input type="text" id="floatingInputUsername" name="username" required>
+        <label for="floatingInput">Username</label>
+      </div>
+      <div class="field" style="margin-bottom: 30px; margin-top: 20px;">
+        <input type="email" id="floatingInputEmail" name="email" required>
+        <label for="floatingInput">Email</label>
+      </div>
+      <div class="field" style="margin-bottom: 30px; margin-top: 20px;">
+        <input type="password" id="floatingNewPassword" name="newPassword" required>
+        <label for="floatingPassword">New Password</label>
+      </div>
+      <div class="field" style="margin-bottom: 30px; margin-top: 20px;">
+        <input type="password" id="floatingPasswordConfirm" name="confPassword" required>
+        <label for="floatingPassword">confirm Password</label>
+      </div>
+      <br>
+      <br>
+      <div class="field">
+          <input type="submit" class="fw-semibold w-100 btn btn-lg btn-submit text-white btn-light" value="Reset Password">
+      </div>
+      <br>
+    </form>
+  </div>
+
+  <script>
+    const formReset = document.getElementById('formReset');
+    formReset.addEventListener("submit", async (event) =>  {
+      event.preventDefault();
+
+      const username = document.getElementById('floatingInputUsername').value;
+      const email = document.getElementById('floatingInputEmail').value;
+      const newPassword = document.getElementById('floatingNewPassword').value;
+      const confPassword = document.getElementById('floatingPasswordConfirm').value;
+
+      const formData = new FormData(formReset);
+      const thisData = {
+            username: username,
+            email: email, 
+            newPassword: newPassword,
+            confPassword: confPassword,
+          };
+      const requestOptions = await fetch('http://localhost:3000/auth/resetPassword', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        }, 
+        body: JSON.stringify(thisData)
+      });
+
+      const data = await requestOptions.json();
+
+      if (data.success == 'failedPassword') {
+        alert(data.msg);
+      } else if (data.success == false) {
+        alert(data.msg);
+        location.reload()
+      } else if (data.success == true){
+        alert(data.msg);
+        window.location.href = '/auth/login';
+      }
+    });
+  </script>
+</body>
+
+</html>

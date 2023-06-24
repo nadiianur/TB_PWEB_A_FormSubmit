@@ -31,8 +31,8 @@ const verifyToken = (req, res, next) => {
 
 
 controllers.login = async(req, res) => {
-  let username = req.body.username;
-  let password = req.body.password;
+  const username = req.body.username;
+  const password = req.body.password;
 
   try{
     //Mengecek atau mencari user berdasarkan username
@@ -103,5 +103,54 @@ const logOut = (req, res) => {
   });
 }
 controllers.logOut = [verifyToken, logOut];
+
+
+const viewResetPass = async (req, res) => {
+  res.render('resetPass');
+}
+controllers.viewResetPass = viewResetPass;
+
+controllers.resetPass = async(req, res) => {
+  const username = req.body.username;
+  const email = req.body.email;
+  const newPassword = req.body.newPassword;
+  const confPassword = req.body.confPassword;
+
+  try{
+    const user = await User.findOne({ 
+      where: { 
+        email: email,
+        username: username
+      } 
+    });
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        msg: "User Not Found !"
+      });
+    }
+
+    if (newPassword !== confPassword)
+    return res.status(400).json({
+      msg: "Password doesnt match", 
+      success: 'failedPassword'});
+      
+    const hashedPassword = bcrypt.hashSync(newPassword, 10);
+
+    user.password = hashedPassword;
+    await user.save();
+    return res.status(200).json({
+        success: true,
+        msg: "Password has been reset successfully"
+      });
+
+  }catch (err) {
+    console.log(err);
+    res.status(500).json({ 
+      error: "An error occurred while resetting password" });
+  }
+
+}
 
 module.exports = controllers;

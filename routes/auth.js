@@ -17,5 +17,8 @@ router.post('/login', controllers.login);
 //logout akun
 router.get('/logout', controllers.logOut);
 
+//reset password akun
+router.get('/resetPassword', controllers.viewResetPass);
+router.post('/resetPassword', controllers.resetPass);
 
 module.exports = router;
