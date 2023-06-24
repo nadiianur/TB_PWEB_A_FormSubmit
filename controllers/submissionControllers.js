@@ -39,7 +39,8 @@ const verifyToken = (req, res, next) => {
 // Ini buat get halaman add Submission
 const getUpload= async (req, res) => {
     const form_id = req.params.form_id;
-    
+    const user_id = req.session.user_id;
+
     const findForm = await Form.findOne({
         where:{
             form_id: form_id,
@@ -48,7 +49,7 @@ const getUpload= async (req, res) => {
     
     const findUser = await User.findOne({
         where : {
-            user_id: findForm.user_id
+            user_id: user_id
         }
     })
 
@@ -60,33 +61,33 @@ const getUpload= async (req, res) => {
             msg: 'Data Tidak Didapatkan'
         })
     }
-    
-    const cekSubmission = await Submission.findOne({
-        where:{
-            user_id: findUser.user_id,
-            form_id: findForm.form_id
-        }
-    })
-
-    if(!cekSubmission){
-        //jika belum pernah upload
-        res.render('submission/upload', {
-            item: item,
-            user: findUser,
-            uploaded_file: null,
-            description: null,
+        const cekSubmission = await Submission.findOne({
+            where:{
+                user_id: findUser.user_id,
+                form_id: findForm.form_id
+            }
         })
-    } else {
-        res.render('submission/upload', {
-            item: item,
-            user: findUser,
-            id: cekSubmission.id,
-            user_id: cekSubmission.user_id,
-            uploaded_file: cekSubmission.uploaded_file,
-            description: cekSubmission.description
+    
+        if(!cekSubmission){
+            //jika belum pernah upload
+            res.render('submission/upload', {
+                item: item,
+                user: findUser,
+                uploaded_file: null,
+                description: null,
             })
-    }
-    }
+        } else {
+            res.render('submission/upload', {
+                item: item,
+                user: findUser,
+                id: cekSubmission.id,
+                user_id: cekSubmission.user_id,
+                uploaded_file: cekSubmission.uploaded_file,
+                description: cekSubmission.description
+                })
+        }
+    
+}
 controllers.getUpload = [verifyToken, getUpload];
 
 // Konfigurasi modul multer untuk uploaded file
