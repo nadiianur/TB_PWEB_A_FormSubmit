@@ -7,32 +7,32 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.108.0">
-    <title>Profile</title>
+    <title>Edit Profile</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    
+
     <link href="/css/sidebars.css" rel="stylesheet">
-    <link href="/css/index.css" rel="stylesheet">   
+    <link href="/css/index.css" rel="stylesheet">
 
     <style>
         .b-example-divider {
-        height: 3rem;
-        background-color: #E8E9EE;
-        border: solid rgba(0, 0, 0, .15);
-        border-width: 1px 0;
-        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
-    }
+            height: 3rem;
+            background-color: #E8E9EE;
+            border: solid rgba(0, 0, 0, .15);
+            border-width: 1px 0;
+            box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+        }
 
-    .b-example-vr {
-        flex-shrink: 0;
-        width: 1.5rem;
-        height: 100vh;
-    }
+        .b-example-vr {
+            flex-shrink: 0;
+            width: 1.5rem;
+            height: 100vh;
+        }
     </style>
-    
+
 </head>
 
 <body>
@@ -44,21 +44,24 @@
                 <h2 class="h2bar"> &nbsp; Study In</h2>
                 <hr class="hrbarA ">
                 <li>
-                    <a href="/form/home " class="nav-link list-group-item-action list-group-item-dark p-2.8 text-dark fw-bold">
+                    <a href="/form/home "
+                        class="nav-link list-group-item-action list-group-item-dark p-2.8 text-dark fw-bold">
                         <i class="bi bi-houses"></i>
                         Home
                     </a>
                 </li>
                 <br>
                 <li>
-                    <a href="/form/listMyForm" class="nav-link list-group-item-action list-group-item-dark p-2.8 text-dark fw-bold">
+                    <a href="/form/listMyForm"
+                        class="nav-link list-group-item-action list-group-item-dark p-2.8 text-dark fw-bold">
                         <i class="bi bi-folder2-open"></i>
                         My Form
                     </a>
                 </li>
                 <br>
                 <li>
-                    <a href="/submission/listMySubmission" class="nav-link list-group-item-action list-group-item-dark p-2.8 text-dark fw-bold">
+                    <a href="/submission/listMySubmission"
+                        class="nav-link list-group-item-action list-group-item-dark p-2.8 text-dark fw-bold">
                         <i class="bi bi-file-earmark-arrow-down"></i>
                         Submission
                     </a>
@@ -66,7 +69,8 @@
                 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
                 <hr class="hrbarA">
                 <li>
-                    <a href="/user/profile" class="nav-link active bg-light list-group-item-action list-group-item-light p-2.8 text-dark fw-bold">
+                    <a href="/user/profile"
+                        class="nav-link active bg-light list-group-item-action list-group-item-light p-2.8 text-dark fw-bold">
                         <i class="bi bi-person"></i>
                         Profile
                     </a>
@@ -84,13 +88,16 @@
 
         <div class="b-example-divider b-example-vr p-1" style="width:85.3%;">
             <div class="container">
-                <div class="text-center bg-light atas" style="margin-left: -55px; margin-top: 50px; border-radius: 50px;" >
+                <div class="text-center bg-light atas"
+                    style="margin-left: -55px; margin-top: 50px; border-radius: 50px;">
                     <div class="row align-items-start p-3">
                         <div class="col">
-                            <img src="/img/profile.png" class="w-40" style="width: 100px; height: 100px; margin-left: 50px;">
+                            <img src="/img/profile.png" class="w-40"
+                                style="width: 100px; height: 100px; margin-left: 50px;">
                         </div>
                         <div class="col">
-                            <h3 class="text-dark fw-bold" style="margin-right: 250px; margin-top: 30px;"><%= nama %></h3>
+                            <h3 class="text-dark fw-bold" style="margin-right: 250px; margin-top: 30px;"><%= nama %>
+                            </h3>
                         </div>
                     </div>
                 </div>
@@ -102,57 +109,63 @@
                             <form method="post" class="mt-5" id="formProfile">
                                 <div class="container overflow-hidden">
                                     <div class="row gy-3">
-                                        <div class="form-floating mb-3 w-50 " >
-                                            <input type="text" class="form-control" id="floatingInputUsername" name="username"
-                                                placeholder="username" value="<%= username %>" style="border-radius: 50px;">
+                                        <div class="form-floating mb-3 w-50 ">
+                                            <input type="text" class="form-control" id="floatingInputUsername"
+                                                name="username" placeholder="username" value="<%= username %>"
+                                                style="border-radius: 50px;">
                                             <label for="floatingInput" style="margin-left: 10px;"> Username</label>
                                         </div>
                                         <div class="form-floating mb-3 w-50 ">
-                                            <input type="email" class="form-control" id="floatingInputEmail" placeholder="name@example.com"
-                                                name="email" value="<%= email %>" style="border-radius: 50px;">
+                                            <input type="email" class="form-control" id="floatingInputEmail"
+                                                placeholder="name@example.com" name="email" value="<%= email %>"
+                                                style="border-radius: 50px;">
                                             <label for="floatingInput" style="margin-left: 10px;"> Email</label>
                                         </div>
                                         <div class="form-floating mb-3 w-50 ">
-                                            <input type="text" class="form-control" id="floatingInputNama" placeholder="nama" name="nama"
-                                                value="<%= nama %>" style="border-radius: 50px;">
+                                            <input type="text" class="form-control" id="floatingInputNama"
+                                                placeholder="nama" name="nama" value="<%= nama %>"
+                                                style="border-radius: 50px;">
                                             <label for="floatingNama" style="margin-left: 10px;"> Nama</label>
                                         </div>
                                         <div class="form-floating mb-3 w-50 "></div>
-                                        </div>
-                                        <div class="form-floating mb-1 w-50 ">
-                                            <br><br><br>
-                                            <p class="text-danger">Change Password? Here!</p>
-                                        </div>
-                                        <div class="form-floating mb-3 w-50 ">
-                                            <input type="password" class="form-control" id="floatingPasswordBaru" placeholder="password baru"
-                                                name="passwordBaru" style="border-radius: 50px;">
-                                            <label for="floatingPassword">New Password</label>
-                                        </div>
-                                        <div class="form-floating mb-3 w-50 ">
-                                            <input type="password" class="form-control" id="floatingPasswordLama" placeholder="password lama"
-                                                name="passwordLama" style="border-radius: 50px;">
-                                            <label for="floatingPassword">Old Password</label>
-                                        </div>
-                                            <div class="simpan">
-                                                <a href="#" class="btn btn-lg text-white btn-success float-end"
-                                                        type="button" id="save-update-btn" style="border-radius: 25px; margin-right: 25px;">Save Change
-                                                </a>
-                                            </div>
-                                        </div>
+                                    </div>
+                                    <div class="form-floating mb-1 w-50 ">
+                                        <br><br><br>
+                                        <p class="text-danger">Change Password? Here!</p>
+                                    </div>
+                                    <div class="form-floating mb-3 w-50 ">
+                                        <input type="password" class="form-control" id="floatingPasswordBaru"
+                                            placeholder="password baru" name="passwordBaru"
+                                            style="border-radius: 50px;">
+                                        <label for="floatingPassword">New Password</label>
+                                    </div>
+                                    <div class="form-floating mb-3 w-50 ">
+                                        <input type="password" class="form-control" id="floatingPasswordLama"
+                                            placeholder="password lama" name="passwordLama"
+                                            style="border-radius: 50px;">
+                                        <label for="floatingPassword">Old Password</label>
+                                    </div>
+                                    <div class="simpan">
+                                        <a href="#" class="btn btn-lg text-white btn-success float-end" type="button"
+                                            id="save-update-btn" style="border-radius: 25px; margin-right: 25px;">Save
+                                            Change
+                                        </a>
                                     </div>
                                 </div>
-                            </form>
                         </div>
-                    </td>
-                </tr>
-            </table>
+        </div>
+        </form>
+        </div>
+        </td>
+        </tr>
+        </table>
         </div>
 
 
     </main>
 
     <script>
-         document.addEventListener("DOMContentLoaded", async function () {
+        document.addEventListener("DOMContentLoaded", async function () {
             const saveUpdateBtn = document.getElementById("save-update-btn");
             saveUpdateBtn.addEventListener('click', async function (event) {
                 event.preventDefault()
@@ -195,21 +208,21 @@
                 fetch('/auth/logout')
                     .then(response => response.json())
                     .then(data => {
-                    if (data.success) {
-                        // Logout berhasil, hapus token dari local storage
-                        localStorage.removeItem('token');
-                        // Redirect ke halaman login
-                        window.location.href = '/auth/login';
-                    } else {
-                        console.log(data.msg);
-                    }
-                })
+                        if (data.success) {
+                            // Logout berhasil, hapus token dari local storage
+                            localStorage.removeItem('token');
+                            // Redirect ke halaman login
+                            window.location.href = '/auth/login';
+                        } else {
+                            console.log(data.msg);
+                        }
+                    })
                     .catch(error => {
-                    console.log('Error : ', error);
-                });
+                        console.log('Error : ', error);
+                    });
             });
 
-         })
+        })
     </script>
 
 

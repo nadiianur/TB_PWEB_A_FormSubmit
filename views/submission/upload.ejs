@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
+    <title>Upload Submission</title>
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.108.0">
 
@@ -34,13 +35,14 @@
             height: 100vh;
         }
 
-        .buttonFile{
-            border-radius:15px; 
-            margin-right: 489px; 
-            background-color:#6f799e;
-            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+        .buttonFile {
+            border-radius: 15px;
+            margin-right: 489px;
+            background-color: #6f799e;
+            box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
         }
-        .buttonFile:active{
+
+        .buttonFile:active {
             transform: translateY(4px);
         }
     </style>
@@ -98,7 +100,7 @@
         </div>
         <!-- end slide bar -->
 
-        <div class="b-example-divider b-example-vr"  style="width:85.3%;">
+        <div class="b-example-divider b-example-vr" style="width:85.3%;">
             <br>
             <h2 class="tittle text-center my-3 text-dark">Submission Task</h2><br><br>
             <div class="kotak task-form-container1"><br>
@@ -107,17 +109,18 @@
                         <img src="/img/profile.png" alt="Avatar"
                             style="width: 100px; height: 100px; margin-left: 50px;">
                     </div>
-                    <div>
-                        <h3 class="mb-3"><%= user.nama %></h3>
-                    </div>
+                    <h3 class="title mb-4" style=" font-weight:700; margin-left: 5px; font-size: 35px;">
+                        <%= item.tittle %></h3>
                 </div>
 
                 <div>
-                    <h1 class="title mb-3" style="margin-left: 225px;"><%= item.tittle %></h1>
-                    <p class="upload-info">Created at :</p>
-                    <p class="upload-date mb-3"><%= item.created_at %></p>
-                    <p class="instruction-info">Instruction :</p>
-                    <p class="instruction-text mb-3"><%= item.description %></p>
+
+                    <p class="upload-info mt-2">Deadline Submission :</p>
+                    <p class="upload-date mb-2"><%= deadline %></p>
+                    <p class="instruction-info">Instructions :</p>
+                    <p class="instruction-text mb-2"><%= item.description %></p>
+                    <p class="instruction-info">By :</p>
+                    <p class="instruction-text mb-2"><%= user.nama %></p>
                     <hr>
                 </div>
 
@@ -125,17 +128,19 @@
                     <!-- jika si user sudah pernah submit tugasnya di form yang dipilih -->
                     <% if (uploaded_file) { %>
                     <h2 class="answer-title mb-1">&nbsp; Answer</h2>
+                    <p style="color:midnightblue; margin-left: 105px;font-weight:lighter; font-size: 18px;"> [ status :
+                        <%= status %> ]</p>
                     <ul class="">
                         <li class="list-group-item">
                             <div class="file-upload-container">
-                                <div class="upload-container">
+                                <div class="upload-container mt-2">
                                     <p style="color: black; margin-left: 25px;font-weight: bold; font-size: 18px;">
                                         My Submission File</p>
                                     <form action="/submission/viewFileSubmisison/<%= id%>" method="GET">
-                                    <button class="btn btn-secondary buttonFile" style="margin-right: 510px;"
-                                        type="submit">
-                                        <h6 style="margin-top: 10px; text-align: center;"><%= uploaded_file %></h6>
-                                    </button>
+                                        <button class="btn btn-secondary buttonFile" type="submit"
+                                            style="content: normal;">
+                                            <h6 style="margin-top: 10px; text-align: center;"><%= uploaded_file %></h6>
+                                        </button>
                                     </form>
                                 </div>
                             </div>

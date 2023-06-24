@@ -7,6 +7,9 @@ require("dotenv").config();
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const {
+    timeStamp
+} = require('console');
 // const { user } = require('accesstoken/config.js');
 // const req = require('express/lib/request.js');
 // const { title } = require('process');
@@ -37,41 +40,42 @@ const verifyToken = (req, res, next) => {
 
 // Function Create Submission
 // Ini buat get halaman add Submission
-const getUpload= async (req, res) => {
+const getUpload = async (req, res) => {
     const form_id = req.params.form_id;
     const user_id = req.session.user_id;
-
-    const findForm = await Form.findOne({
-        where:{
-            form_id: form_id,
-        }
-    })
-    
-    const findUser = await User.findOne({
-        where : {
-            user_id: user_id
-        }
-    })
-
-    const item = findForm
-
-    if(!form_id){
-        res.status(400).json({
-            success: false,
-            msg: 'Data Tidak Didapatkan'
+    try {
+        const findForm = await Form.findOne({
+            where: {
+                form_id: form_id,
+            }
         })
-    }
+
+        const findUser = await User.findOne({
+            where: {
+                user_id: user_id
+            }
+        })
+
+        const item = findForm
+
+        if (!form_id) {
+            res.status(400).json({
+                success: false,
+                msg: 'Data Tidak Didapatkan'
+            })
+        }
         const cekSubmission = await Submission.findOne({
-            where:{
+            where: {
                 user_id: findUser.user_id,
                 form_id: findForm.form_id
             }
         })
-    
-        if(!cekSubmission){
+
+        if (!cekSubmission) {
             //jika belum pernah upload
             res.render('submission/upload', {
                 item: item,
+                deadline: formatTime(item.deadline),
                 user: findUser,
                 uploaded_file: null,
                 description: null,
@@ -79,20 +83,36 @@ const getUpload= async (req, res) => {
         } else {
             res.render('submission/upload', {
                 item: item,
+                deadline: formatTime(item.deadline),
                 user: findUser,
                 id: cekSubmission.id,
                 user_id: cekSubmission.user_id,
                 uploaded_file: cekSubmission.uploaded_file,
-                description: cekSubmission.description
-                })
+                description: cekSubmission.description,
+                status: cekSubmission.status
+            })
         }
-    
+    } catch (error) {
+        return res.redirect('/auth/login');
+    }
+
+}
+// fungsi untuk menampilkan date time ke client
+function formatTime(deadline) {
+    const date = new Date(deadline);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+
+    return `${year}/${month}/${day} ${hours}:${minutes}`;
 }
 controllers.getUpload = [verifyToken, getUpload];
 
 // Konfigurasi modul multer untuk uploaded file
 const storage = multer.diskStorage({
-    destination: function (req, file, cb){
+    destination: function (req, file, cb) {
         cb(null, path.join(__dirname, '../', 'assets', 'fileSubmit'));
     },
     filename: function (req, file, cb) {
@@ -108,29 +128,37 @@ const uploaded = upload.single('file');
 // Ini untuk add Submission
 const addSubmission = async (req, res) => {
     const form_id = req.params.form_id;
-    const user_id =  req.session.user_id;
+    const user_id = req.session.user_id;
     const file = req.file;
     const description = req.body.description;
 
     try {
         const myForm = await Form.findOne({
-            where:{
+            where: {
                 form_id: form_id,
                 user_id: req.session.user_id
             }
         })
-        if (myForm){
+        if (myForm) {
             res.status(400).json({
                 success: 'mine',
-                msg: 'Cant Submission in Your Own Form',
-              });
-        } else { 
+                msg: 'Cant Submit in your own Form',
+            });
+        } else {
+            const created_at = new Date();
+            const myForm = await Form.findByPk(form_id);
+            const deadline = new Date(myForm.deadline);
+
+            const status = created_at <= deadline ? 'ontime' : 'late';
+
             const uploads = await Submission.create({
                 user_id: user_id,
                 form_id: form_id,
                 uploaded_file: file.originalname,
                 description: description,
+                status: status
             })
+
             if (uploads) {
                 res.status(200).json({
                     msg: "Successfully added submission",
@@ -140,14 +168,16 @@ const addSubmission = async (req, res) => {
                         form_id: form_id,
                         uploaded_file: file.originalname,
                         description: description,
+                        status: status
                     }
                 });
             } else {
                 res.status(400).json({
-                    msg: "Please try again later",
+                    msg: 'Please try again later',
                     success: false
-                })
+                });
             }
+
         }
     } catch (error) {
         res.status(400).json({
@@ -160,24 +190,24 @@ controllers.addSubmission = [verifyToken, uploaded, addSubmission];
 
 // Function Update Submission
 // Ini buat get halaman edit Submission
-const getEdit= async (req, res) => {
+const getEdit = async (req, res) => {
     const id = req.params.id
-    const user_id =req.session.user_id
+    const user_id = req.session.user_id
 
     const findSubmit = await Submission.findOne({
-        where:{
+        where: {
             id: id
         }
     })
 
     const findForm = await Form.findOne({
-        where:{
-            form_id: findSubmit.form_id 
+        where: {
+            form_id: findSubmit.form_id
         }
     })
-    
+
     const findUser = await User.findOne({
-        where : {
+        where: {
             user_id: findSubmit.user_id
         }
     })
@@ -193,7 +223,7 @@ const getEdit= async (req, res) => {
             id,
             success: true
         })
-    } 
+    }
 }
 controllers.getEdit = [verifyToken, getEdit];
 // Ini buat submission data yang akan di edit
@@ -202,19 +232,18 @@ const editSubmission = async (req, res) => {
     const id = req.params.id;
 
     try {
-        const description  = req.body.description;
+        const description = req.body.description;
         const findSubmission = await Submission.findByPk(id)
 
-        if (!findSubmission){
+        if (!findSubmission) {
             res.status(400).json({
                 msg: 'Submission not find',
                 success: "undefined"
-              })
+            })
         } else {
             const updateSubmit = await Submission.update({
                 description: description
-            },
-            {
+            }, {
                 where: {
                     id: id
                 }
@@ -225,8 +254,8 @@ const editSubmission = async (req, res) => {
                     msg: "File already updated!",
                     data: {
                         description: description
-                      },
-                      success: true
+                    },
+                    success: true
                 })
             } else {
                 res.status(400).json({
@@ -246,9 +275,8 @@ controllers.editSubmission = [verifyToken, editSubmission];
 
 // Function Read Data Submission
 // ini buat get halaman list submission
-const getListMySubmission = async (req, res) => 
-{
-    try{
+const getListMySubmission = async (req, res) => {
+    try {
         const findUser = await User.findOne({
             where: {
                 user_id: req.session.user_id
@@ -263,17 +291,17 @@ const getListMySubmission = async (req, res) =>
     } catch (error) {
         return res.redirect('/auth/login');
     }
-};  
+};
 controllers.getListMySubmission = [verifyToken, getListMySubmission];
 // ini buat read data Submission si user yg lagi login
-const listSubmission = async(req,res) => {
+const listSubmission = async (req, res) => {
     try {
         const allMySubmission = await Submission.findAll({
-          where: {
-            user_id: req.session.user_id
-          }
+            where: {
+                user_id: req.session.user_id
+            }
         });
-        
+
         if (allMySubmission.length > 0) {
             const submissionPromises = allMySubmission.map(async (doc) => {
                 const findForm = await Form.findByPk(doc.form_id)
@@ -286,38 +314,39 @@ const listSubmission = async(req,res) => {
                 const hours = String(createdAt.getHours()).padStart(2, '0');
                 const minutes = String(createdAt.getMinutes()).padStart(2, '0');
                 const seconds = String(createdAt.getSeconds()).padStart(2, '0');
-                
+
                 const format = `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
 
-                return{ 
-                id: doc.id,
-                user_id: doc.user_id,
-                form_id: doc.form_id,
-                uploaded_file: doc.uploaded_file,
-                created_at: format,
-                description: doc.description,
-                updated_at: doc.updated_at,  
-                tittle: tittle
+                return {
+                    id: doc.id,
+                    user_id: doc.user_id,
+                    form_id: doc.form_id,
+                    tittle: tittle,
+                    uploaded_file: doc.uploaded_file,
+                    created_at: format,
+                    description: doc.description,
+                    updated_at: doc.updated_at,
+                    status: doc.status,
                 }
-        });
-        const submissions = await Promise.all(submissionPromises);
-          res.status(200).json({
-            success: true,
-            submissions: submissions
-          });
+            });
+            const submissions = await Promise.all(submissionPromises);
+            res.status(200).json({
+                success: true,
+                submissions: submissions
+            });
         } else {
-          res.status(400).json({
-            success: false,
-            msg: 'Nothing your submission'
-          });
+            res.status(400).json({
+                success: false,
+                msg: 'Nothing your submission'
+            });
         }
-      } catch (error) {
+    } catch (error) {
         res.status(500).json({
-          msg: 'Try Again!',
-          success: 'error'
+            msg: 'Try Again!',
+            success: 'error'
         });
-      }
-    };
+    }
+};
 controllers.listSubmission = [verifyToken, listSubmission];
 
 
@@ -327,19 +356,19 @@ const deleteSubmission = async (req, res) => {
     try {
         const delet = await Submission.destroy({
             where: {
-              id: id,
+                id: id,
             }
         });
         if (delet) {
             res.status(200).json({
                 success: true,
                 msg: 'Submission sucessfully deleted'
-              })
+            })
         } else {
             res.status(400).json({
                 success: false,
                 msg: 'Please try again!'
-              })
+            })
         }
     } catch (error) {
         res.status(400).json({
@@ -361,18 +390,18 @@ const downloadSubmission = async (req, res) => {
             res.status(404).json({
                 success: false,
                 msg: 'Submission not found',
-              });
+            });
         }
-        
+
         //atribute file 
-        const filePath = path.join(__dirname,  '../', 'assets', 'fileSubmit', file.uploaded_file);
+        const filePath = path.join(__dirname, '../', 'assets', 'fileSubmit', file.uploaded_file);
 
         if (!fs.existsSync(filePath)) {
             return res.status(404).json({
-              success: 'no',
-              msg: 'File not found',
+                success: 'no',
+                msg: 'File not found',
             });
-          }
+        }
 
         // Mengirim file sebagai respons download
         res.download(filePath);
@@ -387,14 +416,14 @@ controllers.downloadSubmission = [verifyToken, downloadSubmission];
 
 
 // Lihat File Submission
-const lihatFileSubmission = async (req,res) => {
+const lihatFileSubmission = async (req, res) => {
     const id = req.params.id
 
-    try{
+    try {
         const file = await Submission.findByPk(id)
 
         //atribute file
-        const filePath = path.join(__dirname,  '../', 'assets', 'fileSubmit', file.uploaded_file);
+        const filePath = path.join(__dirname, '../', 'assets', 'fileSubmit', file.uploaded_file);
 
         res.sendFile(filePath, {
             success: true
@@ -403,8 +432,8 @@ const lihatFileSubmission = async (req,res) => {
     } catch (error) {
         console.error('Error fetching submission:', error);
         res.status(500).json({
-        success: false,
-        msg: 'Failed to fetch submission'
+            success: false,
+            msg: 'Failed to fetch submission'
         });
     }
 };

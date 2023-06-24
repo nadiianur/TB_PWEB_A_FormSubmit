@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
+    <title>Add Form</title>
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.108.0">
 
@@ -32,6 +33,14 @@
         .b-example-vr {
             flex-shrink: 0;
             height: 100vh;
+        }
+
+        .datetime {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            width: 300px;
         }
     </style>
 </head>
@@ -109,13 +118,20 @@
                                     <p style="color: black; margin-left: 32px;font-weight: bold;">Instructions</p>
                                     <input style="width: 900px; height: 120px;" type="text" class="form-control"
                                         id="floatingInputDescription" placeholder="Instructions" name="description">
-                                    <br><br><br><br>
+                                    <br>
+                                </div>
+                                <div class="mb-3" style="margin-left: 37px;">
+                                    <form>
+                                        <p style="color: black; margin-left: 32px;font-weight: bold;">Deadline</p>
+                                        <input type="datetime-local" class="datetime" style="margin-left: 37px;"
+                                            id="deadline" name="deadline">
+                                    </form>
                                 </div>
                                 <div class="action-buttons">
-                                    <a href="/form/home" class="cancel-button btn btn-outline-danger">
+                                    <a href="/form/home" class="cancel-button btn btn-outline-danger mt-3">
                                         Cancel
                                     </a>
-                                    <input type="submit" class="upload-button btn btn-lg btn-primary" value="Add">
+                                    <input type="submit" class="upload-button btn btn-lg btn-primary mt-3" value="Add">
                                 </div>
                             </div>
                         </form>
@@ -134,12 +150,14 @@
                 // Mengambil nilai input form
                 const tittle = document.getElementById('floatingInputTittle').value;
                 const description = document.getElementById('floatingInputDescription').value;
+                const deadline = document.getElementById('deadline').value;
 
                 const formData = new FormData(addForm);
                 // Objek data yang akan dikirimkan
                 const thisData = {
                     tittle: tittle,
                     description: description,
+                    deadline: deadline
                 };
 
                 // Konfigurasi request Fetch API

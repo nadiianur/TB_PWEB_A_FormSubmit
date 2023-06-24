@@ -10,71 +10,75 @@ const controllers = {}
 
 const verifyToken = (req, res, next) => {
   const token = req.cookies.accessToken;
-  //   console.log(token)
   if (!token) {
-      res.json({
-          msg: "Invalid token"
-      })
-      // Token tidak ada, redirect ke halaman login
-      return res.redirect('/auth/login');
+    res.json({
+      msg: "Invalid token"
+    })
+    return res.redirect('/auth/login');
   }
 
   try {
-      const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-      req.User = decoded.user_id;
-      next();
+    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+    req.User = decoded.user_id;
+    next();
   } catch (error) {
-      // Token tidak valid atau kedaluwarsa, redirect ke halaman login
-      return res.redirect('/auth/login');
+    return res.redirect('/auth/login');
   }
 };
 
 
-controllers.login = async(req, res) => {
+controllers.login = async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
 
-  try{
+  try {
     //Mengecek atau mencari user berdasarkan username
     const user = await User.findOne({
-      where:{ 
+      where: {
         username: username
       }
     });
+
     //Jika username tidak ditemukan 
     if (!user) {
-      return res.status(401).json({ msg: "Username not valid" });
+      return res.status(401).json({
+        msg: "Username not valid"
+      });
     }
     //Mengecek password
     const match = await bcrypt.compare(password, user.password, async (err, result) => {
-    if (err || !result) {
-      return res.status(401).json({msg : "Password wrong"});
-    }
+      if (err || !result) {
+        return res.status(401).json({
+          msg: "Password wrong"
+        });
+      }
 
-    //Akses Token jika berhasil login
-    const accessToken = jwt.sign(
-    { user_id: user.user_id},
-    process.env.ACCESS_TOKEN_SECRET,
-    {
-      expiresIn: '1000s',
-    });
+      //Akses Token jika berhasil login
+      const accessToken = jwt.sign({
+          user_id: user.user_id
+        },
+        process.env.ACCESS_TOKEN_SECRET, {
+          expiresIn: '1000s',
+        });
 
-    req.session.user_id = user.user_id;
+      req.session.user_id = user.user_id;
 
-    res.cookie('accessToken', accessToken, {
-    httpOnly: true,
-    maxAge: 24 * 60 * 60 * 1000
+      res.cookie('accessToken', accessToken, {
+        httpOnly: true,
+        maxAge: 24 * 60 * 60 * 1000
+      });
+
+      res.status(200).json({
+        msg: 'Login Success',
+        token: accessToken,
+        success: 'ok',
+        user_id: req.session.user_id
+      });
     });
-    
-    res.status(200).json({
-      msg:'Login Success', 
-      token:accessToken,
-      success: 'ok',
-      user_id: req.session.user_id
-    });
-  });
   } catch (error) {
-    res.status(404).json({msg: "Failed Login"})
+    res.status(404).json({
+      msg: "Failed Login"
+    })
   }
 }
 
@@ -88,17 +92,17 @@ controllers.viewLogin = viewLogin;
 const logOut = (req, res) => {
   req.session.destroy((err) => {
     if (err) {
-        console.log(err);
-        return res.status(400).json({
-            success: false,
-            msg: 'Cant logout',
-        });
+      console.log(err);
+      return res.status(400).json({
+        success: false,
+        msg: 'Cant logout',
+      });
     }
 
     res.clearCookie('sessionId');
     return res.status(200).json({
-        success: true,
-        msg: 'Logout berhasil',
+      success: true,
+      msg: 'Logout berhasil',
     });
   });
 }
@@ -110,18 +114,18 @@ const viewResetPass = async (req, res) => {
 }
 controllers.viewResetPass = viewResetPass;
 
-controllers.resetPass = async(req, res) => {
+controllers.resetPass = async (req, res) => {
   const username = req.body.username;
   const email = req.body.email;
   const newPassword = req.body.newPassword;
   const confPassword = req.body.confPassword;
 
-  try{
-    const user = await User.findOne({ 
-      where: { 
+  try {
+    const user = await User.findOne({
+      where: {
         email: email,
         username: username
-      } 
+      }
     });
 
     if (!user) {
@@ -132,23 +136,25 @@ controllers.resetPass = async(req, res) => {
     }
 
     if (newPassword !== confPassword)
-    return res.status(400).json({
-      msg: "Password doesnt match", 
-      success: 'failedPassword'});
-      
+      return res.status(400).json({
+        msg: "Password doesnt match",
+        success: 'failedPassword'
+      });
+
     const hashedPassword = bcrypt.hashSync(newPassword, 10);
 
     user.password = hashedPassword;
     await user.save();
     return res.status(200).json({
-        success: true,
-        msg: "Password has been reset successfully"
-      });
+      success: true,
+      msg: "Password has been reset successfully"
+    });
 
-  }catch (err) {
+  } catch (err) {
     console.log(err);
-    res.status(500).json({ 
-      error: "An error occurred while resetting password" });
+    res.status(500).json({
+      error: "An error occurred while resetting password"
+    });
   }
 
 }

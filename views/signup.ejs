@@ -2,94 +2,94 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up</title>
-    <link rel="stylesheet" href="/css/signup.css">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up</title>
+  <link rel="stylesheet" href="/css/signup.css">
 </head>
 
 <body>
-    <div class="title">
-        Create Account !
-    </div>
-    <div class="wrapper">
-        <form class="m-4" action='/user/register' method="post" id="formRegis">
-            <div class="field">
-                <input type="text" id="floatingInputNama" name="nama" required>
-                <label for="floatingInput">Name</label>
-            </div>
-            <div class="field">
-                <input type="text" id="floatingInputUsername" name="username" required>
-                <label for="floatingInput">Username</label>
-            </div>
-            <div class="field">
-                <input type="email" id="floatingInputEmail" name="email" required>
-                <label for="floatingInput">Email</label>
-            </div>
-            <div class="field">
-                <input type="password" id="floatingPassword" name="password" required>
-                <label for="floatingPassword">Password</label>
-            </div>
-            <div class="field">
-                <input type="password" id="floatingPasswordConfirm" name="confPassword" required>
-                <label for="floatingPassword">Confirm Password</label>
-            </div>
-            <br>
-            <br>
-            <div class="field">
-                <input type="submit" class="fw-bold w-100 btn btn-lg btn-submit text-white btn-light" value="Sign Up">
-            </div>
-        </form>
-    </div>
-    <div class="row text-center" >
-        <p> Already Have an Account ?</p>
-        <h4><a href="/auth/login">Sign In</a></h4>
-    </div>
+  <div class="title">
+    Create Account !
+  </div>
+  <div class="wrapper">
+    <form class="m-4" action='/user/register' method="post" id="formRegis">
+      <div class="field">
+        <input type="text" id="floatingInputNama" name="nama" required>
+        <label for="floatingInput">Name</label>
+      </div>
+      <div class="field">
+        <input type="text" id="floatingInputUsername" name="username" required>
+        <label for="floatingInput">Username</label>
+      </div>
+      <div class="field">
+        <input type="email" id="floatingInputEmail" name="email" required>
+        <label for="floatingInput">Email</label>
+      </div>
+      <div class="field">
+        <input type="password" id="floatingPassword" name="password" required>
+        <label for="floatingPassword">Password</label>
+      </div>
+      <div class="field">
+        <input type="password" id="floatingPasswordConfirm" name="confPassword" required>
+        <label for="floatingPassword">Confirm Password</label>
+      </div>
+      <br>
+      <br>
+      <div class="field">
+        <input type="submit" class="fw-bold w-100 btn btn-lg btn-submit text-white btn-light" value="Sign Up">
+      </div>
+    </form>
+  </div>
+  <div class="row text-center">
+    <p> Already Have an Account ?</p>
+    <h4><a href="/auth/login">Sign In</a></h4>
+  </div>
 
-    <script>
-        const formRegis = document.getElementById('formRegis');
-        formRegis.addEventListener('submit', async (event) => {
-          event.preventDefault(); // Menghentikan pengiriman form secara default
-    
-          // Mengambil nilai input form
-          const nama = document.getElementById('floatingInputNama').value;
-          const username = document.getElementById('floatingInputUsername').value;
-          const email = document.getElementById('floatingInputEmail').value;
-          const password = document.getElementById('floatingPassword').value;
-          const confPassword = document.getElementById('floatingPasswordConfirm').value;
-        
-          const formData = new FormData(formRegis);
-          // Objek data yang akan dikirimkan
-          const thisData = {
-            nama: nama,
-            username: username,
-            email: email, 
-            password: password,
-            confPassword: confPassword,
-          };
-    
-          // Konfigurasi request Fetch API
-          const requestOptions = await fetch('http://localhost:3000/user/register', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            }, 
-            body: JSON.stringify(thisData)
-          });
-    
-          const data = await requestOptions.json();
-          if (data.success == 'true') {
-            alert(data.msg);
-            window.location.href = '/auth/login';
-          } else if (data.success == false) {
-            alert(data.msg);
-          } else if (data.success == 'failedPassword'){
-            alert(data.msg);
-          }
-    
-        });
-      </script>
+  <script>
+    const formRegis = document.getElementById('formRegis');
+    formRegis.addEventListener('submit', async (event) => {
+      event.preventDefault(); // Menghentikan pengiriman form secara default
+
+      // Mengambil nilai input form
+      const nama = document.getElementById('floatingInputNama').value;
+      const username = document.getElementById('floatingInputUsername').value;
+      const email = document.getElementById('floatingInputEmail').value;
+      const password = document.getElementById('floatingPassword').value;
+      const confPassword = document.getElementById('floatingPasswordConfirm').value;
+
+      const formData = new FormData(formRegis);
+      // Objek data yang akan dikirimkan
+      const thisData = {
+        nama: nama,
+        username: username,
+        email: email,
+        password: password,
+        confPassword: confPassword,
+      };
+
+      // Konfigurasi request Fetch API
+      const requestOptions = await fetch('http://localhost:3000/user/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(thisData)
+      });
+
+      const data = await requestOptions.json();
+      if (data.success == 'true') {
+        alert(data.msg);
+        window.location.href = '/auth/login';
+      } else if (data.success == false) {
+        alert(data.msg);
+      } else if (data.success == 'failedPassword') {
+        alert(data.msg);
+      }
+
+    });
+  </script>
 
 </body>
 

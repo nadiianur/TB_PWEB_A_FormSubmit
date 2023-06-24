@@ -5,15 +5,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
+    <title>My Forms</title>
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.108.0">
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/sidebars/">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
-   
+
     <link href="/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/index.css">
     <link rel="stylesheet" href="/css/task.css">
@@ -22,11 +23,11 @@
 
     <style>
         .b-example-divider {
-        height: 3rem;
-        background-color: #E8E9EE;
-        border: solid rgba(0, 0, 0, .15);
-        border-width: 1px 0;
-        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+            height: 3rem;
+            background-color: #E8E9EE;
+            border: solid rgba(0, 0, 0, .15);
+            border-width: 1px 0;
+            box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
         }
 
         .b-example-vr {
@@ -35,10 +36,15 @@
         }
 
         .button {
-        border-radius: 25px;
-        width: 250px;
-        height: 50px;
-        font-weight: bold;
+            border-radius: 25px;
+            width: 250px;
+            height: 50px;
+            font-weight: bold;
+        }
+
+        .tabelform {
+            background-color: #E8E9EE;
+            overflow-y: scroll;
         }
     </style>
 
@@ -52,22 +58,25 @@
                 <br>
                 <h2 class="h2bar"> &nbsp; Study In</h2>
                 <hr class="hrbarA">
-                <li>    
-                    <a href="/form/home " class="nav-link list-group-item-action list-group-item-dark p-2.8 text-dark fw-bold">
+                <li>
+                    <a href="/form/home "
+                        class="nav-link list-group-item-action list-group-item-dark p-2.8 text-dark fw-bold">
                         <i class="bi bi-houses"></i>
                         Home
                     </a>
                 </li>
                 <br>
                 <li>
-                    <a href="/form/listMyForm" class="nav-link active bg-light list-group-item-action list-group-item-light p-2.8 text-dark fw-bold ">
+                    <a href="/form/listMyForm"
+                        class="nav-link active bg-light list-group-item-action list-group-item-light p-2.8 text-dark fw-bold ">
                         <i class="bi bi-folder2-open"></i>
                         My Form
                     </a>
                 </li>
                 <br>
                 <li>
-                    <a href="/submission/listMySubmission" class="nav-link list-group-item-action list-group-item-dark p-2.8 text-dark fw-bold">
+                    <a href="/submission/listMySubmission"
+                        class="nav-link list-group-item-action list-group-item-dark p-2.8 text-dark fw-bold">
                         <i class="bi bi-file-earmark-arrow-down"></i>
                         Submission
                     </a>
@@ -75,7 +84,8 @@
                 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
                 <hr class="hrbar">
                 <li>
-                    <a href="/user/profile" class="nav-link list-group-item-action list-group-item-dark p-2.8 text-white fw-bold">
+                    <a href="/user/profile"
+                        class="nav-link list-group-item-action list-group-item-dark p-2.8 text-white fw-bold">
                         <i class="bi bi-person"></i>
                         Profile
                     </a>
@@ -91,47 +101,48 @@
         </div>
         <!-- end slide bar -->
 
-        <div class="b-example-divider b-example-vr"  style="width:85.3%;">
-            <br><h2 class="tittle text-center my-3 text-dark">List My Form</h2><br><br>
-            <div class="white-rectangle"><br>
-                <a href="/form/addForm"><button style="margin-left: 52px;"
-                    type="button" class="button btn btn-primary btn-lg"  type="button">+ Add New</button></a>
-                    <div class="table-box">
-                        <table class="table text-center">
-                            <thead class="table">
-                                <tr>
-                                    <th scope="col">No</th>
-                                    <th scope="col">Title</th>
-                                    <th scope="col">Created At</th>
-                                    <th scope="col">Description</th>
-                                    <th scope="col">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody id="formTableBody">
-                                <!-- Fetch data tabel -->
-                            </tbody>
-                        </table>
-                    </div>
+        <div class="b-example-divider b-example-vr" style="width:85.3%;">
+            <br>
+            <h2 class="tittle text-center my-3 text-dark">List My Form</h2><br><br>
+            <div class="white-rectangle1"><br>
+                <a href="/form/addForm"><button style="margin-left: 52px;" type="button"
+                        class="button btn btn-primary btn-lg" type="button">+ Add New</button></a>
+                <div class="table-box tabelform" style="background-color: #E8E9EE;">
+                    <table class="table text-center ">
+                        <thead class="table">
+                            <tr>
+                                <th scope="col">No</th>
+                                <th scope="col">Title</th>
+                                <th scope="col">Deadline</th>
+                                <th scope="col">Description</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="formTableBody">
+                            <!-- Fetch data tabel -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </main>
 
-        <script src="/assets/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="/assets/js/sidebars.js"></script>
+    <script src="/assets/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/js/sidebars.js"></script>
 
-        <script>
-            document.addEventListener("DOMContentLoaded", async function () {
-                const tbody = document.getElementById("formTableBody");
+    <script>
+        document.addEventListener("DOMContentLoaded", async function () {
+            const tbody = document.getElementById("formTableBody");
 
-                try {
-                    const response = await fetch('http://localhost:3000/form/listForm');
-                    const data = await response.json();
-                    
-                    if (data.success) {
+            try {
+                const response = await fetch('http://localhost:3000/form/listForm');
+                const data = await response.json();
+
+                if (data.success) {
                     const myForm = data.forms;
                     console.log(myForm)
                     var i = 1;
-                    
+
                     myForm.forEach((doc) => {
                         const tr = document.createElement("tr");
                         tbody.appendChild(tr);
@@ -139,13 +150,13 @@
                         const no = document.createElement("td")
                         const tittle = document.createElement("td")
                         const description = document.createElement("td")
-                        const created_at = document.createElement('td')
+                        const deadline = document.createElement('td')
                         const action = document.createElement("td")
 
                         tbody.appendChild(tr)
                         tr.appendChild(no)
                         tr.appendChild(tittle)
-                        tr.appendChild(created_at)
+                        tr.appendChild(deadline)
                         tr.appendChild(description)
                         tr.appendChild(action)
 
@@ -153,7 +164,7 @@
 
                         no.innerHTML = i;
                         tittle.innerHTML = doc.tittle
-                        created_at.innerHTML = doc.created_at
+                        deadline.innerHTML = doc.deadline
                         description.innerHTML = doc.description
                         i++;
 
@@ -184,19 +195,19 @@
                         del.appendChild(logoDel)
                         logoDel.classList.add("bi", "bi-trash")
                     });
-                    } else {
+                } else {
                     alert('You dont have any form ');
-                    }
-                } catch (error) {
-                    console.log(error);
                 }
-                
+            } catch (error) {
+                console.log(error);
+            }
 
-                const btndel = document.getElementsByClassName("btnDelete")
-                console.log(btndel)
 
-                for (let i = 0; i < btndel.length; i++) {
-                    btndel[i].addEventListener('click', async function () {
+            const btndel = document.getElementsByClassName("btnDelete")
+            console.log(btndel)
+
+            for (let i = 0; i < btndel.length; i++) {
+                btndel[i].addEventListener('click', async function () {
                     const form_id = btndel[i].getAttribute('data-id')
                     console.log(form_id)
 
@@ -205,33 +216,33 @@
 
                     if (confirm('Are you sure to delete this form?') == true) {
                         const response = await fetch(
-                        `http://localhost:3000/form/deleteForm/${form_id}/user/${user_id}`, {
-                            method: 'DELETE'
-                        })
+                            `http://localhost:3000/form/deleteForm/${form_id}/user/${user_id}`, {
+                                method: 'DELETE'
+                            })
                         const data = await response.json();
 
                         if (data.success == true) {
-                        alert(data.msg)
-                        location.reload()
+                            alert(data.msg)
+                            location.reload()
                         } else if (data.success == false) {
-                        alert(data.msg)
-                        location.reload()
+                            alert(data.msg)
+                            location.reload()
                         }
                     } else {
                         alert('Please try again later!')
                         location.reload()
                     }
-                    })
-                }
+                })
+            }
 
 
-                const btnLogout = document.getElementById('btn-logout');
-                btnLogout.addEventListener('click', async function (event) {
-                    event.preventDefault()
+            const btnLogout = document.getElementById('btn-logout');
+            btnLogout.addEventListener('click', async function (event) {
+                event.preventDefault()
 
-                    fetch('/auth/logout')
-                        .then(response => response.json())
-                        .then(data => {
+                fetch('/auth/logout')
+                    .then(response => response.json())
+                    .then(data => {
                         if (data.success) {
                             // Logout berhasil, hapus token dari local storage
                             localStorage.removeItem('token');
@@ -241,12 +252,12 @@
                             console.log(data.msg);
                         }
                     })
-                        .catch(error => {
+                    .catch(error => {
                         console.log('Error : ', error);
                     });
-                });
-            })
-        </script>
+            });
+        })
+    </script>
 
 </body>
 

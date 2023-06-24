@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
+    <title>Update Submission</title>
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.108.0">
 
@@ -34,13 +35,14 @@
             height: 100vh;
         }
 
-        .buttonFile{
-            border-radius:15px; 
-            margin-right: 489px; 
-            background-color:#6f799e;
-            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+        .buttonFile {
+            border-radius: 15px;
+            margin-right: 489px;
+            background-color: #6f799e;
+            box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
         }
-        .buttonFile:active{
+
+        .buttonFile:active {
             transform: translateY(4px);
         }
     </style>
@@ -99,56 +101,61 @@
         <!-- end slide bar -->
 
         <div class="b-example-divider b-example-vr " style="width:85.3%;">
-            <br><h2 class="tittle text-center my-3 text-dark">Submission Task</h2> <br><br>
-            <!-- Menampilkan Data Form Pengumpulan Submission -->
+            <br>
+            <h2 class="tittle text-center my-3 text-dark">Submission Task</h2><br><br>
             <div class="kotak task-form-container1"><br>
                 <div class="avatar-container">
                     <div class="avatar">
                         <img src="/img/profile.png" alt="Avatar"
-                            style="width: 100px; height: 100px; border-radius: 50%; margin-left: 50px;">
+                            style="width: 100px; height: 100px; margin-left: 50px;">
                     </div>
-                    <div>
-                        <h3 class="mb-3"><%= user.nama %></h3>
-                    </div>
+                    <h3 class="title mb-4" style=" font-weight:700; margin-left: 5px; font-size: 35px;">
+                        <%= form.tittle %></h3>
                 </div>
+
                 <div>
-                    <h1 class="title mb-3" style="margin-left: 225px;"><%= form.tittle %></h1>
-                    <p class="upload-info">Created at :</p>
-                    <p class="upload-date mb-3"><%= form.created_at %></p>
-                    <p class="instruction-info">Instruction :</p>
-                    <p class="instruction-text mb-3"><%= form.description %></p>
+
+                    <p class="upload-info mt-2">Deadline Submission :</p>
+                    <p class="upload-date mb-2"><%= form.deadline %></p>
+                    <p class="instruction-info">Instructions :</p>
+                    <p class="instruction-text mb-2"><%= form.description %></p>
+                    <p class="instruction-info">By :</p>
+                    <p class="instruction-text mb-2"><%= user.nama %></p>
                     <hr>
                 </div>
                 <!-- End -->
 
                 <h2 class="answer-title mb-1">&nbsp; Answer</h2>
-
+                <p style="color:midnightblue; margin-left: 90px;font-weight:lighter; font-size: 18px;"> [ status :
+                    <%= item.status %> ]</p>
                 <!-- Form Edit Data Submission -->
-                <form class="" action="/submission/editSubmission/<%= item.id%>" method="post" id="form-edit">
-                    <ul style="margin-right: 130px;">
-                        <li class="list-group-item">
-                            <div class="file-upload-container">
-                                <div class="upload-container">
-                                    <p style="color: black; margin-left: 22px;font-weight: bold; font-size: 18px;">
-                                        Upload File</p>
-                                        <form action="/submission/viewFileSubmisison/<%= item.id%>" method="GET">
-                                        <button class="btn btn-secondary buttonFile"
-                                            type="button">
-                                            <h6 style="margin-top: 10px; text-align: center;"><%= item.uploaded_file %></h6>
-                                        </button>
-                                        </form>
-                                </div>
+                <ul style="margin-right: 130px;">
+                    <li class="list-group-item">
+                        <div class="file-upload-container">
+                            <div class="upload-container mt-2">
+                                <p style="color: black; margin-left: 25px;font-weight: bold; font-size: 18px;">
+                                    My Submission File</p>
+                                <form action="/submission/viewFileSubmisison/<%= item.id%>" method="GET">
+                                    <button class="btn btn-secondary buttonFile" style="margin-right: 510px;"
+                                        type="submit" id="viewFileButton-<%= item.id %>">
+                                        <h6 style="margin-top: 10px; text-align: center;"><%= item.uploaded_file %></h6>
+                                    </button>
+                                </form>
                             </div>
-                        </li>
-                        <li class="list-group-item" >
+                        </div>
+                    </li>
+                    <form class="form-edit" action="/submission/editSubmission/<%= item.id%>" method="post"
+                        id="form-edit">
+                        <li class="list-group-item">
                             <div class="description-section">
                                 <p style="color: black;font-weight: bold;" for="floatingInputDesc">
                                     Comments</p>
                                 <textarea placeholder="Add a comment (optional)" type="text" class="form-control"
-                                    id="floatingInputDesc" name="description" style="margin-left: 1px;"><%= item.description || '' %></textarea>
+                                    id="floatingInputDesc" name="description"
+                                    style="margin-left: 1px;"><%= item.description || '' %></textarea>
                             </div>
                         </li>
-                    </ul>
+                </ul>
                 </form>
                 <!-- End -->
 
@@ -156,7 +163,8 @@
                     <a href="/submission/upload/<%= form.form_id%>" class="cancel-button btn btn-secondary">
                         Cancel
                     </a>
-                    <button form="form-edit" class="upload-button btn btn-lg btn-success me-3" type="submit">
+                    <button form="form-edit" id="form-edit" class="upload-button btn btn-lg btn-success me-3"
+                        type="submit">
                         Update
                     </button>
                 </div>
@@ -169,7 +177,7 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", async function () {
-            const form = document.querySelector('form');
+            const form = document.getElementById('form-edit');
             form.addEventListener('submit', async (event) => {
                 event.preventDefault();
 

@@ -2,11 +2,11 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reset Password</title>
-    <link rel="stylesheet" href="/css/signin.css">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reset Password</title>
+  <link rel="stylesheet" href="/css/signin.css">
 </head>
 
 <body>
@@ -34,7 +34,8 @@
       <br>
       <br>
       <div class="field">
-          <input type="submit" class="fw-semibold w-100 btn btn-lg btn-submit text-white btn-light" value="Reset Password">
+        <input type="submit" class="fw-semibold w-100 btn btn-lg btn-submit text-white btn-light"
+          value="Reset Password">
       </div>
       <br>
     </form>
@@ -42,7 +43,7 @@
 
   <script>
     const formReset = document.getElementById('formReset');
-    formReset.addEventListener("submit", async (event) =>  {
+    formReset.addEventListener("submit", async (event) => {
       event.preventDefault();
 
       const username = document.getElementById('floatingInputUsername').value;
@@ -52,16 +53,16 @@
 
       const formData = new FormData(formReset);
       const thisData = {
-            username: username,
-            email: email, 
-            newPassword: newPassword,
-            confPassword: confPassword,
-          };
+        username: username,
+        email: email,
+        newPassword: newPassword,
+        confPassword: confPassword,
+      };
       const requestOptions = await fetch('http://localhost:3000/auth/resetPassword', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-        }, 
+        },
         body: JSON.stringify(thisData)
       });
 
@@ -72,11 +73,11 @@
       } else if (data.success == false) {
         alert(data.msg);
         location.reload()
-      } else if (data.success == true){
+      } else if (data.success == true) {
         alert(data.msg);
         window.location.href = '/auth/login';
-      }
-    });
+      }
+    });
   </script>
 </body>
 

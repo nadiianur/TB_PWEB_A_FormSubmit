@@ -36,6 +36,9 @@ const Submission = db.define(
     description: {
       type: DataTypes.STRING
     },
+    status: {
+      type: DataTypes.STRING
+    },
     created_at: {
       type: DataTypes.DATE,
     },

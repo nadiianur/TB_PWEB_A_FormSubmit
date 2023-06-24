@@ -28,6 +28,10 @@ const Form = db.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    deadline: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
     created_at: {
       type: DataTypes.DATE,
       allowNull: false,

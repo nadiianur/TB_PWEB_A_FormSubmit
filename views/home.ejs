@@ -92,7 +92,7 @@
         </div>
         <!-- end slide bar -->
 
-        <div class="b-example-divider b-example-vr table" style="width:85.3%;" >
+        <div class="b-example-divider b-example-vr table" style="width:85.3%;">
             <div class="row">
                 <div class="col data ms-5 mb-5">
                     <table class=" mt-3">
@@ -101,7 +101,8 @@
                                 <br>
                                 <h3 class="text-left my-1 fw-bold mb-3" style="color: #5A6794;">Welcome to StudyIn</h3>
                                 <hr style="border-top: 2px dashed rgb(0, 0, 0);">
-                                <h5 class="text-left my-1 fw-semibold mb-3" style="color: #000000">Hello! This is where you will see
+                                <h5 class="text-left my-1 fw-semibold mb-3" style="color: #000000">Hello! This is where
+                                    you will see
                                     updates from your study.</h5>
                                 <hr style="border-top: 2px dashed rgb(0, 0, 0);">
                             </td>
@@ -110,25 +111,30 @@
                     <table>
                         <br>
                         <a href="/form/addForm"><button type="button" class="button btn btn-primary btn-lg"
-                            type="button">+ Add New</button></a>
+                                type="button">+ Add New</button></a>
                     </table>
                     <table class="text-dark mt-5 bg-light shadow" style="border-radius: 20px; width: 15%;">
                         <tr>
-                            <td><h1 class="mb-3 fw-bold" style="margin-left: 30px;" id="formCount"><%= formCount %></h1></td>
+                            <td>
+                                <h1 class="mb-3 fw-bold" style="margin-left: 30px;" id="formCount"><%= formCount %></h1>
+                            </td>
                             <td class="p-2">
-                                <p class="fw-bold fs-6 mb-2">Form Tugas <br> <span class="fw-semibold"> New Updates </span></p>
+                                <p class="fw-bold fs-6 mb-2">Form Tugas <br> <span class="fw-semibold"> New Updates
+                                    </span></p>
                             </td>
                         </tr>
                     </table>
 
                     <% if (data && data.length > 0) { %>
-                        <% data.forEach((item, index) => { %>
-                    <table class="border bg-light shadow mt-5 w-50 tableForm" style="border-radius: 50px; height: 70px;" form_id="<%= item.form_id %>" tittle="<%= item.tittle %>" user_id="<%= item.user_id %>" created_at="<%= item.created_at %>" description="<%= item.description %>">
+                    <% data.forEach((item, index) => { %>
+                    <table class="border bg-light shadow mt-5 w-50 tableForm" style="border-radius: 50px; height: 70px;"
+                        form_id="<%= item.form_id %>" tittle="<%= item.tittle %>" user_id="<%= item.user_id %>"
+                        created_at="<%= item.created_at %>" description="<%= item.description %>">
                         <tbody>
                             <tr>
                                 <td class="pt-3 pe-5 ps-5">
-                                    <h4 class="mt-3">Owner : <%= item.nama %></h4>
-                                    <p><%= item.created_at %></p>
+                                    <h4 class="mt-3"><%= item.nama %></h4>
+                                    <p>Deadline [ <%= item.deadline %> ]</p>
                                 </td>
                             </tr>
                             <tr>
@@ -137,16 +143,16 @@
                                     <p style="font-weight: 500; margin-top: 5px;">Instructions :</p>
                                     <p style="font-size: large;"><%= item.description %></p>
                                     <!-- href="/submission/upload" -->
-                                    <a href="/submission/upload/<%= item.form_id %>" type="button" class="btn btn-dark" id="btnTurnIn"
-                                        style="border-radius: 25px; width: 125px; margin-bottom: 40px;" >
-                                            Turn In
+                                    <a href="/submission/upload/<%= item.form_id %>" type="button" class="btn btn-dark"
+                                        id="btnTurnIn" style="border-radius: 25px; width: 125px; margin-bottom: 40px;">
+                                        Turn In
                                     </a>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
-                        <% }); %>
-                     <% } %>
+                    <% }); %>
+                    <% } %>
                 </div>
             </div>
         </div>
@@ -162,6 +168,29 @@
     <script src="/assets/js/sidebars.js"></script>
 
     <script>
+        const btnLogout = document.getElementById('btn-logout');
+        btnLogout.addEventListener('click', async function (event) {
+            event.preventDefault()
+
+            fetch('/auth/logout')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Logout berhasil, hapus token dari local storage
+                        localStorage.removeItem('token');
+                        // Redirect ke halaman login
+                        window.location.href = '/auth/login';
+                    } else {
+                        console.log(data.msg);
+                    }
+                })
+                .catch(error => {
+                    console.log('Error : ', error);
+                });
+        });
+
+
+        document.addEventListener("DOMContentLoaded", async function () {
             const response = await fetch('http:/localhost:3000/form/home');
 
             const data = await response.json();
@@ -170,28 +199,7 @@
                 const formCount = data.formCount;
                 document.getElementById('formCount').innerText = formCount;
             }
-
-
-            const btnLogout = document.getElementById('btn-logout');
-                btnLogout.addEventListener('click', async function (event) {
-                    event.preventDefault()
-
-                    fetch('/auth/logout')
-                        .then(response => response.json())
-                        .then(data => {
-                        if (data.success) {
-                            // Logout berhasil, hapus token dari local storage
-                            localStorage.removeItem('token');
-                            // Redirect ke halaman login
-                            window.location.href = '/auth/login';
-                        } else {
-                            console.log(data.msg);
-                        }
-                    })
-                    .catch(error => {
-                    console.log('Error : ', error);
-                });
-            });
+        })
     </script>
 
     <!-- <script>
@@ -239,6 +247,7 @@
         
     }
     </script> -->
-    
+
 </body>
+
 </html>

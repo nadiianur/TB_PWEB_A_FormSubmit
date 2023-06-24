@@ -2,11 +2,11 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" href="/css/signin.css">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In</title>
+  <link rel="stylesheet" href="/css/signin.css">
 </head>
 
 <body>
@@ -26,10 +26,11 @@
       <br>
       <br>
       <div class="field">
-        <p style="text-align: right; margin-top: 0px; font-size: large;"> <a href="/auth/resetPassword">Forgot Password?</a></p>
+        <p style="text-align: right; margin-top: 0px; font-size: large;"> <a href="/auth/resetPassword">Forgot
+            Password?</a></p>
       </div>
       <div class="field">
-          <input type="submit" class="fw-semibold w-100 btn btn-lg btn-submit text-white btn-light" value="Sign in">
+        <input type="submit" class="fw-semibold w-100 btn btn-lg btn-submit text-white btn-light" value="Sign in">
       </div>
       <br>
     </form>
@@ -41,7 +42,7 @@
 
   <script>
     const formLogin = document.getElementById('formLogin');
-    formLogin.addEventListener("submit", async (event) =>  {
+    formLogin.addEventListener("submit", async (event) => {
       event.preventDefault();
 
       const username = document.getElementById('floatingInputUsername').value;
@@ -53,7 +54,10 @@
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({username, password})
+        body: JSON.stringify({
+          username,
+          password
+        })
       });
 
       const data = await requestOptions.json();
@@ -64,14 +68,13 @@
       } else if (!data.success == false) {
         alert('Login Tidak Berhasil');
         window.location.href = '/auth/login';
-      } else if (data.msg == 'Username not valid'){
+      } else if (data.msg == 'Username not valid') {
         alert(data.msg);
         window.location.href = '/auth/login';
-      } else if(data.msg == 'Password wrong'){
+      } else if (data.msg == 'Password wrong') {
         alert(data.msg);
-        window.location.href = '/auth/login';
-      }
-    });
+      }
+    });
   </script>
 </body>
 
