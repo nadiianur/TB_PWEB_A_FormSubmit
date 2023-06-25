@@ -86,7 +86,7 @@ hr {
 
 .file-upload-container {
     margin-left: 20px;
-    width: 800px;
+    width:max-content;
 }
 
 .file-upload-box {

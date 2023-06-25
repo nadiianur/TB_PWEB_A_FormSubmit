@@ -129,23 +129,19 @@
                 <p style="color:midnightblue; margin-left: 90px;font-weight:lighter; font-size: 18px;"> [ status :
                     <%= item.status %> ]</p>
                 <!-- Form Edit Data Submission -->
-                <ul style="margin-right: 130px;">
-                    <li class="list-group-item">
-                        <div class="file-upload-container">
-                            <div class="upload-container mt-2">
-                                <p style="color: black; margin-left: 25px;font-weight: bold; font-size: 18px;">
-                                    My Submission File</p>
-                                <form action="/submission/viewFileSubmisison/<%= item.id%>" method="GET">
-                                    <button class="btn btn-secondary buttonFile" style="margin-right: 510px;"
-                                        type="submit" id="viewFileButton-<%= item.id %>">
-                                        <h6 style="margin-top: 10px; text-align: center;"><%= item.uploaded_file %></h6>
-                                    </button>
-                                </form>
+                <form class="form-edit" action="/submission/editSubmission/<%= item.id%>" method="post" id="form-edit">
+                    <ul style="margin-right: 130px;">
+                        <li class="list-group-item">
+                            <div class="file-upload-container">
+                                <div class="upload-container mt-2">
+                                    <p style="color: black; margin-left: 25px;font-weight: bold; font-size: 18px;">
+                                        My Submission File</p>
+                                    <input type="file" class="form-control" id="floatingInput" placeholder="file-upload"
+                                        name="file" value="<%= uploaded_file %>" required>
+                                </div>
                             </div>
-                        </div>
-                    </li>
-                    <form class="form-edit" action="/submission/editSubmission/<%= item.id%>" method="post"
-                        id="form-edit">
+                        </li>
+
                         <li class="list-group-item">
                             <div class="description-section">
                                 <p style="color: black;font-weight: bold;" for="floatingInputDesc">
@@ -155,7 +151,7 @@
                                     style="margin-left: 1px;"><%= item.description || '' %></textarea>
                             </div>
                         </li>
-                </ul>
+                    </ul>
                 </form>
                 <!-- End -->
 
@@ -177,23 +173,24 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", async function () {
+
             const form = document.getElementById('form-edit');
             form.addEventListener('submit', async (event) => {
                 event.preventDefault();
 
                 const description = document.getElementById('floatingInputDesc').value;
+                const file = document.getElementById('floatingInput').files[0];
+
+                const formData = new FormData();
+                formData.append('description', description);
+                formData.append('file', file);
 
                 const id = '<%= id%>'
                 try {
                     const response = await fetch(
                         `http://localhost:3000/submission/editSubmission/${id}`, {
                             method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({
-                                description: description
-                            })
+                            body: formData
                         });
 
                     const data = await response.json()
@@ -213,7 +210,6 @@
                     alert(error)
                 }
             })
-
 
             const btnLogout = document.getElementById('btn-logout');
             btnLogout.addEventListener('click', async function (event) {

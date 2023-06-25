@@ -217,6 +217,7 @@ const getEdit = async (req, res) => {
     } else {
         res.render('submission/editSubmission', {
             item: findSubmit,
+            uploaded_file: findSubmit.uploaded_file,
             user: findUser,
             form: findForm,
             user_id,
@@ -233,6 +234,7 @@ const editSubmission = async (req, res) => {
 
     try {
         const description = req.body.description;
+        const file = req.file;
         const findSubmission = await Submission.findByPk(id)
 
         if (!findSubmission) {
@@ -242,7 +244,8 @@ const editSubmission = async (req, res) => {
             })
         } else {
             const updateSubmit = await Submission.update({
-                description: description
+                description: description,
+                uploaded_file: file.originalname,
             }, {
                 where: {
                     id: id
@@ -253,7 +256,8 @@ const editSubmission = async (req, res) => {
                 res.status(200).json({
                     msg: "File already updated!",
                     data: {
-                        description: description
+                        description: description,
+                        uploaded_file: file.originalname,
                     },
                     success: true
                 })
@@ -270,7 +274,7 @@ const editSubmission = async (req, res) => {
         })
     }
 }
-controllers.editSubmission = [verifyToken, editSubmission];
+controllers.editSubmission = [verifyToken, uploaded, editSubmission];
 
 
 // Function Read Data Submission

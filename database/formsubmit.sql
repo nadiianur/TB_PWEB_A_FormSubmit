@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 19 Jun 2023 pada 09.27
+-- Waktu pembuatan: 25 Jun 2023 pada 05.14
 -- Versi server: 10.4.28-MariaDB
 -- Versi PHP: 8.2.4
 
@@ -32,6 +32,7 @@ CREATE TABLE `forms` (
   `user_id` int(11) NOT NULL,
   `tittle` varchar(255) NOT NULL,
   `description` varchar(500) NOT NULL,
+  `deadline` datetime NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `update_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -40,11 +41,26 @@ CREATE TABLE `forms` (
 -- Dumping data untuk tabel `forms`
 --
 
-INSERT INTO `forms` (`form_id`, `user_id`, `tittle`, `description`, `created_at`, `update_at`) VALUES
-(1001, 211171, 'Form pengumpulan tugas RPL', 'Kumpulkan tugas RPL', '2023-06-03 08:48:45', '2023-06-03 08:48:45'),
-(1011, 211175, 'Progress project PWEB A', 'Cantumkan link youtube demo dan link repository github disini', '2023-06-11 07:27:35', '2023-06-11 07:27:35'),
-(1012, 211175, 'Upload KTP ', 'Untuk jalan-jalan di hari rabu dibutuhkan ktp peserta jalan-jalan', '2023-06-11 07:28:09', '2023-06-11 07:28:09'),
-(1015, 211175, 'Progress project PWEB', 'DESKRIPSI NYA DI UPDATE', '2023-06-11 14:08:25', '2023-06-18 15:01:59');
+INSERT INTO `forms` (`form_id`, `user_id`, `tittle`, `description`, `deadline`, `created_at`, `update_at`) VALUES
+(1054, 211175, 'Progress project PWEB A', 'Cantumkan link youtube demo dan link repository github disini', '2023-06-27 16:00:00', '2023-06-24 14:07:26', '2023-06-24 14:38:26'),
+(1055, 211179, 'Artikel Data Mining', 'Kumpulkan draft jurnal dan laporan', '2023-06-29 16:59:00', '2023-06-24 15:55:40', '2023-06-24 17:12:28'),
+(1056, 211175, 'Berkas Pendaftaran Ulang Maba FTI', 'Berkas yang di perlukan : ss buktu, foto, formulis pendaftaran ulang', '2023-06-26 16:59:00', '2023-06-24 17:25:50', '2023-06-24 17:27:13'),
+(1057, 211175, 'Tugas Praktikum Data Mining Pertemuan 1', 'Kumpulkan file ipynb', '2023-07-01 16:59:00', '2023-06-24 17:28:23', '2023-06-24 17:28:23'),
+(1058, 211175, 'Tugas Praktikum Data Mining Pertemuan 2', 'Kumpulkan file ipynb', '2023-07-08 16:59:00', '2023-06-24 17:28:59', '2023-06-24 17:28:59'),
+(1060, 211175, 'Tugas Praktikum Data Mining Pertemuan 3', 'Kumpulkan file ipynb', '2023-07-15 16:00:00', '2023-06-24 17:32:01', '2023-06-24 17:32:01'),
+(1061, 211175, 'Tugas Praktikum Data Mining Pertemuan 4', 'Kumpulkan file ipynb', '2023-07-21 17:32:00', '2023-06-24 17:32:42', '2023-06-24 17:32:42'),
+(1064, 211175, 'Tugas Praktikum Data Mining Pertemuan 5', 'Kumpulkan file ipynb', '2023-07-29 00:32:57', '2023-06-24 17:34:35', '2023-06-24 17:34:35'),
+(1065, 211175, 'Tugas Praktikum Data Mining Pertemuan 6', 'kumpulkan file ipynb', '2023-08-05 00:32:57', '2023-06-24 17:34:35', '2023-06-24 17:34:35'),
+(1066, 211175, 'Tugas Praktikum Data Mining Pertemuan 7', 'kumpulkan file ipynb', '2023-08-12 00:34:41', '2023-06-24 17:35:43', '2023-06-24 17:35:43'),
+(1067, 211175, 'Tugas Praktikum Data Mining Pertemuan 8', 'kumpulkan file ipynd', '2023-08-19 00:34:41', '2023-06-24 17:35:43', '2023-06-24 17:35:43'),
+(1072, 211175, 'Tugas Praktikum Data Mining Pertemuan 9', 'Kumpulkan file ipynb', '2023-08-26 00:36:12', '2023-06-24 17:37:28', '2023-06-24 17:37:28'),
+(1073, 211175, 'Tugas Praktikum Data Mining Pertemuan 10', 'Kumpulkan file ipynb', '2023-09-02 00:36:12', '2023-06-24 17:37:28', '2023-06-24 17:37:28'),
+(1074, 211175, 'Tugas Praktikum Data Mining Pertemuan 11', 'Kumpulkan file ipynb', '2023-09-09 00:36:12', '2023-06-24 17:37:28', '2023-06-24 17:37:28'),
+(1075, 211175, 'Tugas Praktikum Data Mining Pertemuan 12', 'Kumpulkan file ipynb', '2023-09-16 00:36:12', '2023-06-24 17:37:28', '2023-06-24 17:37:28'),
+(1077, 211175, 'UAP Data Mining', 'File PDF jawaban UAP', '2023-06-26 00:37:31', '2023-06-24 17:38:15', '2023-06-24 17:38:15'),
+(1078, 211175, 'TESSTTTT', 'TESTTT', '2023-06-24 19:37:31', '2023-06-24 17:38:15', '2023-06-24 17:38:15'),
+(1079, 211175, 'TESSTTT', 'TESTTT', '2023-08-02 00:39:21', '2023-06-24 17:39:46', '2023-06-24 17:39:46'),
+(1080, 211175, 'TESTTT', 'TESTT', '2023-06-24 19:39:21', '2023-06-24 17:39:46', '2023-06-24 17:39:46');
 
 -- --------------------------------------------------------
 
@@ -58,9 +74,19 @@ CREATE TABLE `submissions` (
   `form_id` int(11) NOT NULL,
   `uploaded_file` varchar(255) NOT NULL,
   `description` varchar(255) NOT NULL,
+  `status` varchar(50) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `update_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data untuk tabel `submissions`
+--
+
+INSERT INTO `submissions` (`id`, `user_id`, `form_id`, `uploaded_file`, `description`, `status`, `created_at`, `update_at`) VALUES
+(55, 211179, 1054, 'tabel relasi 2.jpg', 'edit captionssszzz', 'ontime', '2023-06-25 03:13:24', '2023-06-25 03:13:24'),
+(56, 211175, 1055, 'JURNAL DAMIN KELP 6.docx', '', 'ontime', '2023-06-24 17:23:59', '2023-06-24 17:23:59'),
+(57, 211180, 1054, '56.docx', '', 'ontime', '2023-06-24 17:31:14', '2023-06-24 17:31:14');
 
 -- --------------------------------------------------------
 
@@ -85,14 +111,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `nama`, `username`, `email`, `password`, `active`, `avatar`, `created_at`, `update_at`) VALUES
-(211152, '', 'nadini', 'dini@gmail.com', '$2b$10$9.HSQRyoSNHdJiuxTsxq6OzN0L6W2AEuJTdn1fpQnrI8GfhlUGg66', 1, 'photo', '2023-05-27 01:41:24', '2023-05-27 01:41:24'),
-(211153, '', 'amalia', 'amal@gmail.com', '698d51a19d8a121ce581499d7b701668', 1, 'picture', '2023-05-23 15:47:34', '2023-04-10 08:28:07'),
-(211159, 'dini', 'nadini12', 'dini@gmail.com', '$2b$10$i6wWF4fzda29ledMK48KmeUiPP4bZTsKbk/K5Se6mL7eCYB.UGxbW', 1, 'picture', '2023-05-29 08:30:07', '2023-05-29 08:30:07'),
-(211171, 'nadia nur saida', 'nadiianrs', 'nadianrs88@gmail.com', '$2b$10$i1ZuCAmUFgIifTBJqwdSR.jEfl7Z84YWbWelDbYiPy/cEHXpDGuH2', 1, 'picture', '2023-06-03 04:04:50', '2023-06-03 04:04:50'),
-(211175, 'Nadia Nur Saida', 'nadianursaida88', 'nadianursaida88@gmail.com', '$2b$10$It1OMJNj0olWxrHhis5mxe38mb6rQECoaARVBe9YrFz5aa72qsvfa', 1, 'picture', '2023-06-11 03:16:10', '2023-06-11 03:16:10'),
-(211176, 'naaaad', 'nadiaa', 'nadianrs88@gmail.com', '$2b$10$oTdhi.RSMZlTazguDuenBO2aa7c66e2jTMe9BK3gVadfVouPF0rNK', 1, 'picture', '2023-06-07 08:04:52', '2023-06-07 08:04:52'),
-(211177, 'Syadza Intann Benya', 'syadza12', 'syadza12@gmail.com', '$2b$10$fGytl9ACgzoPW3fZm/2rku5nU4uuQ3KyQgdwJ2DWPcP8pYPdpxn8u', 1, 'picture', '2023-06-07 08:10:38', '2023-06-07 08:10:38'),
-(211178, 'syadza intan benya', 'syadza123', 'syadza123@gmail.com', '$2b$10$4jyfOrAZs2RPXoh8I1N5yuwZJegL7WOjL13S32K1uXGI3NedRhYJq', 1, 'picture', '2023-06-07 13:05:41', '2023-06-07 13:05:41');
+(211175, 'Nadia Nur Saida', 'nadianursaida88', 'nadianursaida88@gmail.com', '$2b$10$1LS3T89FzlSe9k5GkCx30OMWnFw/U5n9Za2nuV91EqPq/6i0VcC7e', 1, 'C:\\fakepath\\The role of information and communication technology in encountering.pdf', '2023-06-24 03:01:56', '2023-06-24 03:01:56'),
+(211179, 'Sarah Permata Sari', 'sarahpermata', 'sarah123@gmail.com', '$2b$10$dPnmo/PkUG9YPyhWa07gk.Gz4hnr9bRZ4ksbt.PQTIevyVIeoEM4S', 1, 'picture', '2023-06-24 05:15:01', '2023-06-24 05:15:01'),
+(211180, 'Slamet Arif Maulana', 'slametam', 'slametam1@gmail.com', '$2b$10$IpG31Ld43wUiErt83ESAzuonUwA0ahCh04xKFEuAauoK/0aV2Q9Ny', 1, 'picture', '2023-06-24 17:30:50', '2023-06-24 17:30:50');
 
 --
 -- Indexes for dumped tables
@@ -127,19 +148,19 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT untuk tabel `forms`
 --
 ALTER TABLE `forms`
-  MODIFY `form_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1019;
+  MODIFY `form_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1081;
 
 --
 -- AUTO_INCREMENT untuk tabel `submissions`
 --
 ALTER TABLE `submissions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 
 --
 -- AUTO_INCREMENT untuk tabel `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=211179;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=211181;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
