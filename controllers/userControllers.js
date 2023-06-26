@@ -156,137 +156,94 @@ const editUser = async (req, res) => {
             }
         });
 
-        const user_id = findUser.user_id
-        const realUsername = findUser.username
-        const realEmail = findUser.email
-        const realNama = findUser.nama
+        const {
+            username,
+            email,
+            nama,
+            passwordBaru,
+            passwordLama
+        } = req.body;
+        const user_id = findUser.user_id;
+        const passwordAsli = findUser.password;
 
-        const username = req.body.username || realUsername
-        const email = req.body.email || realEmail
-        const nama = req.body.nama || realNama
+        if (!username || !email || !nama) {
+            return res.status(400).json({
+                success: false,
+                msg: 'Data not valid'
+            });
+        }
 
-        const passwordBaru = req.body.passwordBaru
-        const passwordLama = req.body.passwordLama
+        if (username.length < 8) {
+            return res.status(400).json({
+                success: false,
+                msg: 'Username must be at least 8 characters'
+            });
+        }
 
-        if (passwordBaru == '' && passwordLama == '') {
-            if (!username || !email || !nama) {
-                res.status(400).json({
-                    success: false,
-                    msg: 'Data not valid'
-                })
-            } else {
-                if (username.length < 10) {
-                    res.status(400).json({
-                        success: false,
-                        msg: 'Username must 10 characters'
-                    })
-                } else {
-                    const newData = await User.update({
-                        username: username,
-                        email: email,
-                        nama: nama,
-                    }, {
-                        where: {
-                            user_id: user_id
-                        }
-                    })
-
-                    if (newData) {
-                        const findUserBaru = await User.findByPk(user_id)
-                        const usernameBaru = findUserBaru.username
-                        const emailBaru = findUserBaru.email
-                        const namaBaru = findUserBaru.nama
-
-                        res.status(200).json({
-                            success: true,
-                            username: usernameBaru,
-                            email: emailBaru,
-                            nama: namaBaru,
-                            msg: 'Data Sucessfully Update'
-                        })
-                    } else {
-                        res.status(400).json({
-                            success: false,
-                            message: 'Try agail later!'
-                        })
-                    }
-                }
-
-            }
-        } else if (passwordBaru != '' && passwordLama == '') {
-            res.status(400).json({
+        if (passwordBaru && !passwordLama) {
+            return res.status(400).json({
                 success: false,
                 msg: 'Please fill in Old Password'
-            })
-        } else if (passwordBaru == '' && passwordLama != '') {
-            res.status(400).json({
+            });
+        }
+
+        if (!passwordBaru && passwordLama) {
+            return res.status(400).json({
                 success: false,
                 msg: 'Please fill in New Password'
-            })
-        } else {
-            const passwordAsli = findUser.password
+            });
+        }
 
+        if (passwordBaru && passwordLama) {
             const salt = bcrypt.genSaltSync(10);
             const passwordMatch = bcrypt.compareSync(passwordLama, passwordAsli);
 
-
-            if (!username || !email || !username || !passwordBaru || !passwordLama) {
-                res.status(400).json({
+            if (!passwordMatch) {
+                return res.status(400).json({
                     success: false,
-                    msg: 'Try again'
-                })
-            } else {
-                if (username.length < 15) {
-                    res.status(400).json({
-                        success: false,
-                        msg: 'Username must 15 characters'
-                    })
-                } else {
-                    if (passwordMatch) {
-                        const hashedPasswordBaru = bcrypt.hashSync(passwordBaru, salt)
-                        const newData = await User.update({
-                            username: username,
-                            password: hashedPasswordBaru,
-                            email: email,
-                            nama: nama,
-                        }, {
-                            where: {
-                                user_id: user_id
-                            }
-                        })
-
-                        if (newData) {
-                            const findUserBaru = await User.findByPk(user_id)
-                            const newUsername = findUserBaru.username
-                            const newEmail = findUserBaru.email
-                            const newNama = findUserBaru.nama
-
-                            res.status(200).json({
-                                success: true,
-                                username: newUsername,
-                                email: newEmail,
-                                nama: newNama,
-                                msg: 'Profile Sucessfully Updated'
-                            })
-                        } else {
-                            res.status(400).json({
-                                success: false,
-                                message: 'Try again!'
-                            })
-                        }
-                    } else {
-                        res.status(400).json({
-                            success: false,
-                            msg: 'Wrong Old Password'
-                        })
-                    }
-                }
+                    msg: 'Wrong Old Password'
+                });
             }
+
+            const hashedPasswordBaru = bcrypt.hashSync(passwordBaru, salt);
+            await User.update({
+                username: username,
+                password: hashedPasswordBaru,
+                email: email,
+                nama: nama,
+            }, {
+                where: {
+                    user_id: user_id
+                }
+            });
+        } else {
+            await User.update({
+                username: username,
+                email: email,
+                nama: nama,
+            }, {
+                where: {
+                    user_id: user_id
+                }
+            });
         }
+
+        const findUserBaru = await User.findByPk(user_id);
+        const newUsername = findUserBaru.username;
+        const newEmail = findUserBaru.email;
+        const newNama = findUserBaru.nama;
+
+        res.status(200).json({
+            success: true,
+            username: newUsername,
+            email: newEmail,
+            nama: newNama,
+            msg: 'Profile Successfully Updated'
+        });
     } catch (error) {
         return res.redirect('/auth/login');
     }
-}
+};
 controllers.editUser = [verifyToken, editUser];
 
 

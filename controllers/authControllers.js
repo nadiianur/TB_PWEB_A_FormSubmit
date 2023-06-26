@@ -77,7 +77,8 @@ controllers.login = async (req, res) => {
     });
   } catch (error) {
     res.status(404).json({
-      msg: "Failed Login"
+      msg: "Failed Login",
+      r: error
     })
   }
 }
