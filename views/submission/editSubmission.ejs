@@ -179,20 +179,18 @@
                 event.preventDefault();
 
                 const description = document.getElementById('floatingInputDesc').value;
-                const file = document.getElementById('floatingInput').files[0];;
+                const file = document.getElementById('floatingInput').files[0];
+
+                const formData = new FormData();
+                formData.append('description', description);
+                formData.append('file', file);
 
                 const id = '<%= id%>'
                 try {
                     const response = await fetch(
-                        `http://studyin.northeurope.cloudapp.azure.com/submission/editSubmission/${id}`, {
+                        `http://studyin.northeurope.cloudapp.azure.com/form/editForm/${id}`, {
                             method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({
-                                description: description,
-                                file: file,
-                            })
+                            body: formData
                         });
 
                     const data = await response.json()
