@@ -245,7 +245,7 @@
             formData.append('file', file);
 
             const form_id = '<%= item.form_id%>'
-            const response = await fetch('http://localhost:3000/submission/upload/' + form_id, {
+            const response = await fetch('http://studyin.northeurope.cloudapp.azure.com/submission/upload/' + form_id, {
                 method: 'POST',
                 body: formData
             });

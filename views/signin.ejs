@@ -49,7 +49,7 @@
       const password = document.getElementById('floatingPassword').value;
 
       const formData = new FormData(formLogin);
-      const requestOptions = await fetch('http://localhost:3000/auth/login', {
+      const requestOptions = await fetch('http://studyin.northeurope.cloudapp.azure.com/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

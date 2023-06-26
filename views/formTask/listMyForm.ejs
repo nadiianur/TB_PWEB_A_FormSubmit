@@ -135,7 +135,7 @@
             const tbody = document.getElementById("formTableBody");
 
             try {
-                const response = await fetch('http://localhost:3000/form/listForm');
+                const response = await fetch('http://studyin.northeurope.cloudapp.azure.com/form/listForm');
                 const data = await response.json();
 
                 if (data.success) {
@@ -216,7 +216,7 @@
 
                     if (confirm('Are you sure to delete this form?') == true) {
                         const response = await fetch(
-                            `http://localhost:3000/form/deleteForm/${form_id}/user/${user_id}`, {
+                            `http://studyin.northeurope.cloudapp.azure.com/form/deleteForm/${form_id}/user/${user_id}`, {
                                 method: 'DELETE'
                             })
                         const data = await response.json();

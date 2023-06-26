@@ -154,7 +154,7 @@
             const form_id = "<%= form_id %>";
 
             try {
-                const response = await fetch(`http://localhost:3000/form/submissionMyForm/${form_id}`);
+                const response = await fetch(`http://studyin.northeurope.cloudapp.azure.com/form/submissionMyForm/${form_id}`);
                 const data = await response.json();
 
                 if (data.success) {

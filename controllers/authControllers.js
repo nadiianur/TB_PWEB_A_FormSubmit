@@ -63,7 +63,7 @@ controllers.login = async (req, res) => {
 
       req.session.user_id = user.user_id;
 
-      res.cookie('accessToken', accessToken, {
+      res.cookie('accessToken', accessToken, { 
         httpOnly: true,
         maxAge: 24 * 60 * 60 * 1000
       });
