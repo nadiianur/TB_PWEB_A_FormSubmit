@@ -181,7 +181,7 @@
                 const description = document.getElementById('floatingInputDesc').value;
                 const file = document.getElementById('floatingInput').files[0];
 
-                const formData = new FormData();
+                const formData = new FormData(form);
                 formData.append('description', description);
                 formData.append('file', file);
 
